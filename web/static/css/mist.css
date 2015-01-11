@@ -1,0 +1,58 @@
+
+/*
+  Defaults
+*/
+
+* {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 100%;
+}
+
+/*
+  Basic elements
+*/
+
+header {
+  margin-top: 10px;
+}
+
+
+footer {
+  border-top: 1px solid #ddd;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+
+body {
+}
+
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 98%;
+}
+
+
+h1 {
+  font-size: 130%;
+  font-style: italic;
+}
+
+
+h2 {
+  font-size: 120%;
+  font-style: italic;
+}
+
+
+h3 {
+  font-size: 110%;
+  font-style: italic;
+}
+
+
+/*
+  Classes
+*/

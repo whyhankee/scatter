@@ -1,0 +1,19 @@
+extends _layout
+
+append body_main
+  form(action='/login', method='POST')
+    div
+      p username
+        input(name='username')
+      p Password
+        input(name='password', type='password')
+      p
+        input(name='login', type='submit' value='Login')
+
+    div
+      p username
+        input(name='username')
+      p Password
+        input(name='password', type='password')
+      p
+        input(name='signup', type='submit', value='Signup')

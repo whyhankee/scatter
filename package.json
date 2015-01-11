@@ -1,0 +1,32 @@
+{
+  "name": "mist",
+  "version": "0.0.0",
+  "description": "Mist Social Network",
+  "main": "mist.js",
+  "scripts": {
+    "gulp": "gulp",
+    "reload": "nodemon ./mist.js"
+  },
+  "keywords": [
+    "mist",
+    "social",
+    "network"
+  ],
+  "dependencies": {
+    "async": "*",
+    "bcrypt": "*",
+    "body-parser": "*",
+    "morgan": "*",
+    "express": "*",
+    "jade": "*",
+    "m1cro": "git://github.com/lerint/m1cro.git",
+    "node-uuid": "*",
+    "oap": "*",
+    "thinky": "*"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  },
+  "author": "",
+  "license": "MIT"
+}
