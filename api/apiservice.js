@@ -1,18 +1,18 @@
 /* jshint node: true */
 "use strict";
 var path = require('path');
-
 var thinky = require('thinky');
 
 var model = require(path.join(__dirname,'/models'));
-var user = require(path.join(__dirname,'/user'));
+var user = require(path.join(__dirname,'/user.js'));
 
 
 /**
  * Our api service
  */
 function ApiService(iface, qname, options) {
-  iface.subscribe(qname+'.userGetAuthToken', this.userGetAuthToken);
+  iface.subscribe(this, qname+'.userSignUp', this.userSignUp);
+  iface.subscribe(this, qname+'.userGetAuthToken', this.userGetAuthToken);
 
   this.config = options.config;
   this.db = undefined;
@@ -20,7 +20,7 @@ function ApiService(iface, qname, options) {
 }
 
 
-ApiService.prototype.onStart = function(done) {
+ApiService.prototype.onStart = function (done) {
   var self = this;
 
   // Connect to RethinkDB
@@ -36,8 +36,12 @@ ApiService.prototype.onStart = function(done) {
   return done();
 };
 
+ApiService.prototype.onStop = function (done) {
+  return done();
+};
 
-ApiService.prototype.userSignup = user.signup;
+
+ApiService.prototype.userSignUp = user.signUp;
 ApiService.prototype.userGetAuthToken = user.getAuthToken;
 
 

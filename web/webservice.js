@@ -13,6 +13,7 @@ var morgan = require('morgan');
  * Globals
  */
 var mistApiCalls = [
+  'userSignUp',
   'userGetAuthToken'
 ];
 
@@ -47,8 +48,12 @@ function WebService(iface, qname, options) {
 
   // Routes
   this.app.get('/', getIndex);
+
   this.app.get('/login', getLogin);
   this.app.post('/login', postLogin);
+
+  this.app.get('/signup', getSignUp);
+  this.app.post('/signup', postSignUp);
 
   // .. errorHandler last
   this.app.use(errorHandler);
@@ -99,16 +104,40 @@ function getLogin(req, res) {
 
 
 function postLogin(req, res, next) {
-  var tokenData = {
+  console.log(req.body);
+
+  // signup
+  if (req.body.action === 'signup') {
+    var signupData = {
+      username: req.body.username,
+      password: req.body.password,
+      email: req.body.email
+    };
+    req.api.userSignUp(signupData, function (err, token) {
+      if (err) return req.next(err);
+
+      res.redirect('/');
+    });
+  }
+}
+
+
+function getSignUp(req, res) {
+  showPage('signup', {}, req, res);
+}
+
+
+function postSignUp(req, res, next) {
+  // signup
+  var signupData = {
     username: req.body.username,
-    password: req.body.password
+    password: req.body.password,
+    email: req.body.email
   };
-  req.api.userGetAuthToken(tokenData, function (err, token) {
+
+  req.api.userSignUp(signupData, function (err, token) {
     if (err) return req.next(err);
 
-    // set cookie
-
-    // Redirect to homepage
     res.redirect('/');
   });
 }
