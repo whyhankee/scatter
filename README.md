@@ -1,10 +1,10 @@
 # Mist
 
-An experiment in distributed social networking.
+An experiment in Distributed Social Networking.
 For insiders only.
 
 
-# installation
+# Installation
 
 
 ## requirements
@@ -19,3 +19,10 @@ For insiders only.
 * run `npm install` to install the dependencies
 * run `npm run reload` to run the server
 
+
+# Development
+
+## Test Driven Development :)
+
+* run `npm test` to run the tests
+* run `npm run tdd` to run the tests and wait for changes

@@ -59,7 +59,6 @@ function signUp(req) {
 
 
 
-
 function getAuthToken(req) {
   var self = this;    // jshint ignore:line
 

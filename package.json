@@ -4,6 +4,8 @@
   "description": "Mist Social Network",
   "main": "mist.js",
   "scripts": {
+    "test": "mocha",
+    "tdd": "mocha -w",
     "gulp": "gulp",
     "reload": "nodemon ./mist.js"
   },
@@ -25,6 +27,8 @@
     "thinky": "*"
   },
   "devDependencies": {
+    "expect.js": "*",
+    "mocha": "*",
     "nodemon": "*"
   },
   "author": "",
