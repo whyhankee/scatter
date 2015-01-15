@@ -1,16 +1,15 @@
 /* jshint node: true */
 "use strict";
 var os = require('os');
+var path = require('path');
 var util = require('util');
 
 var m1cro = require('m1cro');
-var webService = require('./web/webservice');
-var apiService = require('./api/apiservice');
+var webService = require(path.join(__dirname, 'web', 'webservice'));
+var apiService = require(path.join(__dirname, 'api', 'apiservice'));
 
 
-/**
- * Globals
- */
+// Move to external file
 var config = {
   web: {
     server: {

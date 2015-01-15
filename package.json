@@ -7,7 +7,7 @@
     "test": "mocha",
     "tdd": "mocha -w",
     "gulp": "gulp",
-    "reload": "nodemon ./mist.js"
+    "reload": "nodemon mist.js"
   },
   "keywords": [
     "mist",
