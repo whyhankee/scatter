@@ -7,23 +7,7 @@ var thinky = require('thinky');
 
 var model = require(path.join(__dirname,'/models'));
 var user = require(path.join(__dirname,'/user.js'));
-
-
-var apiLogger = {
-  pre: function timerStart(req) {
-    req.s.timerStart = Date.now();
-    return req.next();
-  },
-
-  post: function timerStop(req) {
-    console.log(util.format('API %s %s %d ms',
-      req.message,
-      req.response.err === null ? "Ok" : "Error",
-      Date.now()-req.s.timerStart)
-    );
-    return req.next();
-  }
-};
+var apiLogger = require(path.join(__dirname,'..','middleware', 'm1cro-logger'));
 
 
 /**
