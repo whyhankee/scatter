@@ -1,19 +1,43 @@
 /* jshint node: true */
 "use strict";
 var path = require('path');
+var util = require('util');
+
 var thinky = require('thinky');
 
 var model = require(path.join(__dirname,'/models'));
 var user = require(path.join(__dirname,'/user.js'));
 
 
+var apiLogger = {
+  pre: function timerStart(req) {
+    req.s.timerStart = Date.now();
+    return req.next();
+  },
+
+  post: function timerStop(req) {
+    console.log(util.format('API - request %s, %s. %d ms',
+      req.message,
+      req.response.err === null ? "Ok" : "Error",
+      Date.now()-req.s.timerStart)
+    );
+    return req.next();
+  }
+};
+
+
 /**
  * Our api service
  */
 function ApiService(iface, qname, options) {
+  // Service wide middleware
+  iface.serviceUse(qname, apiLogger);
+
+  // Subscribe to messages
   iface.subscribe(this, qname+'.userSignUp', this.userSignUp);
   iface.subscribe(this, qname+'.userGetAuthToken', this.userGetAuthToken);
 
+  // Setup
   this.config = options.config;
   this.db = undefined;
   this.m = {};
