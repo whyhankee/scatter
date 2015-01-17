@@ -41,7 +41,8 @@ function signUp(req) {
       var newUser = new self.User({
         username: args.username,
         password: results.cryptPassword,
-        email: args.email
+        email: args.email,
+        confirmed: null,  // todo
       });
       newUser.save().nodeify(cb);
     }
@@ -61,12 +62,47 @@ function signUp(req) {
 
 function getAuthToken(req) {
   var self = this;    // jshint ignore:line
+  var template = {
+    username: {required: 1, defined: 1},
+    password: {required: 1, defined: 1},
+  };
 
   // get username from db
-  // Check password
-  // return existing token, or create new
-  // update token on user record in db
-  req.done(new Error('notImplementedYet'));
+  var args;
+  async.waterfall([checkArgs, getUser, checkPassword, getToken], function (err, result) {
+    return req.done(err, result);
+  });
+
+  function checkArgs(cb) {
+    oap.check(req.data, template, cb);
+  }
+  function getUser(a, cb) {
+    args = a;
+
+    self.User.filter({username: args.username}).run().nodeify( function (err, users) {
+      if (users.length === 0) return req.done(new Error('invalidUsernamePassword'));
+      return cb(null, users[0]);
+    });
+  }
+  function checkPassword(user, cb) {
+    _checkPassword(args.password, user.password, function (err, same) {
+      if (err) return cb(err);
+      if (!same) return cb(new Error('invalidUsernamePassword'));
+      return cb(null, user);
+    });
+  }
+  function getToken(user, cb) {
+    if (user.authToken) {
+      // send event.user.token.reuse({userId: userId})
+      return cb(null, {token: user.authToken});
+    }
+
+    // Update user with random authToken
+    user.merge({authToken: uuid.v4()}).save().nodeify( function (err, user) {
+      // send event.user.token.create({userId: userId})
+      return cb(null, {token: user.authToken});
+    });
+  }
 }
 
 
@@ -85,9 +121,7 @@ function _cryptPassword(password, done) {
 
 
 function _checkPassword(password, crypted, done) {
-  bcrypt.compare(password, crypted, function(err, same) {
-   return done(err, same);
-  });
+  bcrypt.compare(password, crypted, done);
 }
 
 

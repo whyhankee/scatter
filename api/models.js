@@ -14,6 +14,7 @@ var userModel = {
     email: String,
 
     created: Date,
+    confirmed: Date,
     deleted: Date,
     blocked: Date,
 

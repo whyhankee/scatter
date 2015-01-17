@@ -29,7 +29,7 @@ var iface = m1cro.interface();
 iface.on('start', runTests);
 iface.service(ApiService, 'apiService', {config: apiConfig});
 iface.client('apiService', {
-  api: ['userSignUp']
+  api: ['userSignUp', 'userGetAuthToken']
 });
 iface.start();
 
@@ -65,7 +65,23 @@ function userTests() {
 
   it('should not be a able to signup another with the same email address');
 
-  // it('should be able to create a authToken for a user', function (done) {
+  it('should be able to create a authToken for a user', function (done) {
+      api.userGetAuthToken(signupData, function (err, result) {
+          expect(err).to.be(null);
+          expect(result.token).to.be.ok();
+          return done();
+      });
+  });
 
-  // })
+  it('should *not* be able to create a authToken for a invalid pwd', function (done) {
+      var invalidSignupData = signupData;
+      invalidSignupData.password = 'invalid';
+      api.userGetAuthToken(invalidSignupData, function (err, result) {
+          expect(err).not.to.be(null);
+          expect(err.name).to.be('Error');
+          expect(err.message).to.be('invalidUsernamePassword');
+          expect(result).to.be(undefined);
+          return done();
+      });
+  });
 }
