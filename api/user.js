@@ -27,8 +27,7 @@ function signUp(req) {
     async.auto({
       checkDupEmail: checkDupEmail,
       cryptPassword: cryptPassword,
-      saveUser: ['checkDupEmail', 'cryptPassword', saveUser],
-      sendEvent: ['saveUser', sendEvent]
+      saveUser: ['checkDupEmail', 'cryptPassword', saveUser]
     }, onDone);
 
     function checkDupEmail(cb, results) {
@@ -45,12 +44,8 @@ function signUp(req) {
         confirmed: null,  // todo
       });
       newUser.save().nodeify(cb);
-    }
-    function sendEvent(cb) {
       // send event.user.signup(id: newUserId)
-      return cb();
     }
-
     function onDone(err, result) {
       if (err) return req.done(err);
       req.done(null, result.saveUser);
