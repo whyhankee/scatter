@@ -16,7 +16,7 @@ var apiLogger = {
   },
 
   post: function timerStop(req) {
-    console.log(util.format('API - request %s, %s. %d ms',
+    console.log(util.format('API %s %s %d ms',
       req.message,
       req.response.err === null ? "Ok" : "Error",
       Date.now()-req.s.timerStart)
