@@ -87,20 +87,23 @@ function getAuthToken(req) {
   function checkPassword(user, cb) {
     _checkPassword(args.password, user.password, function (err, same) {
       if (err) return cb(err);
-      if (!same) return cb(new Error('invalidUsernamePassword'));
+      if (!same) {
+        cb(new Error('invalidUsernamePassword'));
+        // send event.user.token.invalidLogin({username: username})
+      }
       return cb(null, user);
     });
   }
   function getToken(user, cb) {
     if (user.authToken) {
+      cb(null, {token: user.authToken});
       // send event.user.token.reuse({userId: userId})
-      return cb(null, {token: user.authToken});
     }
 
     // Update user with random authToken
     user.merge({authToken: uuid.v4()}).save().nodeify( function (err, user) {
-      // send event.user.token.create({userId: userId})
-      return cb(null, {token: user.authToken});
+      cb(null, {token: user.authToken});
+    // send event.user.token.create({userId: userId})
     });
   }
 }
@@ -113,10 +116,7 @@ function _cryptPassword(password, done) {
   if (password.length < 6) {
     return done(new Error('chooseBetterPassword'));
   }
-
-  var cryptedPassword = bcrypt.hash(password, 10, function(err, hash) {
-    return done(err, hash);
-  });
+  var cryptedPassword = bcrypt.hash(password, 10, done);
 }
 
 
