@@ -92,7 +92,7 @@ function getAuthToken(req) {
       if (err) return cb(err);
       if (!same) {
         cb(new Error('invalidUsernamePassword'));
-        // send event.user.token.invalidLogin({username: username})
+        // send event.user.token.invalidLogin({userId: user.id})
         return;
       }
       return cb(null, user);
