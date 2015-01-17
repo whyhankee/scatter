@@ -98,30 +98,31 @@ function getIndex(req, res) {
 }
 
 
+/**
+ * Login
+ */
 function getLogin(req, res) {
   showPage('login', {}, req, res);
 }
 
 
 function postLogin(req, res, next) {
-  console.log(req.body);
-
-  // signup
-  if (req.body.action === 'signup') {
-    var signupData = {
+  if (req.body.action === 'Login') {
+    var loginForm = {
       username: req.body.username,
-      password: req.body.password,
-      email: req.body.email
+      password: req.body.password
     };
-    req.api.userSignUp(signupData, function (err, token) {
+    req.api.userGetAuthToken(loginForm, function (err, ti) {
       if (err) return req.next(err);
-
       res.redirect('/');
     });
   }
 }
 
 
+/**
+ * Signup
+ */
 function getSignUp(req, res) {
   showPage('signup', {}, req, res);
 }
@@ -137,7 +138,6 @@ function postSignUp(req, res, next) {
 
   req.api.userSignUp(signupData, function (err, token) {
     if (err) return req.next(err);
-
     res.redirect('/');
   });
 }

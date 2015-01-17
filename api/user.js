@@ -25,11 +25,15 @@ function signUp(req) {
     }
 
     async.auto({
+      checkDupUsername: checkDupUsername,
       checkDupEmail: checkDupEmail,
       cryptPassword: cryptPassword,
       saveUser: ['checkDupEmail', 'cryptPassword', saveUser]
     }, onDone);
 
+    function checkDupUsername(cb, results) {
+      return cb();
+    }
     function checkDupEmail(cb, results) {
       return cb();
     }
@@ -75,7 +79,11 @@ function getAuthToken(req) {
     args = a;
 
     self.User.filter({username: args.username}).run().nodeify( function (err, users) {
-      if (users.length === 0) return req.done(new Error('invalidUsernamePassword'));
+      if (users.length === 0) {
+        req.done(new Error('invalidUsernamePassword'));
+        // send event.user.token.invalidUsername({username: username})
+        return;
+      }
       return cb(null, users[0]);
     });
   }
@@ -85,6 +93,7 @@ function getAuthToken(req) {
       if (!same) {
         cb(new Error('invalidUsernamePassword'));
         // send event.user.token.invalidLogin({username: username})
+        return;
       }
       return cb(null, user);
     });
@@ -93,12 +102,14 @@ function getAuthToken(req) {
     if (user.authToken) {
       cb(null, {token: user.authToken});
       // send event.user.token.reuse({userId: userId})
+      return;
     }
 
     // Update user with random authToken
     user.merge({authToken: uuid.v4()}).save().nodeify( function (err, user) {
       cb(null, {token: user.authToken});
-    // send event.user.token.create({userId: userId})
+      // send event.user.token.create({userId: userId})
+      return;
     });
   }
 }

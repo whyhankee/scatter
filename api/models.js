@@ -23,12 +23,14 @@ var userModel = {
 };
 
 
-
 /**
  * Create models
  */
 function createModels(obj) {
   obj.User = obj.db.createModel(userModel.table, userModel.fields);
+  obj.User.ensureIndex('username');
+  obj.User.ensureIndex('email');
+  obj.User.ensureIndex('authToken');
 }
 
 
