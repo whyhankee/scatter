@@ -42,6 +42,11 @@ M1croSession.prototype.set = function set(sid, session, cb) {
 };
 
 
+M1croSession.prototype.destroy = function destroy(sid, session, cb) {
+  this.iface.clients[this.qname].publish('destroy', {sid: sid, session: session}, cb);
+};
+
+
 /**
  * Exports
  */

@@ -6,14 +6,12 @@ var util = require('util');
 
 // The service manaager
 var m1cro = require('m1cro');
-
-// Service Logging middleware
-var serviceLogger = require(path.join(__dirname, 'middleware', 'm1cro-mw-servicelogger'));
+var serviceLogger = m1cro.middleware.logger;
+var SessionService = require('m1cro-svc-express-session-rethinkdb');
 
 // Our services that make up our Application
 var webService = require(path.join(__dirname, 'web', 'webservice'));
 var apiService = require(path.join(__dirname, 'api', 'apiservice'));
-var m1croSession = require(path.join(__dirname, 'session', 'm1cro-svc-express-session-rethindb'));
 
 
 // Move to external file
@@ -59,7 +57,7 @@ var iface = m1cro.interface({appName: 'mist'});
 
 // Attach services to the Service Manager
 iface.service(apiService, config.api.queue.name, {config: config.api});
-iface.service(m1croSession, config.session.queue.name, {config: config.session});
+iface.service(SessionService, config.session.queue.name, {config: config.session});
 iface.service(webService, config.web.queue.name, {config: config.web});
 
 // Register middleware on the services
