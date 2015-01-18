@@ -7,24 +7,27 @@ var thinky = require('thinky');
 
 var model = require(path.join(__dirname,'/models'));
 var user = require(path.join(__dirname,'/user.js'));
-var apiLogger = require(path.join(__dirname,'..','middleware', 'm1cro-logger'));
 
 
 /**
  * Our api service
  */
 function ApiService(iface, qname, options) {
-  // Service wide middleware
-  iface.serviceUse(qname, apiLogger);
+  this.iface = iface;
+  this.qname = qname;
 
   // Subscribe to messages
   iface.subscribe(this, qname+'.userSignUp', this.userSignUp);
   iface.subscribe(this, qname+'.userGetAuthToken', this.userGetAuthToken);
 
+  // Register our client to the api
+  iface.client('mist_api', {api: [
+    'userSignUp', 'userGetAuthToken']
+  });
+
   // Setup
   this.config = options.config;
   this.db = undefined;
-  this.m = {};
 }
 
 
@@ -40,7 +43,6 @@ ApiService.prototype.onStart = function (done) {
 
   // create the models
   var models = model.createModels(this);
-  console.log('Mist Api service started');
   return done();
 };
 

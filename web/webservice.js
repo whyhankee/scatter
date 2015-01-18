@@ -1,28 +1,24 @@
 /* jshint node: true */
 "use strict";
-var os = require('os');
 var path = require('path');
 var util = require('util');
+var EventEmitter = require('events').EventEmitter;
 
 var express = require('express');
+var express_session = require('express-session');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
+var connect = require('connect');
 
-
-/**
- * Globals
- */
-var mistApiCalls = [
-  'userSignUp',
-  'userGetAuthToken'
-];
+var M1croSession = require(path.join(__dirname, 'm1cro-express-session-store'));
 
 
 /**
  * Our WebServer service
  */
 function WebService(iface, qname, options) {
-  iface.client('mistApi', {api: mistApiCalls});
+  this.iface = iface;
+  this.qname = qname;
 
   // Setup Express instance and configure
   this.app = express();
@@ -37,12 +33,31 @@ function WebService(iface, qname, options) {
   this.app.use(bodyParser.urlencoded({ extended: false }));
   this.app.use(morgan('dev'));
 
-  // Static asset routing (nginx on production)
+  // Static asset routing (should be nginx on production)
+  //  Note: before cookie handling (no cookie negotiation for statics)
   this.app.use('/static', express.static(path.join(__dirname, 'static')));
 
-  // Route middleware
+  // Setup sessions
+  var m1croSessionStore = new M1croSession.Store(iface, 'mist_session');
+  var cookieOptions = { secure: false };
+
+  // In production we expect to be using HTTPS
+  if (process.env.NODE_ENV && process.env.NODE_ENV.match(/^prod/)) {
+    this.app.set('trust proxy', 1);     // trust first proxy
+    cookieOptions.secure = true;        // serve secure cookies
+  }
+  this.app.use(express_session({
+    secret: 'our_very_big_secret',
+    name: 'sid',
+    cookie: cookieOptions,
+    resave: false,
+    saveUninitialized: false,
+    store: m1croSessionStore
+  }));
+
+  // Before routes middleware
   this.app.use(function(req, res, next) {
-    req.api = req.app.get('iface').clients.mistApi;
+    req.api = req.app.get('iface').clients.mist_api;
     return next();
   });
 
@@ -61,16 +76,12 @@ function WebService(iface, qname, options) {
 
 
 WebService.prototype.onStart = function(done) {
+  var self = this;
   var config = this.app.get('config');
 
   // Start Express server
-  this.app.listen(config.server.port, function (err) {
+  self.app.listen(config.server.port, function (err) {
     if (err) return done(err);
-
-    console.log(util.format(
-      'Mist Web service started at http://%s:%d/',
-      os.hostname(), config.server.port
-    ));
     return done();
   });
 };
