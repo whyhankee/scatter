@@ -67,7 +67,6 @@ function WebService(iface, qname, options) {
       if (!token) return next();
 
       req.api.userGetMe({authToken: token}, function(err, me) {
-        console.log('me -> session', me);
         req.user = me;
         return next();
       });
