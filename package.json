@@ -5,7 +5,7 @@
   "main": "mist.js",
   "scripts": {
     "test": "mocha",
-    "tdd": "mocha -w",
+    "tdd": "mocha -b -w",
     "gulp": "gulp",
     "reload": "nodemon mist.js"
   },
@@ -25,6 +25,7 @@
     "morgan": "*",
     "express": "*",
     "express-session": "*",
+    "express-session-m1cro": "git://github.com/lerint/express-session-m1cro",
     "connect": "*",
     "jade": "*",
     "m1cro": "git://github.com/lerint/m1cro.git",
