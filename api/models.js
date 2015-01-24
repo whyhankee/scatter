@@ -1,12 +1,12 @@
 /* jshint node: true */
 "use strict";
 
+
 /**
- * User Model
+ * User model
  */
-var userModel = {
-  table: 'user',
-  fields: {
+function createUserModel(obj)  {
+  obj.User = obj.db.createModel('user', {
     id: String,
 
     username: String,
@@ -19,18 +19,20 @@ var userModel = {
     blocked: Date,
 
     authToken: String
-  }
-};
+  });
 
-
-/**
- * Create models
- */
-function createModels(obj) {
-  obj.User = obj.db.createModel(userModel.table, userModel.fields);
   obj.User.ensureIndex('username');
   obj.User.ensureIndex('email');
   obj.User.ensureIndex('authToken');
+}
+
+
+/**
+ * Creates all the models
+ */
+function createModels(obj) {
+  createUserModel(obj);
+
 }
 
 

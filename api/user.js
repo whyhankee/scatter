@@ -15,11 +15,12 @@ function signUp(req) {
   var self = this;    // jshint ignore:line
 
   var template = {
+    id: {required: 0},
     username: {required: 1, defined: 1},
     password: {required: 1, defined: 1},
     email: {required: 1, defined: 1}
   };
-  oap.check(req.data, template, function (err, args) {
+  oap.check(req.body, template, function (err, args) {
     if (err) {
       return req.done(new Error('invalidArguments: '+util.inspect(err)));
     }
@@ -28,7 +29,7 @@ function signUp(req) {
       checkDupUsername: checkDupUsername,
       checkDupEmail: checkDupEmail,
       cryptPassword: cryptPassword,
-      saveUser: ['checkDupEmail', 'cryptPassword', saveUser]
+      saveUser: ['checkDupUsername', 'checkDupEmail', 'cryptPassword', saveUser]
     }, onDone);
 
     function checkDupUsername(cb, results) {
@@ -42,6 +43,7 @@ function signUp(req) {
     }
     function saveUser(cb, results) {
       var newUser = new self.User({
+        id: args.id,
         username: args.username,
         password: results.cryptPassword,
         email: args.email,
@@ -73,7 +75,7 @@ function getAuthToken(req) {
   });
 
   function checkArgs(cb) {
-    oap.check(req.data, template, cb);
+    oap.check(req.body, template, cb);
   }
   function getUser(a, cb) {
     args = a;
@@ -116,6 +118,14 @@ function getAuthToken(req) {
 
 
 /**
+ * Gets users own details (from authToken)
+ */
+function getMe(req) {
+  return req.done(null, req.user);
+}
+
+
+/**
  * Helper functions
  */
 function _cryptPassword(password, done) {
@@ -136,5 +146,6 @@ function _checkPassword(password, crypted, done) {
  */
 module.exports = {
   signUp: signUp,
-  getAuthToken: getAuthToken
+  getAuthToken: getAuthToken,
+  getMe: getMe
 };

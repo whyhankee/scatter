@@ -2,7 +2,7 @@
 "use strict";
 var path = require('path');
 var util = require('util');
-var EventEmitter = require('events').EventEmitter;
+// var EventEmitter = require('events').EventEmitter;
 
 var express = require('express');
 var express_session = require('express-session');
@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var connect = require('connect');
 
-var M1croSession = require(path.join(__dirname, 'm1cro-express-session-store'));
+var M1croSession = require('express-session-m1cro');
 
 
 /**
@@ -47,11 +47,11 @@ function WebService(iface, qname, options) {
     cookieOptions.secure = true;        // serve secure cookies
   }
   this.app.use(express_session({
-    secret: 'our_very_big_secret',
+    secret: 'our_very_small_secret',
     name: 'sid',
     cookie: cookieOptions,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: m1croSessionStore
   }));
 
@@ -59,6 +59,18 @@ function WebService(iface, qname, options) {
   this.app.use(function(req, res, next) {
     req.api = req.app.get('iface').clients.mist_api;
     return next();
+  });
+
+  // Get user details of logged in user
+  this.app.use(function (req, res, next) {
+      var token = req.session.userAuthToken;
+      if (!token) return next();
+
+      req.api.userGetMe({authToken: token}, function(err, me) {
+        console.log('me -> session', me);
+        req.user = me;
+        return next();
+      });
   });
 
   // Routes
@@ -125,6 +137,8 @@ function postLogin(req, res, next) {
     };
     req.api.userGetAuthToken(loginForm, function (err, ti) {
       if (err) return req.next(err);
+
+      req.session.userAuthToken  = ti.token;
       res.redirect('/');
     });
   }
