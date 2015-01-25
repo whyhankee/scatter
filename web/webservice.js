@@ -2,13 +2,13 @@
 "use strict";
 var path = require('path');
 var util = require('util');
-// var EventEmitter = require('events').EventEmitter;
 
 var express = require('express');
 var express_session = require('express-session');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var connect = require('connect');
+var uuid = require('node-uuid');
 
 var M1croSession = require('express-session-m1cro');
 
@@ -41,17 +41,17 @@ function WebService(iface, qname, options) {
   var m1croSessionStore = new M1croSession.Store(iface, 'mist_session');
   var cookieOptions = { secure: false };
 
-  // In production we expect to be using HTTPS
+  // In production we expect to be using HTTPS with nginx / haproxy
   if (process.env.NODE_ENV && process.env.NODE_ENV.match(/^prod/)) {
-    this.app.set('trust proxy', 1);     // trust first proxy
-    cookieOptions.secure = true;        // serve secure cookies
+    this.app.set('trust proxy', 1);
+    cookieOptions.secure = true;
   }
   this.app.use(express_session({
     secret: 'our_very_small_secret',
     name: 'sid',
-    cookie: cookieOptions,
-    resave: false,
+    resave: true,
     saveUninitialized: true,
+    cookie: cookieOptions,
     store: m1croSessionStore
   }));
 
@@ -61,7 +61,7 @@ function WebService(iface, qname, options) {
     return next();
   });
 
-  // Get user details of logged in user
+  // Get user details of logged-in user
   this.app.use(function (req, res, next) {
       var token = req.session.userAuthToken;
       if (!token) return next();
@@ -72,7 +72,14 @@ function WebService(iface, qname, options) {
       });
   });
 
-  // Routes
+  // setup TrackerId on the web-session
+  //  same as the userID, used for tracing events and logging
+  this.app.use(function (req, res, next) {
+    req.session.userTrackerId = req.user ? req.user.id : uuid.v4();
+    return next();
+  });
+
+  // Application routes
   this.app.get('/', getIndex);
 
   this.app.get('/login', getLogin);
@@ -154,7 +161,9 @@ function getSignUp(req, res) {
 
 function postSignUp(req, res, next) {
   // signup
+  //  use trackerID as userID field
   var signupData = {
+    id: req.session.userTrackerId,
     username: req.body.username,
     password: req.body.password,
     email: req.body.email
