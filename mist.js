@@ -10,12 +10,13 @@ var serviceLogger = m1cro.middleware.logger;
 var SessionService = require('m1cro-svc-express-session-rethinkdb');
 
 // Our services that make up our Application
-var webService = require(path.join(__dirname, 'web', 'webservice'));
 var apiService = require(path.join(__dirname, 'api', 'apiservice'));
+var webServer = require(path.join(__dirname, 'webserver', 'webserver'));
 
 
 // Move to external file
 var config = {
+
   api: {
     queue: {
       name: 'mist_api'
@@ -38,9 +39,9 @@ var config = {
     }
   },
 
-  web: {
+  webserver: {
     queue: {
-      name: 'mist_web'
+      name: 'mist_webserver'
     },
     server: {
       port: 2460
@@ -56,14 +57,14 @@ var config = {
 var iface = m1cro.interface({appName: 'mist'});
 
 // Attach services to the Service Manager
-iface.service(apiService, config.api.queue.name, {config: config.api});
 iface.service(SessionService, config.session.queue.name, {config: config.session});
-iface.service(webService, config.web.queue.name, {config: config.web});
+iface.service(apiService, config.api.queue.name, {config: config.api});
+iface.service(webServer, config.webserver.queue.name, {config: config.webserver});
 
 // Register middleware on the services
-iface.serviceUse(config.api.queue.name, serviceLogger);
 iface.serviceUse(config.session.queue.name, serviceLogger);
-iface.serviceUse(config.web.queue.name, serviceLogger);
+iface.serviceUse(config.api.queue.name, serviceLogger);
+iface.serviceUse(config.webserver.queue.name, serviceLogger);
 
 // Start services and clients
 iface.on('start', onStart);
@@ -73,6 +74,6 @@ iface.start();
 function onStart() {
   iface.log.info(util.format(
     'Mist Web service started at http://%s:%d/',
-    os.hostname(), config.web.server.port
+    os.hostname(), config.webserver.server.port
   ));
 }
