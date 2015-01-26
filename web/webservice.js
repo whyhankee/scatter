@@ -219,7 +219,10 @@ function postSignUp(req, res, next) {
  * Helper function
  */
 function showPage(page, data, req, res) {
-  res.render(page+'.jade', function(err, html) {
+  var options = {
+    pretty: isProduction ? false : true
+  };
+  res.render(page+'.jade', options, function(err, html) {
     if (err) console.log("\nerror: ", err);
 
     res.send(html);
