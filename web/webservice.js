@@ -1,6 +1,7 @@
 /* jshint node: true */
 "use strict";
 var path = require('path');
+var os = require('os');
 var util = require('util');
 
 var express = require('express');
@@ -11,6 +12,10 @@ var connect = require('connect');
 var uuid = require('node-uuid');
 
 var M1croSession = require('express-session-m1cro');
+
+
+// Are we running production?
+var isProduction = process.env.NODE_ENV.match(/^prod/);
 
 
 /**
@@ -29,9 +34,65 @@ function WebService(iface, qname, options) {
   this.app.set('views', path.join(__dirname, 'views'));
   this.app.set('view engine', 'jade');
 
-  // Server middleware
+  // Middlware for WebServer *AND* ApiServer
+  this.app.use(morgan(isProduction ? 'combined' : 'dev'));
+  this.app.use(function(req, res, next) {
+    req.api = req.app.get('iface').clients.mist_api;
+    return next();
+  });
+
+  // Setup components
+  this.setupApiServer(iface);
+  this.setupWebServer(iface);
+
+  // .. errorHandler last
+  this.app.use(errorHandler);
+}
+
+
+WebService.prototype.onStart = function(done) {
+  var self = this;
+  var config = self.app.get('config');
+
+  // Start Express server
+  self.app.listen(config.server.port, function (err) {
+    if (err) return done(err);
+
+    self.iface.log.info(util.format(
+      'Mist Web service started at http://%s:%d/',
+      os.hostname(), config.server.port
+    ));
+    return done();
+  });
+};
+
+
+/**
+ * Setup Webserver routing and middleware
+ */
+WebService.prototype.setupApiServer = function setupWebServer(iface) {
+  this.app.use(bodyParser.json());
+
+  // thinking about routes we need in the first place
+  this.app.post('/contact/:userid/request', ApiNotImplemented);
+  this.app.post('/notify/:userid', ApiNotImplemented);
+  this.app.post('/timelineitem', ApiNotImplemented);
+
+  // oAuth provider stuff?
+};
+
+
+function ApiNotImplemented(req, res, next) {
+    return next('notImplemented');
+}
+
+
+
+/**
+ * Setup Webserver routing and middleware
+ */
+WebService.prototype.setupWebServer = function setupWebServer(iface) {
   this.app.use(bodyParser.urlencoded({ extended: false }));
-  this.app.use(morgan('dev'));
 
   // Static asset routing (should be nginx on production)
   //  Note: before cookie handling (no cookie negotiation for statics)
@@ -40,9 +101,7 @@ function WebService(iface, qname, options) {
   // Setup sessions
   var m1croSessionStore = new M1croSession.Store(iface, 'mist_session');
   var cookieOptions = { secure: false };
-
-  // In production we expect to be using HTTPS with nginx / haproxy
-  if (process.env.NODE_ENV && process.env.NODE_ENV.match(/^prod/)) {
+  if (isProduction) {
     this.app.set('trust proxy', 1);
     cookieOptions.secure = true;
   }
@@ -54,12 +113,6 @@ function WebService(iface, qname, options) {
     cookie: cookieOptions,
     store: m1croSessionStore
   }));
-
-  // Before routes middleware
-  this.app.use(function(req, res, next) {
-    req.api = req.app.get('iface').clients.mist_api;
-    return next();
-  });
 
   // Get user details of logged-in user
   this.app.use(function (req, res, next) {
@@ -87,21 +140,6 @@ function WebService(iface, qname, options) {
 
   this.app.get('/signup', getSignUp);
   this.app.post('/signup', postSignUp);
-
-  // .. errorHandler last
-  this.app.use(errorHandler);
-}
-
-
-WebService.prototype.onStart = function(done) {
-  var self = this;
-  var config = this.app.get('config');
-
-  // Start Express server
-  self.app.listen(config.server.port, function (err) {
-    if (err) return done(err);
-    return done();
-  });
 };
 
 
