@@ -1,17 +1,14 @@
 /* jshint node: true */
 "use strict";
-var os = require('os');
 var path = require('path');
-var util = require('util');
 
 // The service manaager
 var m1cro = require('m1cro');
-var serviceLogger = m1cro.middleware.logger;
 var SessionService = require('m1cro-svc-express-session-rethinkdb');
 
 // Our services that make up our Application
-var webService = require(path.join(__dirname, 'web', 'webservice'));
-var apiService = require(path.join(__dirname, 'api', 'apiservice'));
+var WebService = require(path.join(__dirname, 'web', 'webservice'));
+var ApiService = require(path.join(__dirname, 'api', 'apiservice'));
 
 
 // Move to external file
@@ -56,23 +53,15 @@ var config = {
 var iface = m1cro.interface({appName: 'mist'});
 
 // Attach services to the Service Manager
-iface.service(apiService, config.api.queue.name, {config: config.api});
+iface.service(ApiService, config.api.queue.name, {config: config.api});
 iface.service(SessionService, config.session.queue.name, {config: config.session});
-iface.service(webService, config.web.queue.name, {config: config.web});
+iface.service(WebService, config.web.queue.name, {config: config.web});
 
 // Register middleware on the services
+var serviceLogger = m1cro.middleware.logger;
 iface.serviceUse(config.api.queue.name, serviceLogger);
 iface.serviceUse(config.session.queue.name, serviceLogger);
 iface.serviceUse(config.web.queue.name, serviceLogger);
 
 // Start services and clients
-iface.on('start', onStart);
 iface.start();
-
-
-function onStart() {
-  iface.log.info(util.format(
-    'Mist Web service started at http://%s:%d/',
-    os.hostname(), config.web.server.port
-  ));
-}
