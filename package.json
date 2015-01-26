@@ -24,7 +24,7 @@
     "bower": "*",
     "body-parser": "*",
     "connect": "*",
-    "express": "*",
+    "express.io": "*",
     "express-session": "*",
     "express-session-m1cro": "*",
     "gulp": "*",

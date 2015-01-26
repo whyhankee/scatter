@@ -4,7 +4,7 @@ var path = require('path');
 var os = require('os');
 var util = require('util');
 
-var express = require('express');
+var express = require('express.io');
 var express_session = require('express-session');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
@@ -27,6 +27,8 @@ function WebService(iface, qname, options) {
 
   // Setup Express instance and configure
   this.app = express();
+  this.app.http().io();
+
   this.app.set('iface', iface);
   this.app.set('config', options.config);
 
@@ -44,6 +46,7 @@ function WebService(iface, qname, options) {
   // Setup components
   this.setupApiServer(iface);
   this.setupWebServer(iface);
+  this.setupSocketServer(iface);
 
   // .. errorHandler last
   this.app.use(errorHandler);
@@ -55,7 +58,7 @@ WebService.prototype.onStart = function(done) {
   var config = self.app.get('config');
 
   // Start Express server
-  self.app.listen(config.server.port, function (err) {
+  this.app.listen(config.server.port, function (err) {
     if (err) return done(err);
 
     self.iface.log.info(util.format(
@@ -64,7 +67,9 @@ WebService.prototype.onStart = function(done) {
     ));
     return done();
   });
+
 };
+
 
 
 /**
@@ -140,6 +145,17 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
 
   this.app.get('/signup', getSignUp);
   this.app.post('/signup', postSignUp);
+};
+
+
+/**
+ * setupSocketServer
+ */
+WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
+  this.app.io.route('ready', function (req) {
+    console.log('***** socket server ready');
+    req.io.emit('readyAnswer', {do: 'cool shit'});
+  });
 };
 
 
