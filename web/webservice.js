@@ -152,6 +152,8 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
  * setupSocketServer
  */
 WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
+  var self = this;
+
   this.app.io.route('ready', function (req) {
     console.log('***** socket server ready');
     req.io.emit('readyAnswer', {do: 'cool shit'});
@@ -159,7 +161,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
 
   this.app.io.route('authenticate', function (req) {
     console.log('***** authenticate req', req);
-    req.app.get('iface').clients.mist_api.userGetAuthToken(req, function (err, result) {
+    this.iface.clients.mist_api.userGetAuthToken(req, function (err, result) {
       console.log('authenticate result', err, result);
       req.io.emit('authenticateResponse', {err: err, result: result});
     });
