@@ -10,17 +10,12 @@ html(lang=en)
     link(rel='stylesheet', href='static/css/mist.css')
 
   body
-    div.container
-
-      header
-        block header
-
-      section
-        block body_main
-
-      footer
-        block footer
 
     script(type='text/javascript', src='static/js/riot.min.js')
     script(src='/socket.io/socket.io.js')
     script(type='text/javascript', src='static/js/mist.js')
+
+    script(type='text/javascript', src='static/js/login.js')
+    <!-- mount the tag -->
+    script(type='text/javascript').
+      riot.mount('login')
