@@ -21,13 +21,11 @@ riot.tag('login', '<div class="row"> <h1>{ page.title }</h1> <div id="error" cla
                     self.errorMessage = response.err.message;
                     self.errorStack = response.err.stack;
                     riot.update()
-                    console.log('Error');
                 }
 
                 console.log('Success!', response.result);
 
                 riot.route('main')
-            })
+            });
         }.bind(this);
-    
 });

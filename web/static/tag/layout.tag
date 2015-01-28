@@ -1,7 +1,6 @@
 <layout>
-
-    <login></login>
-    <main></main>
+    <div id="test">
+    </div>
 
     <script>
         window.onload = function onLoad() {
@@ -9,15 +8,18 @@
             io.emit('ready');
 
             var authenticated = false;
-            if (authenticated) {
-                riot.mount('login');
+
+            if (authenticated) {;
+                riot.mount('app');
             } else {
-                riot.mount('main');
+                riot.mountTo(document.getElementById('test'), 'login');
             }
+
 
             riot.route(function(collection, id, action) {
                 console.log('route is called', collection, id, action);
-                riot.mount('main');
+                riot.unmount('login');
+                riot.mountTo(document.getElementById('test'), 'app');
             });
         };
     </script>
