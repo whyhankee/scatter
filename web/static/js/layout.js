@@ -21,6 +21,14 @@ riot.tag('layout', '<login></login> <main></main>', function(opts) {
             } else {
                 riot.mount('main');
             }
+
+            riot.route(function(collection, id, action) {
+
+
+                     console.log('route is called', collection, id, action);
+                    riot.mount('main');
+ 
+            });
         };
     
 });

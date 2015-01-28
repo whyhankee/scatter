@@ -3,7 +3,7 @@
 
         <h1>{ page.title }</h1>
 
-        <div id="error"><p>Oops, something went wrong</p></div>
+        <div id="error" class={ errorState ? 'show' : 'hide' }><p>Oops, something went wrong</p></div>
 
         <form id="login" onsubmit={ submit }>
             <input name="username" id="username" type="text" placeholder="username">
@@ -16,7 +16,9 @@
     <script>
         // grab above HTML elements
         var form = this.login,
-            button = this.submit
+            button = this.submit;
+
+        var self = this;
 
         submit(e) {
 
@@ -24,18 +26,21 @@
                 password = this.password.value;
 
             console.log('Emit - Authenticate');
+
             io.emit('authenticate', { username: username, password: password});
 
-            io.on('authenticateResponse', function (data) {
-                console.log('On - authenticateResponse', data);
+            io.on('authenticateResponse', function (response) {
+                console.log('On - authenticateResponse', response);
 
-                if (data.err) {
+                if (response.err) {
                     errorState = true;
-                    this.update();
-                    return console.log('Error');
+                    self.update();
+                    console.log('Error');
                 }
 
-                console.log('Success!');
+                console.log('Success!', response.result);
+
+                riot.route('main')
             })
         }
     </script>
