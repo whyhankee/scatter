@@ -75,7 +75,7 @@ h3 {
   display: none;
 }
 
-.show {
+#error.show {
   display: block;
 }
 
