@@ -3,7 +3,7 @@
 
         <h1>{ page.title }</h1>
 
-        <div id="error" class="{ errorState ? show : hide }"><p>Oops, something went wrong</p></div>
+        <div id="error" class={ errorState ? 'show' : 'hide' }><p>Oops, something went wrong</p></div>
 
         <form id="login" onsubmit={ submit }>
             <input name="username" id="username" type="text" placeholder="username">
@@ -32,7 +32,8 @@
                 console.log('On - authenticateResponse', data);
 
                 if (data.err) {
-
+                    errorState = true;
+                    this.update();
                     return console.log('Error');
                 }
 
