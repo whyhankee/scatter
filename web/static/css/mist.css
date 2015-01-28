@@ -56,3 +56,29 @@ h3 {
 /*
   Classes
 */
+
+.aside {
+  background-color: rgba(0,0,0,.9);
+}
+
+.aside p {
+  color: #fff;
+}
+
+.main {
+  background-color: rgba(0,0,0,.1);
+}
+
+#error {
+  padding: 10;
+  background-color: #ff0000 ;
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+#error p {
+  color: #fff;
+}
