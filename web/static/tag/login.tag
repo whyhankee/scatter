@@ -36,8 +36,7 @@
                     self.errorState = true;
                     self.errorMessage = response.err.message;
                     self.errorStack = response.err.stack;
-                    riot.update()
-                    console.log('Error');
+                    return riot.update()
                 }
 
                 console.log('Success!', response.result);
