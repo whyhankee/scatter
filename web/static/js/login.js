@@ -26,6 +26,7 @@ riot.tag('login', '<div class="row"> <h1>{ page.title }</h1> <div id="error" cla
                 console.log('Success!', response.result);
 
                 riot.route('main')
-            });
+            })
         }.bind(this);
+    
 });

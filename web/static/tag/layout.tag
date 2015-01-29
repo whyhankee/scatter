@@ -1,5 +1,5 @@
 <layout>
-    <div id="test">
+    <div id="content">
     </div>
 
     <script>
@@ -12,15 +12,23 @@
             if (authenticated) {;
                 riot.mount('app');
             } else {
-                riot.mountTo(document.getElementById('test'), 'login');
+                riot.mountTo(document.getElementById('content'), 'login');
             }
 
 
             riot.route(function(collection, id, action) {
                 console.log('route is called', collection, id, action);
-                riot.unmount('login');
-                riot.mountTo(document.getElementById('test'), 'app');
+                clearLayout();
+                riot.mountTo(document.getElementById('content'), 'app');
             });
+
+            // Ow boy this is bad, it works for now though...
+            function clearLayout () {
+                var elem = document.getElementById('content');
+                while (elem.firstChild) {
+                    elem.removeChild(elem.firstChild);
+                }
+            }
         };
     </script>
 
