@@ -1,0 +1,31 @@
+{
+  "name": "mist",
+  "main": "mist.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/whyhankee/mist",
+  "authors": [
+    "Paul Wijhenke <paul@paulsplace.nl>"
+  ],
+  "description": "Mist Distributed Social Network",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "mist",
+    "social",
+    "network",
+    "distributed"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "skeleton": "~2.0.4",
+    "riotjs": "~2.0.7"
+  }
+}
