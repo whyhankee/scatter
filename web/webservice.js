@@ -146,14 +146,10 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
 
   self.app.io.route('ready', function (req) {
     console.log('***** socket server ready');
-    req.io.emit('readyAnswer', {do: 'cool shit'});
   });
 
   self.app.io.route('authenticate', function (req) {
-    console.log('***** authenticate req', req.data);
-
     self.iface.clients.mist_api.userGetAuthToken(req.data, function (err, result) {
-      console.log('authenticate result', err, result);
       req.io.emit('authenticateResponse', {err: err, result: result});
     });
   });
