@@ -11,6 +11,6 @@ function rpc(method, token, data, callback) {
     requestId: uid,
     authToken: token
   };
-  socket.once(uid, callback);
-  socket.emit(method, data);
+  io.once(uid, callback);
+  io.emit(method, data);
 }
