@@ -44,7 +44,7 @@ The project's current Todo list. Please Add / Remove issues
 ## Big technical
 
 * Make website
-* Implement Jabber Server
+* Implement XMPP Server-Server communication
 
 
 ## Smaller technical
