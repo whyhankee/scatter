@@ -27,8 +27,7 @@ The main ApiService
 - iface `m1cro.Interface` - The m1cro interface this service is connected to  
 - qname `String` - Name of the queue to listen to  
 - options `Object` - Options  
-  - config `Object` - Configuration used  
-  - db `Object` - {hostname: port: db}  
+  - config `Object`  
 
 <a name="userSignUp"></a>
 #userSignUp(req)
