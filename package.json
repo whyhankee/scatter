@@ -7,6 +7,7 @@
     "test": "mocha",
     "tdd": "mocha -b -w",
     "gulp": "gulp",
+    "jsdoc": "jsdoc2md --src ./**/*.js > ./docs/api.md",
     "reload": "nodemon mist.js"
   },
   "keywords": [
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "expect.js": "*",
+    "jsdoc-to-markdown": "*",
     "mocha": "*",
     "nodemon": "*"
   },

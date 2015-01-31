@@ -18,9 +18,8 @@ var M1croSession = require('express-session-m1cro');
 var isProduction = process.env.NODE_ENV.match(/^prod/);
 
 
-/**
- * Our WebServer service
- */
+// Our WebServer service
+//
 function WebService(iface, qname, options) {
   this.iface = iface;
   this.qname = qname;
@@ -72,9 +71,8 @@ WebService.prototype.onStart = function(done) {
 
 
 
-/**
- * Setup Webserver routing and middleware
- */
+// Setup Webserver routing and middleware
+//
 WebService.prototype.setupApiServer = function setupWebServer(iface) {
   this.app.use(bodyParser.json());
 
@@ -93,9 +91,8 @@ function ApiNotImplemented(req, res, next) {
 
 
 
-/**
- * Setup Webserver routing and middleware
- */
+// Setup Webserver routing and middleware
+//
 WebService.prototype.setupWebServer = function setupWebServer(iface) {
   this.app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -148,9 +145,8 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
 };
 
 
-/**
- * setupSocketServer
- */
+// setupSocketServer
+//
 WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
   var self = this;
 
@@ -170,9 +166,8 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
 };
 
 
-/**
- * Error handler implementation
- */
+// Error handler implementation
+//
 function errorHandler(err, req, res, next){
   var message = 'Oh noes, Mist is broken!\n\n';
   if (err && err.stack) {
@@ -184,17 +179,15 @@ function errorHandler(err, req, res, next){
 }
 
 
-/**
- * Route implementation
- */
+// Route implementation
+//
 function getIndex(req, res) {
   showPage('index', {}, req, res);
 }
 
 
-/**
- * Login
- */
+// Login
+//
 function getLogin(req, res) {
   showPage('login', {}, req, res);
 }
@@ -216,9 +209,8 @@ function postLogin(req, res, next) {
 }
 
 
-/**
- * Signup
- */
+// Signup
+//
 function getSignUp(req, res) {
   showPage('signup', {}, req, res);
 }
@@ -242,9 +234,8 @@ function postSignUp(req, res, next) {
 
 
 
-/**
- * Helper function
- */
+// Helper function
+//
 function showPage(page, data, req, res) {
   var options = {
     pretty: isProduction ? false : true
@@ -257,7 +248,6 @@ function showPage(page, data, req, res) {
 }
 
 
-/**
- * exports
- */
+// Exports
+//
 module.exports = WebService;

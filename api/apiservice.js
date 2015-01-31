@@ -11,7 +11,13 @@ var user = require(path.join(__dirname,'/user.js'));
 
 
 /**
- * Our api service
+ * The main ApiService
+ * @class
+ * @param {m1cro.Interface} iface               The m1cro interface this service is connected to
+ * @param {String} qname                        Name of the queue to listen to
+ * @param {Object} options Options
+ * @param {Object} options.config               Configuration used
+ * @param {Object} options.config.db            {hostname: port: db}
  */
 function ApiService(iface, qname, options) {
   this.iface = iface;
@@ -54,10 +60,8 @@ ApiService.prototype.onStop = function (done) {
 };
 
 
-/**
- * checks if the authToken is valid
- *   if successful, loads the user object on the request (req.user)
- */
+// checks if the authToken is valid
+//    if successful, loads the user object on the request (req.user)
 var checkAuthToken =  {
   pre: function(req) {
     var self = this;
@@ -82,15 +86,13 @@ var checkAuthToken =  {
 
 
 
-/**
- * User methods
- */
+// User methods
+//
 ApiService.prototype.userSignUp = user.signUp;
 ApiService.prototype.userGetAuthToken = user.getAuthToken;
 ApiService.prototype.userGetMe = user.getMe;
 
 
-/**
- * exports
- */
+// exports
+//
 module.exports = ApiService;

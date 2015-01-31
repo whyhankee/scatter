@@ -10,9 +10,8 @@ var categories = [
 ];
 
 
-/**
- * User model
- */
+ // User model
+ //
 function createUserModel(obj)  {
   obj.User = obj.db.createModel('user', {
     id: String,
@@ -35,9 +34,8 @@ function createUserModel(obj)  {
 }
 
 
-/**
- * Contacts
- */
+// Contacts
+//
 function createContactsModel(obj) {
   obj.Contact = obj.db.createModel('friends', {
     id: String,
@@ -53,9 +51,9 @@ function createContactsModel(obj) {
 }
 
 
-/**
- * TimelineItems
- */
+
+// TimelineItems
+//
 function createTimelineItem(obj) {
   obj.TimelineItem = obj.db.createModel('timelineitem', {
     id: String,
@@ -73,9 +71,8 @@ function createTimelineItem(obj) {
 }
 
 
-/**
- * TimelineItems
- */
+// Notifications
+//
 function createNotifications(obj) {
   obj.Notification = obj.db.createModel('notifications', {
     userId: String,
@@ -89,16 +86,14 @@ function createNotifications(obj) {
 }
 
 
-/**
- * Creates all the models
- */
+// Create all models
+//
 function createModels(obj) {
   createUserModel(obj);
 
 }
 
 
-/**
- * Exports
- */
+// Exports
+//
 exports.createModels = createModels;

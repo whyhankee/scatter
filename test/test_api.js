@@ -9,10 +9,8 @@ var uuid = require('node-uuid');
 var ApiService = require(path.join(__dirname, '..', 'api', 'apiservice'));
 
 
-/**
- * Config
- *   TODO: Move to separate file
- */
+// Config
+// TODO: Move to separate file
 var apiConfig = {
   db: {
     hostname: 'localhost',
@@ -22,9 +20,8 @@ var apiConfig = {
 };
 
 
-/**
- * Start M1cro interface
- */
+// Start M1cro interface
+//
 var iface = m1cro.interface();
 iface.on('start', runTests);
 iface.service(ApiService, 'apiService', {config: apiConfig});
@@ -34,18 +31,16 @@ iface.client('apiService', {
 iface.start();
 
 
-/**
- * Test modules
- */
+// Test modules
+//
 function runTests() {
   describe('user service', userTests);
 }
 
 
 
-/**
- * User testing
- */
+// User testing
+//
 function userTests() {
   var authToken;
   var api = iface.clients.apiService;

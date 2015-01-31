@@ -1,10 +1,10 @@
 /* jshint node: true */
-
+"use strict";
 var gulp        = require('gulp');
 
-/**
- * Bower updates
- */
+
+// Copy files task
+//
 var cssSrc = [
   'bower_components/skeleton/css/*.css'
 ];
@@ -15,9 +15,8 @@ var staticRoot = './web/static/';
 
 
 
-/**
- * Gulp tasks
- */
+// Gulp tasks
+//
 gulp.task('default', function() {
   gulp
     .src(cssSrc)

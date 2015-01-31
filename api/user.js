@@ -9,7 +9,16 @@ var oap = require('oap');
 
 
 /**
- * SignUp a new user
+ * @alias userSignUp
+ * @param  {m1cro.Request}
+ * @param  {String} request.id          (id of user to create) [optional]
+ * @param  {String} request.username
+ * @param  {String} request.password
+ * @param  {String} request.email
+ * @return {User}                       The created user
+ * @fires  event.user.signup.success(id: newUserId)
+ * @todo checkDupUsername
+ * @todo checkDupEmail
  */
 function signUp(req) {
   var self = this;    // jshint ignore:line
@@ -49,8 +58,8 @@ function signUp(req) {
         email: args.email,
         confirmed: null,  // todo
       });
+      // send event.user.signup.success(id: newUserId)
       newUser.save().nodeify(cb);
-      // send event.user.signup(id: newUserId)
     }
     function onDone(err, result) {
       if (err) return req.done(err);
@@ -60,7 +69,13 @@ function signUp(req) {
 }
 
 
-
+/**
+ * Validates username / password and returns a authToken
+ * @param  {m1cro.Request} req
+ * @param  {String} req.username
+ * @param  {String} req.password
+ * @return {Object} {token: 'authToken'}
+ */
 function getAuthToken(req) {
   var self = this;    // jshint ignore:line
   var done = req.done.bind(req);
@@ -82,9 +97,9 @@ function getAuthToken(req) {
 
     self.User.filter({username: args.username}).run().nodeify( function (err, users) {
       if (users.length === 0) {
-        req.done(new Error('invalidUsernamePassword'));
-        // send event.user.token.invalidUsername({username: username})
-        return;
+        var errStr = 'invalidUsernamePassword';
+        // send event
+        return req.done(new Error(errStr));
       }
       return cb(null, users[0]);
     });
@@ -93,41 +108,37 @@ function getAuthToken(req) {
     _checkPassword(args.password, user.password, function (err, same) {
       if (err) return cb(err);
       if (!same) {
-        cb(new Error('invalidUsernamePassword'));
-        // send event.user.token.invalidLogin({userId: user.id})
-        return;
+        // send event
+        return cb(new Error('invalidUsernamePassword'));
       }
       return cb(null, user);
     });
   }
   function getToken(user, cb) {
     if (user.authToken) {
-      cb(null, {token: user.authToken});
-      // send event.user.token.reuse({userId: userId})
-      return;
+      // send event
+      return cb(null, {token: user.authToken});
     }
 
     // Update user with random authToken
     user.merge({authToken: uuid.v4()}).save().nodeify( function (err, user) {
-      cb(null, {token: user.authToken});
-      // send event.user.token.create({userId: userId})
-      return;
+      // send event
+      return cb(null, {token: user.authToken});
     });
   }
 }
 
 
 /**
- * Gets users own details (from authToken)
+ * Retrieves users own information
+ *     based on the users authToken
+ * @return {User}
  */
 function getMe(req) {
   return req.done(null, req.user);
 }
 
 
-/**
- * Helper functions
- */
 function _cryptPassword(password, done) {
   if (password.length < 6) {
     return done(new Error('chooseBetterPassword'));
@@ -141,9 +152,8 @@ function _checkPassword(password, crypted, done) {
 }
 
 
-/**
- * Exports
- */
+// Exports
+//
 module.exports = {
   signUp: signUp,
   getAuthToken: getAuthToken,
