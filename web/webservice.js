@@ -31,10 +31,6 @@ function WebService(iface, qname, options) {
   this.app.set('iface', iface);
   this.app.set('config', options.config);
 
-  // Template configuration
-  this.app.set('views', path.join(__dirname, 'views'));
-  this.app.set('view engine', 'jade');
-
   // Middlware for WebServer *AND* ApiServer
   this.app.use(morgan(isProduction ? 'combined' : 'dev'));
   this.app.use(function(req, res, next) {
@@ -100,6 +96,10 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
   //  Note: before cookie handling (no cookie negotiation for statics)
   this.app.use('/static', express.static(path.join(__dirname, 'static')));
 
+  // Template configuration
+  this.app.set('views', path.join(__dirname, 'views'));
+  this.app.set('view engine', 'jade');
+
   // Setup sessions
   var m1croSessionStore = new M1croSession.Store(iface, 'mist_session');
   var cookieOptions = { secure: false };
@@ -136,12 +136,6 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
 
   // Application routes
   this.app.get('/', getIndex);
-
-  this.app.get('/login', getLogin);
-  this.app.post('/login', postLogin);
-
-  this.app.get('/signup', getSignUp);
-  this.app.post('/signup', postSignUp);
 };
 
 
@@ -179,63 +173,13 @@ function errorHandler(err, req, res, next){
 }
 
 
-// Route implementation
+// WebRoute implementations
 //
 function getIndex(req, res) {
   showPage('index', {}, req, res);
 }
 
 
-// Login
-//
-function getLogin(req, res) {
-  showPage('login', {}, req, res);
-}
-
-
-function postLogin(req, res, next) {
-  if (req.body.action === 'Login') {
-    var loginForm = {
-      username: req.body.username,
-      password: req.body.password
-    };
-    req.api.userGetAuthToken(loginForm, function (err, ti) {
-      if (err) return req.next(err);
-
-      req.session.userAuthToken  = ti.token;
-      res.redirect('/');
-    });
-  }
-}
-
-
-// Signup
-//
-function getSignUp(req, res) {
-  showPage('signup', {}, req, res);
-}
-
-
-function postSignUp(req, res, next) {
-  // signup
-  //  use trackerID as userID field
-  var signupData = {
-    id: req.session.userTrackerId,
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email
-  };
-
-  req.api.userSignUp(signupData, function (err, token) {
-    if (err) return req.next(err);
-    res.redirect('/');
-  });
-}
-
-
-
-// Helper function
-//
 function showPage(page, data, req, res) {
   var options = {
     pretty: isProduction ? false : true
