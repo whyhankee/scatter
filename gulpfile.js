@@ -9,7 +9,8 @@ var cssSrc = [
   'bower_components/skeleton/css/*.css'
 ];
 var jsSrc  = [
-  'bower_components/riotjs/riot.min.js'
+  'bower_components/riotjs/riot.min.js',
+  'bower_components/node-uuid/uuid.js'
 ];
 var staticRoot = './web/static/';
 
