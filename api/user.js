@@ -63,6 +63,8 @@ function signUp(req) {
 
 function getAuthToken(req) {
   var self = this;    // jshint ignore:line
+  var done = req.done.bind(req);
+
   var template = {
     username: {required: 1, defined: 1},
     password: {required: 1, defined: 1},
@@ -70,9 +72,7 @@ function getAuthToken(req) {
 
   // get username from db
   var args;
-  async.waterfall([checkArgs, getUser, checkPassword, getToken], function (err, result) {
-    return req.done(err, result);
-  });
+  async.waterfall([checkArgs, getUser, checkPassword, getToken], done);
 
   function checkArgs(cb) {
     oap.check(req.body, template, cb);
