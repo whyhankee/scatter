@@ -9,9 +9,8 @@ html(lang=en)
     link(rel='stylesheet', href='static/css/skeleton.css')
     link(rel='stylesheet', href='static/css/mist.css')
 
-  body
-    div.container
-      layout
+    body
+        app
 
     script(type='text/javascript', src='static/js/riot.min.js')
     script(type='text/javascript', src='static/js/uuid.js')
@@ -19,9 +18,9 @@ html(lang=en)
 
     <!-- app script -->
     script(src='static/js/login.js')
-    script(src='static/js/layout.js')
+    script(src='static/js/core.js')
     script(src='static/js/app.js')
     <!-- mount the tag -->
     script(type='text/javascript').
-        riot.mount('layout')
+        riot.mount('app')
 

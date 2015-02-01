@@ -1,4 +1,4 @@
-riot.tag('login', '<div class="row"> <h1>{ page.title }</h1> <div id="error" class="{ errorState ? \'show\' : \'\' }"><p><strong>Oops, something went wrong </strong><br ></br> { errorMessage } <br ></br> { errorStack }</p></div> <form id="login" onsubmit="{ submit }"> <input name="username" id="username" type="text" placeholder="username"> <input name="password" id="password" type="password" placeholder="password"> <button name="submit">Submit</button> </form> </div>', function(opts) {
+riot.tag('login', '<div class="row"> <h1>{ page.title }</h1> <div id="error" class="{ errorState ? \'show\' : \'\' }"><p><strong>Oops, something went wrong </strong><br > { errorMessage } <br > { errorStack }</p></div> <form id="login" onsubmit="{ submit }"> <input name="username" id="username" type="text" placeholder="username"> <input name="password" id="password" type="password" placeholder="password"> <button name="submit">Submit</button> </form> </div>', function(opts) {
         var form = this.login,
             button = this.submit;
 
