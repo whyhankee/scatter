@@ -1,20 +1,26 @@
 /* jshint node: true */
 "use strict";
-var gulp        = require('gulp');
 
+var gulp = require('gulp'),
+    riot = require('gulp-riot');
 
 // Copy files task
 //
 var cssSrc = [
-  'bower_components/skeleton/css/*.css'
-];
-var jsSrc  = [
-  'bower_components/riotjs/riot.min.js',
-  'bower_components/node-uuid/uuid.js'
-];
-var staticRoot = './web/static/';
+    'bower_components/skeleton/css/*.css'
+    ],
+    jsSrc  = [
+        'bower_components/riotjs/riot.min.js',
+        'bower_components/node-uuid/uuid.js'
+    ],
+    staticRoot = './web/static/';
 
-
+gulp.task('riot', function() {
+    gulp
+        .src('web/src/tag/*.tag')
+        .pipe(riot())
+        .pipe(gulp.dest(staticRoot+'js'));
+});
 
 // Gulp tasks
 //

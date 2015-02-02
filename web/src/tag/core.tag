@@ -1,4 +1,4 @@
-<app>
+<core>
     <div class="row">
         <aside class="aside four columns">
             <p>Menu</p>
@@ -14,4 +14,4 @@
             console.log('MOUNTED!');
         });
     </script>
-</app>
+</core>
