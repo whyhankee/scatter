@@ -1,54 +1,76 @@
-
+input, textarea {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  outline: none;
+}
 /*
   Defaults
 */
 
-* {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 100%;
+html {
+  font-family: Helvetica, sans-serif;
 }
 
 /*
   Basic elements
 */
 
-header {
-  margin-top: 10px;
-}
-
-
-footer {
-  border-top: 1px solid #ddd;
-  margin-top: 20px;
-  padding-top: 20px;
-}
-
-
 body {
-}
-
-
-h1 {
-  font-size: 130%;
-  font-style: italic;
-}
-
-
-h2 {
-  font-size: 120%;
-  font-style: italic;
-}
-
-
-h3 {
-  font-size: 110%;
-  font-style: italic;
+  background-color: #ececec;
 }
 
 
 /*
   Classes
 */
+
+h1 {
+  font-size: 1.6em;
+}
+
+#login-container {
+  background-color: rgba(255,255,255, 1);
+  width: 90%;
+  margin: 20px auto;
+}
+
+@media (min-width: 410px) {
+  #login-container {
+    width: 390px;
+    margin: 40px auto;
+  }
+}
+
+.login-content {
+  padding: 30px;
+}
+
+#login {
+  width: 100%;
+  margin: 30px 0;
+}
+
+input {
+  width: 96%;
+  display: block;
+  padding: 2%;
+  border: none;
+  border-bottom: 2px solid rgba(0,0,0,.4);
+  margin-bottom: 15px;
+}
+
+input:focus {
+  border-bottom: 2px solid #15B2DE;
+}
+
+.submit {
+  margin-top: 10px;
+  background-color: #15B2DE;
+  border: none;
+  width: 100%;
+  color: #fff;
+  padding: 15px 0;
+}
 
 .aside {
   background-color: rgba(0,0,0,.9);

@@ -10,7 +10,7 @@
 
             if (authenticated) {
             } else {
-                riot.mountTo(document.getElementById('app'), 'login');
+                riot.mountTo(document.getElementById('app'), 'login', {  title: 'Login' });
             }
 
 

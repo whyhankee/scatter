@@ -1,16 +1,14 @@
 <login>
-    <div class="row">
-
-        <h1>{ page.title }</h1>
-
-        <div id="error" class={ errorState ? 'show' : '' }><p><strong>Oops, something went wrong </strong><br /> { errorMessage } <br /> { errorStack }</p></div>
-
-        <form id="login" onsubmit={ submit }>
-            <input name="username" id="username" type="text" placeholder="username">
-            <input name="password" id="password" type="password" placeholder="password">
-            <button name="submit">Submit</button>
-        </form>
-
+    <div id="login-container">
+        <div class="login-content">
+            <h1>{ opts.title }</h1>
+            <div id="error" class={ errorState ? 'show' : '' }><p><strong>Oops, something went wrong! </strong><br /> { errorMessage }</p></div>
+            <form id="login" onsubmit={ submit }>
+                <input name="username" id="username" type="text" placeholder="username">
+                <input name="password" id="password" type="password" placeholder="password">
+                <button name="submit" class="submit">Submit</button>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -34,9 +32,9 @@
 
                 if (response.err) {
                     self.errorState = true;
-                    self.errorMessage = response.err.message;
-                    self.errorStack = response.err.stack;
-                    riot.update()
+                    self.errorMessage = response.err.message || 'Unkown';
+                    riot.update();
+                    return false;
                 }
 
                 console.log('Success!', response.result);
