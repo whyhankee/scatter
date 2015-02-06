@@ -13,8 +13,8 @@ var user = require(path.join(__dirname,'user.js'));
 /**
  * The main ApiService
  * @class
- * @param {m1cro.Interface} iface               The m1cro interface this service is connected to
- * @param {String} qname                        Name of the queue to listen to
+ * @param {m1cro.Interface} iface     The m1cro interface this service is connected to
+ * @param {String} qname              Name of the queue to listen to
  * @param {Object} options Options
  * @param {Object} options.config
  *
