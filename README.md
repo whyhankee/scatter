@@ -1,3 +1,6 @@
+
+![](https://github.com/whyhankee/mist/blob/master/assets/scatter_logo.png)
+
 # Mist
 
 Mist An experiment in Distributed Social Networking with (for me) new technologies. Nothing special.
