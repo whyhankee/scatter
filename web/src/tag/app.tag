@@ -3,7 +3,7 @@
 
     <script>
         window.onload = function onLoad() {
-            io = io.connect();
+            io = io.connect(':2460');
             io.emit('ready');
 
             var authenticated = false;

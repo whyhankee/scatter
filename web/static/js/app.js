@@ -1,6 +1,6 @@
 riot.tag('app', '<div id="app"></div>', function(opts) {
         window.onload = function onLoad() {
-            io = io.connect();
+            io = io.connect(':2460');
             io.emit('ready');
 
             var authenticated = false;
