@@ -1,13 +1,13 @@
 riot.tag('app', '<div id="app"></div>', function(opts) {
         window.onload = function onLoad() {
-            io = io.connect();
+            io = io.connect(':2460');
             io.emit('ready');
 
             var authenticated = false;
 
             if (authenticated) {
             } else {
-                riot.mountTo(document.getElementById('app'), 'login');
+                riot.mountTo(document.getElementById('app'), 'login', {  title: 'Login' });
             }
 
 

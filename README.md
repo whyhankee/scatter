@@ -1,7 +1,9 @@
-# Mist
 
-Mist An experiment in Distributed Social Networking with (for me) new technologies. Nothing special.
+![](https://github.com/whyhankee/mist/blob/master/assets/scatter_logo.png)
 
+# Scatter
+
+Scatter - An experiment in Distributed Social Networking with (for me) new technologies. Nothing special.
 
 # Goals
 
@@ -53,7 +55,5 @@ The project's current Todo list. Please Add / Remove issues
 * Implement / Fix pending tests
 * implement events (requires an event client / service)
 
-## Non-technical
 
-* Come up with a [better name](https://github.com/whyhankee/mist/issues/1)
 
