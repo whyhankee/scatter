@@ -1,23 +1,23 @@
 {
-  "name": "mist",
+  "name": "scatter",
   "version": "0.0.0",
-  "description": "Mist Social Network",
-  "main": "mist.js",
+  "description": "Scatter Social Network",
+  "main": "scatter.js",
   "scripts": {
     "test": "mocha",
     "tdd": "mocha -b -w",
     "gulp": "gulp",
     "jsdoc": "jsdoc2md --src ./**/*.js > ./docs/api.md",
-    "reload": "nodemon mist.js"
+    "reload": "nodemon scatter.js"
   },
   "keywords": [
-    "mist",
+    "scatter",
     "social",
     "network"
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:whyhankee/mist.git"
+    "url": "git@github.com:whyhankee/scatter.git"
   },
   "dependencies": {
     "async": "*",

@@ -15,29 +15,29 @@ var ApiService = require(path.join(__dirname, 'api', 'apiservice'));
 var config = {
   api: {
     queue: {
-      name: 'mist_api'
+      name: 'scatter_api'
     },
     db: {
       hostname: 'localhost',
       port: 28015,
-      db: 'mist'
+      db: 'scatter'
     }
   },
 
   session: {
     queue: {
-      name: 'mist_session'
+      name: 'scatter_session'
     },
     db: {
       hostname: 'localhost',
       port: 28015,
-      db: 'mist_session'
+      db: 'scatter_session'
     }
   },
 
   web: {
     queue: {
-      name: 'mist_web'
+      name: 'scatter_web'
     },
     server: {
       port: 2460
@@ -50,7 +50,7 @@ var config = {
  * Setup Interface using loopback transport (default)
  * Setup our services .. and start!
  */
-var iface = m1cro.interface({appName: 'mist'});
+var iface = m1cro.interface({appName: 'scatter'});
 
 // Attach services to the Service Manager
 iface.service(ApiService, config.api.queue.name, {config: config.api});

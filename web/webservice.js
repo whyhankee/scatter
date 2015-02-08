@@ -34,7 +34,7 @@ function WebService(iface, qname, options) {
   // Middlware for WebServer *AND* ApiServer
   this.app.use(morgan(isProduction ? 'combined' : 'dev'));
   this.app.use(function(req, res, next) {
-    req.api = req.app.get('iface').clients.mist_api;
+    req.api = req.app.get('iface').clients.scatter_api;
     return next();
   });
 
@@ -57,7 +57,7 @@ WebService.prototype.onStart = function(done) {
     if (err) return done(err);
 
     self.iface.log.info(util.format(
-      'Mist Web service started at http://%s:%d/',
+      self.iface.appName + ' webservice started at http://%s:%d/',
       os.hostname(), config.server.port
     ));
     return done();
@@ -101,7 +101,7 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
   this.app.set('view engine', 'jade');
 
   // Setup sessions
-  var m1croSessionStore = new M1croSession.Store(iface, 'mist_session');
+  var m1croSessionStore = new M1croSession.Store(iface, 'scatter_session');
   var cookieOptions = { secure: false };
   if (isProduction) {
     this.app.set('trust proxy', 1);
@@ -149,7 +149,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
   });
 
   self.app.io.route('authenticate', function (req) {
-    self.iface.clients.mist_api.userGetAuthToken(req.data, function (err, result) {
+    self.iface.clients.scatter_api.userGetAuthToken(req.data, function (err, result) {
       req.io.emit('authenticateResponse', {err: err, result: result});
     });
   });
@@ -159,7 +159,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
 // Error handler implementation
 //
 function errorHandler(err, req, res, next){
-  var message = 'Oh noes, Mist is broken!\n\n';
+  var message = 'Oh noes, Scatter is broken!\n\n';
   if (err && err.stack) {
     console.error('!!', err.stack);
     message += err.stack;

@@ -1,17 +1,17 @@
 {
-  "name": "mist",
-  "main": "mist.js",
+  "name": "scatter",
+  "main": "scatter.js",
   "version": "0.0.0",
-  "homepage": "https://github.com/whyhankee/mist",
+  "homepage": "https://github.com/whyhankee/scatter",
   "authors": [
     "Paul Wijhenke <paul@paulsplace.nl>"
   ],
-  "description": "Mist Distributed Social Network",
+  "description": "Scatter Distributed Social Network",
   "moduleType": [
     "node"
   ],
   "keywords": [
-    "mist",
+    "scatter",
     "social",
     "network",
     "distributed"

@@ -54,6 +54,3 @@ The project's current Todo list. Please Add / Remove issues
 * Generate API documentation
 * Implement / Fix pending tests
 * implement events (requires an event client / service)
-
-
-

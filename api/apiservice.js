@@ -29,7 +29,7 @@ function ApiService(iface, qname, options) {
   iface.subscribe(this, qname+'.userGetMe', [checkAuthToken, this.userGetMe]);
 
   // Register our client to the api on the interface
-  iface.client('mist_api', {api: [
+  iface.client('scatter_api', {api: [
     'userSignUp', 'userGetAuthToken', 'userGetMe']
   });
 

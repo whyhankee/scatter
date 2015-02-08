@@ -15,7 +15,7 @@ var apiConfig = {
   db: {
     hostname: 'localhost',
     port: 28015,
-    db: 'mist_unittest'
+    db: 'scatter_unittest'
   }
 };
 
