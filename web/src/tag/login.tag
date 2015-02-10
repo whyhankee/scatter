@@ -1,8 +1,10 @@
 <login>
     <div id="login-container">
         <div class="login-content">
-            <h1>{ opts.title }</h1>
-            <div id="error" class={ errorState ? 'show' : '' }><p><strong>Oops, something went wrong! </strong><br /> { errorMessage }</p></div>
+            <div class="login-logo-container">
+                <img class="login-logo" src="static/img/logo.png" />
+            </div>
+            <div id="error" class={ errorState ? 'show' : '' }><p> { errorMessage }</p></div>
             <form id="login" onsubmit={ submit }>
                 <input name="username" id="username" type="text" placeholder="username">
                 <input name="password" id="password" type="password" placeholder="password">
@@ -12,6 +14,8 @@
     </div>
 
     <script>
+        // Move to a util library
+        document.title = 'Scatter - Login';
         // grab above HTML elements
         var form = this.login,
             button = this.submit;

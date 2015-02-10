@@ -1,0 +1,30 @@
+body {
+    &.login {
+        background-color: $base-blue;
+    }
+}
+
+#login-container {
+    @include container(90%);
+    margin: 0 auto;
+
+    @include breakpoint(420px, 4) {
+        @include container(400px);
+    }
+}
+
+
+.login-logo-container {
+    margin: 50px 0;
+    width: span(100%);
+
+    .login-logo {
+        display: block;
+        margin: 0 auto;
+        width: 100px;
+        height: 100px;
+    }
+}
+
+
+
