@@ -2,7 +2,7 @@
 "use strict";
 var util = require('util');
 
-var async = require('async');
+var async = require('neo-async');
 var bcrypt = require('bcrypt');
 var uuid = require('node-uuid');
 var oap = require('oap');

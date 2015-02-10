@@ -20,7 +20,7 @@
     "url": "git@github.com:whyhankee/scatter.git"
   },
   "dependencies": {
-    "async": "*",
+    "neo-async": "*",
     "bcrypt": "*",
     "body-parser": "*",
     "bower": "*",
