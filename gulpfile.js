@@ -50,7 +50,8 @@ gulp.task('riot', function() {
     gulp
         .src('web/src/tag/*.tag')
         .pipe(riot())
-        .pipe(gulp.dest(staticRoot+'js'));
+        .pipe(gulp.dest(staticRoot+'js'))
+        .pipe(reload({stream:true}));
 });
 
 //styles

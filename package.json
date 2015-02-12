@@ -8,7 +8,8 @@
     "tdd": "mocha -b -w",
     "gulp": "gulp",
     "jsdoc": "jsdoc2md --src ./**/*.js > ./docs/api.md",
-    "reload": "nodemon scatter.js"
+    "reload": "nodemon scatter.js",
+    "start": "node scatter.js"
   },
   "keywords": [
     "scatter",

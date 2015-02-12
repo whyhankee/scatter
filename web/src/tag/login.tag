@@ -1,17 +1,25 @@
 <login>
     <div id="login-container">
         <div class="login-content">
-            <h1>{ opts.title }</h1>
-            <div id="error" class={ errorState ? 'show' : '' }><p><strong>Oops, something went wrong! </strong><br /> { errorMessage }</p></div>
+            <div class="login-logo-container">
+                <div class="login-logo" />
+            </div>
+            <div id="error" class={ errorState ? 'show' : '' }><p> { errorMessage }</p></div>
             <form id="login" onsubmit={ submit }>
-                <input name="username" id="username" type="text" placeholder="username">
-                <input name="password" id="password" type="password" placeholder="password">
-                <button name="submit" class="submit">Submit</button>
+                <input name="username" class="input" id="username" type="text" placeholder="Name">
+                <input name="password" class="input" id="password" type="password" placeholder="Password">
+                <button name="submit" class="submit">Sign in</button>
             </form>
+            <div class="login-links">
+                <div class="login-links-register"><a href="#">Register</a></div>
+                <div class="login-links-forgotpassword"><a href="#">Forgot your password?</a></div>
+            </div>
         </div>
     </div>
 
     <script>
+        // Move to a util library
+        document.title = 'Scatter - Login';
         // grab above HTML elements
         var form = this.login,
             button = this.submit;
@@ -32,7 +40,7 @@
 
                 if (response.err) {
                     self.errorState = true;
-                    self.errorMessage = response.err.message || 'Unkown';
+                    self.errorMessage = response.err.message || 'Unknown';
                     riot.update();
                     return false;
                 }

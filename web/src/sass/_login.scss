@@ -1,0 +1,90 @@
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+
+body {
+    &.login {
+        background-color: $base-blue;
+    }
+
+
+
+
+}
+
+#login-container {
+    @include container(90%);
+    margin: 0 auto;
+
+    @include breakpoint(420px, 4) {
+        @include container(400px);
+    }
+}
+
+
+.login-logo-container {
+    margin: 30px 0;
+    width: span(100%);
+
+    @include breakpoint(420px, 4) {
+        margin: 50px 0;
+    }
+
+    .login-logo {
+        display: block;
+        margin: 0 auto;
+        width: 100px;
+        height: 100px;
+        background-image: url('/static/img/logo.png');
+
+        @include hidpi(1.5) {
+            background-image: url('/static/img/logo@2x.png');
+            background-size: 100% 100%;
+        }
+    }
+}
+
+#login {
+    width: span(12);
+
+    .input {
+        width: 100%;
+        display: block;
+        margin: 0;
+        padding: 15px;
+        box-sizing: border-box;
+        background-color: $login-input-background;
+        color: $login-input-color;
+        font-size: 1em;
+        border: none;
+        margin-bottom: 20px;
+        @include border-radius(3px);
+
+        @include placeholder {
+            color: rgb(86, 143, 242);
+        }
+    }
+
+    .submit {
+        /* Rectangle 10: */
+        color: $login-submit-color;
+        background-color: $login-submit-background;
+        border: none;
+        width: 100%;
+        display: block;
+        padding: 15px 0;
+        font-weight: 500;
+        box-sizing: border-box;
+        @include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.23));
+        text-transform: uppercase;
+        @include border-radius(3px);
+
+         &:hover, &:active, &:focus {
+            @include box-shadow(0px 1px 1px 0px rgba(0,0,0,0.15));
+        }
+    }
+}
+
+
+
+
+

@@ -10,6 +10,7 @@
 
             if (authenticated) {
             } else {
+                document.body.classList.add("login");
                 riot.mountTo(document.getElementById('app'), 'login', {  title: 'Login' });
             }
 
