@@ -2,66 +2,44 @@
 "use strict";
 var path = require('path');
 
-// The service manaager
+// The micro-service manager
 var m1cro = require('m1cro');
-var SessionService = require('m1cro-svc-express-session-rethinkdb');
 
-// Our services that make up our Application
+
+// Configuration and constants
+//
+var cfg = require(path.join(__dirname, 'lib', 'config'));
+
+// Services that make up our Application
+//
+var SessionService = require('m1cro-svc-express-session-rethinkdb');
 var WebService = require(path.join(__dirname, 'web', 'webservice'));
 var ApiService = require(path.join(__dirname, 'api', 'apiservice'));
 
 
-// Move to external file
-var config = {
-  api: {
-    queue: {
-      name: 'scatter_api'
-    },
-    db: {
-      hostname: 'localhost',
-      port: 28015,
-      db: 'scatter'
-    }
-  },
-
-  session: {
-    queue: {
-      name: 'scatter_session'
-    },
-    db: {
-      hostname: 'localhost',
-      port: 28015,
-      db: 'scatter_session'
-    }
-  },
-
-  web: {
-    queue: {
-      name: 'scatter_web'
-    },
-    server: {
-      port: 2460
-    }
-  }
-};
-
-
-/**
- * Setup Interface using loopback transport (default)
- * Setup our services .. and start!
- */
+// Setup Interface using loopback transport (default)
+// Setup our services .. and start!
+//
 var iface = m1cro.interface({appName: 'scatter'});
 
+
 // Attach services to the Service Manager
-iface.service(ApiService, config.api.queue.name, {config: config.api});
-iface.service(SessionService, config.session.queue.name, {config: config.session});
-iface.service(WebService, config.web.queue.name, {config: config.web});
+iface.service(ApiService, cfg.constants.api.queue.name, {
+    config: cfg.config.api
+});
+iface.service(SessionService, cfg.constants.session.queue.name, {
+    config: cfg.config.session
+});
+iface.service(WebService, cfg.constants.web.queue.name, {
+    config: cfg.config.web
+});
+
 
 // Register middleware on the services
 var serviceLogger = m1cro.middleware.logger;
-iface.serviceUse(config.api.queue.name, serviceLogger);
-iface.serviceUse(config.session.queue.name, serviceLogger);
-iface.serviceUse(config.web.queue.name, serviceLogger);
+iface.serviceUse(cfg.constants.api.queue.name, serviceLogger);
+iface.serviceUse(cfg.constants.session.queue.name, serviceLogger);
+iface.serviceUse(cfg.constants.web.queue.name, serviceLogger);
 
 // Start services and clients
 iface.start();
