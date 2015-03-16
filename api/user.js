@@ -70,6 +70,7 @@ function signUp(req) {
 
 
 /**
+ * @alias userGetAuthToken
  * Validates username / password and returns a authToken
  * @param  {m1cro.Request} req
  * @param  {String} req.username
@@ -130,6 +131,7 @@ function getAuthToken(req) {
 
 
 /**
+ * alias userGetMe
  * Retrieves users own information
  *     based on the users authToken
  * @return {User}
@@ -137,6 +139,7 @@ function getAuthToken(req) {
 function getMe(req) {
   return req.done(null, req.user);
 }
+
 
 
 function _cryptPassword(password, done) {

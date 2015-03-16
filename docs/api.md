@@ -4,11 +4,15 @@
 
 * [class: ApiService](#ApiService)
   * [new ApiService(iface, qname, options)](#new_ApiService)
+* [class: makeError](#makeError)
+  * [new makeError(name, errorProps, opts)](#new_makeError)
 
 **Functions**
 
 * [userSignUp(req)](#userSignUp)
-* [getAuthToken(req)](#getAuthToken)
+* [userGetAuthToken
+Validates username / password and returns a authToken(req)](#userGetAuthToken
+Validates username / password and returns a authToken)
 * [getMe()](#getMe)
  
 <a name="ApiService"></a>
@@ -29,6 +33,25 @@ The main ApiService
 - options `Object` - Options  
   - config `Object`  
 
+<a name="makeError"></a>
+#class: makeError
+**Members**
+
+* [class: makeError](#makeError)
+  * [new makeError(name, errorProps, opts)](#new_makeError)
+
+<a name="new_makeError"></a>
+##new makeError(name, errorProps, opts)
+Generate a custom error class based on Error
+
+**Params**
+
+- name `String` - Name of your Error object .e.g. ErrorNotFound  
+- errorProps `Object` - Properties to set in every created Object for this Error class  
+- opts `Object` - Options  
+  - addContext `Object` - Add context to message when building an Error  
+
+**Returns**: `function` - The created error object  
 <a name="userSignUp"></a>
 #userSignUp(req)
 **Params**
@@ -44,10 +67,10 @@ The main ApiService
 - event.user.signup.success(id: newUserId)
 
 **Returns**: `User` - The created user  
-<a name="getAuthToken"></a>
-#getAuthToken(req)
-Validates username / password and returns a authToken
-
+<a name="userGetAuthToken
+Validates username / password and returns a authToken"></a>
+#userGetAuthToken
+Validates username / password and returns a authToken(req)
 **Params**
 
 - req `m1cro.Request`  
@@ -57,6 +80,7 @@ Validates username / password and returns a authToken
 **Returns**: `Object` - {token: 'authToken'}  
 <a name="getMe"></a>
 #getMe()
+alias userGetMe
 Retrieves users own information
     based on the users authToken
 
