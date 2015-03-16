@@ -1,7 +1,7 @@
 
 // depends on node-uuid (zie index.jade)
 //
-function rpc(method, token, data, callback) {
+function rpc(token, method, data, callback) {
   if (typeof callback !== 'function') {
     throw new Error('invalidArguments');
   }
@@ -11,6 +11,8 @@ function rpc(method, token, data, callback) {
     requestId: uid,
     authToken: token
   };
+  // register callback
   io.once(uid, callback);
+  // Send to API
   io.emit(method, data);
 }
