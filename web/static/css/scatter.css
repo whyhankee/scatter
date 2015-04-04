@@ -394,7 +394,7 @@ th {
 }
 
 body.login {
-  background-color: #4171d7;
+  background-color: white;
 }
 
 #login-container {
@@ -434,7 +434,7 @@ body.login {
   display: block;
   margin: 0 auto;
   width: 100px;
-  height: 100px;
+  height: 135px;
   background-image: url("/static/img/logo.png");
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx) {
@@ -453,41 +453,75 @@ body.login {
   margin: 0;
   padding: 15px;
   box-sizing: border-box;
-  background-color: #3359a9;
-  color: white;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.7);
   font-size: 1em;
   border: none;
   margin-bottom: 20px;
   border-radius: 3px;
 }
 #login .input::-webkit-input-placeholder {
-  color: #568ff2;
+  color: rgba(0, 0, 0, 0.4);
 }
 #login .input::-moz-placeholder {
-  color: #568ff2;
+  color: rgba(0, 0, 0, 0.4);
 }
 #login .input:-moz-placeholder {
-  color: #568ff2;
+  color: rgba(0, 0, 0, 0.4);
 }
 #login .input:-ms-input-placeholder {
-  color: #568ff2;
+  color: rgba(0, 0, 0, 0.4);
 }
 #login .submit {
   /* Rectangle 10: */
-  color: #4171d7;
-  background-color: white;
+  color: white;
+  background-color: #4171d7;
   border: none;
   width: 100%;
-  display: block;
   padding: 15px 0;
   font-weight: 500;
   box-sizing: border-box;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.23);
   text-transform: uppercase;
   border-radius: 3px;
+  margin-bottom: 1px;
 }
 #login .submit:hover, #login .submit:active, #login .submit:focus {
+  margin-top: 1px;
+  margin-bottom: 0;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15);
+}
+
+.login-links {
+  margin-top: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  float: left;
+  padding-left: 0.83333%;
+  padding-right: 0.83333%;
+  font-size: 0.875em;
+}
+.login-links a {
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+}
+.login-links a:hover, .login-links a:active {
+  color: rgba(0, 0, 0, 0.9);
+}
+.login-links .login-links-register {
+  box-sizing: border-box;
+  width: 33.33333%;
+  float: left;
+  padding-left: 0.83333%;
+  padding-right: 0.83333%;
+}
+.login-links .login-links-forgotpassword {
+  box-sizing: border-box;
+  width: 66.66667%;
+  float: left;
+  padding-left: 0.83333%;
+  padding-right: 0.83333%;
+  text-align: right;
 }
 
 body {

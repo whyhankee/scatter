@@ -3,12 +3,8 @@
 
 body {
     &.login {
-        background-color: $base-blue;
+        background-color: $base-white;
     }
-
-
-
-
 }
 
 #login-container {
@@ -19,7 +15,6 @@ body {
         @include container(400px);
     }
 }
-
 
 .login-logo-container {
     margin: 30px 0;
@@ -33,7 +28,7 @@ body {
         display: block;
         margin: 0 auto;
         width: 100px;
-        height: 100px;
+        height: 135px;
         background-image: url('/static/img/logo.png');
 
         @include hidpi(1.5) {
@@ -60,7 +55,7 @@ body {
         @include border-radius(3px);
 
         @include placeholder {
-            color: rgb(86, 143, 242);
+            color: $login-input-placeholder-color;
         }
     }
 
@@ -70,17 +65,44 @@ body {
         background-color: $login-submit-background;
         border: none;
         width: 100%;
-        display: block;
+
         padding: 15px 0;
         font-weight: 500;
         box-sizing: border-box;
         @include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.23));
         text-transform: uppercase;
         @include border-radius(3px);
+        margin-bottom: 1px;
 
          &:hover, &:active, &:focus {
+            margin-top: 1px;
+            margin-bottom: 0;
             @include box-shadow(0px 1px 1px 0px rgba(0,0,0,0.15));
         }
+    }
+}
+
+.login-links {
+    margin-top: 20px;
+    @include span(12);
+    font-size: 0.875em;
+
+    a {
+        color: $login-link-color;
+        text-decoration: none;
+
+        &:hover, &:active {
+            color: $login-link-active-color;
+        }
+    }
+
+    .login-links-register {
+        @include span(4);
+    }
+
+    .login-links-forgotpassword {
+        @include span(8);
+        text-align: right;
     }
 }
 
