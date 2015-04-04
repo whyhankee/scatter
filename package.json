@@ -34,7 +34,6 @@
     "express.io": "*",
     "jade": "*",
     "m1cro": "git://github.com/lerint/m1cro.git",
-    "m1cro-svc-express-session-rethinkdb": "*",
     "morgan": "*",
     "node-uuid": "*",
     "node-xmpp-client": "*",

@@ -5,13 +5,10 @@ var os = require('os');
 var util = require('util');
 
 var express = require('express.io');
-var express_session = require('express-session');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var connect = require('connect');
 var uuid = require('node-uuid');
-
-var M1croSession = require('express-session-m1cro');
 
 
 // Are we running production?
@@ -108,42 +105,7 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
   this.app.use(bodyParser.urlencoded({ extended: false }));
 
   // Static asset routing (should be nginx on production)
-  //  Note: before cookie handling (no cookie negotiation for statics)
   this.app.use('/static', express.static(path.join(__dirname, 'static')));
-
-  // Setup sessions
-  var m1croSessionStore = new M1croSession.Store(iface, 'scatter_session');
-  var cookieOptions = { secure: false };
-  if (isProduction) {
-    this.app.set('trust proxy', 1);
-    cookieOptions.secure = true;
-  }
-  this.app.use(express_session({
-    secret: 'our_very_small_secret',
-    name: 'sid',
-    resave: true,
-    saveUninitialized: true,
-    cookie: cookieOptions,
-    store: m1croSessionStore
-  }));
-
-  // Get user details of logged-in user
-  this.app.use(function (req, res, next) {
-      var token = req.session.userAuthToken;
-      if (!token) return next();
-
-      req.api.userGetMe({authToken: token}, function(err, me) {
-        req.user = me;
-        return next();
-      });
-  });
-
-  // setup TrackerId on the web-session
-  //  same as the userID, used for tracing events and logging
-  this.app.use(function (req, res, next) {
-    req.session.userTrackerId = req.user ? req.user.id : uuid.v4();
-    return next();
-  });
 
   // Application routes
   this.app.get('/', function(req,res) {
@@ -157,24 +119,26 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
 WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
   var self = this;
 
-  self.app.io.route('ready', function (req) {
+  var io = self.app.io;
+
+  io.route('ready', function (req) {
     console.log('***** socket server ready');
   });
 
-  self.app.io.route('userGetAuthToken', function (req) {
+  io.route('userGetAuthToken', function (req) {
     self.iface.clients.scatter_api.userGetAuthToken(req.data, function (err, result) {
       req.io.emit('userGetAuthTokenResponse', {err: err, result: result});
     });
   });
 
-  self.app.io.route('userSignUp', function (req) {
+  io.route('userSignUp', function (req) {
     self.iface.clients.scatter_api.userSignUp(req.data, function (err, result) {
       req.io.emit('userSignUpResponse', {err: err, result: result});
     });
   });
 
   // RPC calls (with token)
-  self.app.io.route('userGetMe', function (msg) {
+  io.route('userGetMe', function (msg) {
     var rq = {
       authToken: msg.data._meta.authToken
     };
