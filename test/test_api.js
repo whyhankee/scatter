@@ -54,7 +54,7 @@ function userTests() {
   };
 
   it('should signup a user', function (done) {
-    api.userSignUp(signupData, function (err, result) {
+    api.userSignUp(signupData, function (err) {
       expect(err).to.be(null);
       return done();
     });
@@ -66,7 +66,7 @@ function userTests() {
       password: userId,
       email: userId+'@tester.com'
     };
-    api.userSignUp(dataDupEmail, function (err, result) {
+    api.userSignUp(dataDupEmail, function (err) {
       expect(err.message).to.be('duplicateEmail');
       return done();
     });
@@ -78,7 +78,7 @@ function userTests() {
       password: userId,
       email: userId+'@tester.com'+'diff'
     };
-    api.userSignUp(dataDupUsername, function (err, result) {
+    api.userSignUp(dataDupUsername, function (err) {
       expect(err.message).to.be('duplicateUsername');
       return done();
     });
