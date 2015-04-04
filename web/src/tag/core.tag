@@ -5,6 +5,7 @@
 
     <main role="main" id="main">
         <p class={ loaded ? 'welcome-message loaded' : 'welcome-message' }>{ welcomeMessage }</p>
+
     </main>
 
     <script>
@@ -17,7 +18,7 @@
 
         function retreiveUserData (token) {
             rpc(token, 'userGetMe', {}, function (response) {
-                console.log('[Core.js] userGetMe ', reponse);
+                console.log('[Core.js] userGetMe ', response);
                 if (response.err) {
                     // Check error might want to unload and go to login
                 }
