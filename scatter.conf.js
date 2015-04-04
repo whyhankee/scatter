@@ -9,14 +9,6 @@ var config = {
     }
   },
 
-  session: {
-    db: {
-      hostname: 'localhost',
-      port: 28015,
-      db: 'scatter_session'
-    }
-  },
-
   web: {
     server: {
       port: 2460
