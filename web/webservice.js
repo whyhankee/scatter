@@ -96,10 +96,6 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
   //  Note: before cookie handling (no cookie negotiation for statics)
   this.app.use('/static', express.static(path.join(__dirname, 'static')));
 
-  // Template configuration
-  this.app.set('views', path.join(__dirname, 'views'));
-  this.app.set('view engine', 'jade');
-
   // Setup sessions
   var m1croSessionStore = new M1croSession.Store(iface, 'scatter_session');
   var cookieOptions = { secure: false };
@@ -135,7 +131,9 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
   });
 
   // Application routes
-  this.app.get('/', getIndex);
+  this.app.get('/', function(req,res) {
+    res.sendfile('web/static/index.html');
+  });
 };
 
 
