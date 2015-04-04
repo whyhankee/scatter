@@ -478,16 +478,47 @@ body.login {
   background-color: white;
   border: none;
   width: 100%;
-  display: block;
   padding: 15px 0;
   font-weight: 500;
   box-sizing: border-box;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.23);
   text-transform: uppercase;
   border-radius: 3px;
+  margin-bottom: 1px;
 }
 #login .submit:hover, #login .submit:active, #login .submit:focus {
+  margin-top: 1px;
+  margin-bottom: 0;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15);
+}
+
+.login-links {
+  margin-top: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  float: left;
+  padding-left: 0.83333%;
+  padding-right: 0.83333%;
+  font-size: 0.875em;
+}
+.login-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+}
+.login-links .login-links-register {
+  box-sizing: border-box;
+  width: 33.33333%;
+  float: left;
+  padding-left: 0.83333%;
+  padding-right: 0.83333%;
+}
+.login-links .login-links-forgotpassword {
+  box-sizing: border-box;
+  width: 66.66667%;
+  float: left;
+  padding-left: 0.83333%;
+  padding-right: 0.83333%;
+  text-align: right;
 }
 
 body {
