@@ -14,7 +14,7 @@ var cfg = require(path.join(__dirname, 'lib', 'config'));
 //
 var WebService = require(path.join(__dirname, 'web', 'webservice'));
 var ApiService = require(path.join(__dirname, 'api', 'apiservice'));
-var XmppService = require(path.join(__dirname, 'xmppserver', 'xmppserver'));
+var XmppService = require(path.join(__dirname, 'xmpp', 'xmppserver'));
 
 
 // Setup Interface using loopback transport (default)
