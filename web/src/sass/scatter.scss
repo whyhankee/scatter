@@ -14,3 +14,11 @@ body {
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
 }
+
+.welcome-message {
+    display: none;
+
+    &.loaded {
+        display: block;
+    }
+}
