@@ -19,7 +19,7 @@
         </div>
 
         <div class="contacts-footer">
-            <form id="login" onsubmit={ submit }>
+            <form onsubmit={ submit }>
                 <input name="username" class="input" id="username" type="text" placeholder="Username">
                 <button name="submit" class="submit">add contact</button>
             </form>
@@ -31,19 +31,18 @@
     <script>
         var self = this;
 
-        addContact (evt) {
-            console.log('[Contacts.js] Adding contact');
-        }
+        this.on('mount', function() {
+            console.log('[Contacts.js] Mounted ');
+        });
 
-        submit(evt) {
+        submit(e) {
+            console.log('[Contacts.js] Adding contact');
             var userData = { username: self.username.value.trim() };
 
             var token = localStorage.getItem('token');
             // Tell the server to start a Xmpp Client
             rpc(token, 'userContactRequest', userData, function (response) {
-                if (response.err) {
-                    // Handle no XMPP error;
-                }
+                console.log('[Contacts.js] Reponse ', reponse);
             });
         }
 
