@@ -150,13 +150,13 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
 
   self.app.io.route('userGetAuthToken', function (req) {
     self.iface.clients.scatter_api.userGetAuthToken(req.data, function (err, result) {
-      req.io.emit(req._meta.requestId, {err: err, result: result});
+      req.io.emit('userGetAuthTokenResponse', {err: err, result: result});
     });
   });
 
   self.app.io.route('userSignUp', function (req) {
     self.iface.clients.scatter_api.userSignUp(req.data, function (err, result) {
-      req.io.emit(req._meta.requestId, {err: err, result: result});
+      req.io.emit('userSignUpResponse', {err: err, result: result});
     });
   });
 };
