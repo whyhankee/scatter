@@ -1,0 +1,58 @@
+.dialog-overlay {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: $dialog-overlay-background;
+    z-index: 20;
+}
+
+.dialog-container {
+    @include container(90%);
+
+    @include breakpoint(420px) {
+        @include container(400px);
+    }
+
+    @include breakpoint(520px) {
+        @include container(500px);
+    }
+    margin: 100px auto;
+    background-color: $dialog-container-background;
+    z-index: 999;
+
+    .dialog-header {
+        @include container(100%);
+    }
+
+    .dialog-title {
+        @include span(6);
+        padding: 25px 15px 15px 25px;
+    }
+
+    .dialog-close {
+        @include span(6 last);
+        text-align: right;
+        padding: 20px 25px 5px;
+
+        a {
+            color: $dialog-link-color;
+            font-weight: normal;
+            font-size: 0.8em;
+        }
+    }
+
+    hr {
+        width: 90%;
+        height: 0;
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0,.3);
+    }
+
+    .dialog-content {
+        padding: 20px 20px 20px 20px;
+    }
+}
+
+

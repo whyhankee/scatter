@@ -39,6 +39,17 @@
 
         li {
             @include container(100%);
+            padding: 10px 0;
+            border-top: 1px solid $header-border-color;
+
+            &.contacts-none {
+                border: none;
+                padding: 0;
+            }
+
+            &:first-child {
+                border: none;
+            }
         }
 
         .contact-name {
