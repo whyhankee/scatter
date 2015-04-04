@@ -7,18 +7,15 @@
 @import "forms";
 @import "login";
 @import "register";
+@import "core";
 
 body {
     background-color: $base-white;
     font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
 }
 
-.welcome-message {
-    display: none;
 
-    &.loaded {
-        display: block;
-    }
-}

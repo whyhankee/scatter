@@ -1,0 +1,84 @@
+@import "compass/typography/lists/horizontal-list";
+
+.welcome-message {
+    display: none;
+
+    &.loaded {
+        display: block;
+    }
+}
+
+.container {
+    @include container(90%);
+    margin: 0 auto;
+
+    @include breakpoint(1100px, 4) {
+        @include container(1000px);
+    }
+
+}
+
+header {
+    border-bottom: $header-border-width solid $header-border-color;
+    height: 60px;
+
+    .logo {
+
+        @include span(3);
+        margin: 10px 0;
+
+        a {
+            border: none;
+            text-decoration :none;
+        }
+
+        .logo-image {
+            border: none;
+            width: 29px;
+            height: 38px;
+            background-image: url('/static/img/logo.png');
+
+            @include hidpi(1.5) {
+                background-image: url('/static/img/logo@2x.png');
+                background-size: 100% 100%;
+            }
+        }
+    }
+
+    .navigation {
+        @include span(9 last);
+        font-size: 14px;
+        ul {
+            float: right;
+            display: inline-block;
+            @include horizontal-list;
+            margin: 20px 0 0 0;
+
+            p {
+                margin: 0;
+                padding: 0;
+            }
+
+            .last {
+                margin-left: 10px;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            font-weight: bold;
+            color: $base-blue;
+        }
+    }
+}
+
+#main {
+    background-color: $base-background-color;
+
+    #channels {
+
+    }
+
+    
+}
+

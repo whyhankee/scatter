@@ -1,6 +1,7 @@
 // General
 $base-blue: rgb(65, 113, 215);
 $base-white: rgb(255, 255, 255);
+$base-background-color: rgba(0,0,0,.03);
 
 // Login
 $login-link-color: rgba(0, 0, 0, 0.5);
@@ -16,3 +17,7 @@ $login-submit-color: $base-white;
 // Forms - Error
 $error-background: #FD6B50;
 $error-color: $base-white;
+
+// Header
+$header-border-width: 1px;
+$header-border-color: rgba(0,0,0,.1);

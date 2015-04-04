@@ -21,6 +21,9 @@
                 },
                 login: function () {
                     transitionView('login');
+                },
+                core: function () {
+                    transitionView('core');
                 }
             }
 
@@ -29,6 +32,11 @@
                     transitionView('core');
                 }
             })
+
+            app.on('logout', function () {
+                localStorage.removeItem('token');
+                transitionView('login');
+            });
 
             riot.route.exec(function(page, id, action) {
                 console.log('[App.js] Analysing the url (page, id, action)', page, id, action);
@@ -44,8 +52,10 @@
                     return router.register();
                 }
 
-                if (!authenticated) {
-                    return router.login();
+                if (localStorage.getItem('token')) {
+                    router.core();
+                } else {
+                    router.login();
                 }
             });
 
