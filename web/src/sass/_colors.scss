@@ -10,6 +10,9 @@ $login-link-active-color: rgba(0, 0, 0, 0.9);
 $login-input-background: rgba(0, 0, 0, 0.05);
 $login-input-color: rgba(0,0,0,0.7);
 $login-input-placeholder-color: rgba(0,0,0,0.4);
-
 $login-submit-background: $base-blue;
 $login-submit-color: $base-white;
+
+// Forms - Error
+$error-background: #FD6B50;
+$error-color: $base-white;

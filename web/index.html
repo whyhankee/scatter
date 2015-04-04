@@ -13,11 +13,13 @@
     <script type='text/javascript' src='static/js/uuid.js'></script>
     <script src='http://dev.local:2460/socket.io/socket.io.js'></script>
     <!-- app script -->
-    <script src='static/js/login.js'></script>
-    <script src='static/js/core.js'></script>
     <script src='static/js/app.js'></script>
+    <script src='static/js/login.js'></script>
+    <script src='static/js/register.js'></script>
+    <script src='static/js/core.js'></script>
     <!-- mount the tag -->
     <script type='text/javascript'>
+        var app = riot.observable();
         riot.mount('app');
     </script>
 </body>
