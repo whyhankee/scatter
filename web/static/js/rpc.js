@@ -1,6 +1,4 @@
-
-// depends on node-uuid (zie index.jade)
-//
+// depends on node-uuid (zie index)
 function rpc(token, method, data, callback) {
   if (typeof callback !== 'function') {
     throw new Error('invalidArguments');
