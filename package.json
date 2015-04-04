@@ -7,6 +7,7 @@
     "test": "mocha",
     "tdd": "mocha -b -w",
     "gulp": "gulp",
+    "live": "gulp live",
     "jsdoc": "jsdoc2md --src ./**/*.js > ./docs/api.md",
     "reload": "nodemon scatter.js",
     "start": "node scatter.js"
