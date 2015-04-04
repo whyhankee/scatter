@@ -172,6 +172,16 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
       req.io.emit('userSignUpResponse', {err: err, result: result});
     });
   });
+
+  // RPC calls (with token)
+  self.app.io.route('userGetMe', function (msg) {
+    var rq = {
+      authToken: msg.data._meta.authToken
+    };
+    self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
+      msg.io.emit(msg.data._meta.requestId, {err: err, result: result});
+    });
+  });
 };
 
 
