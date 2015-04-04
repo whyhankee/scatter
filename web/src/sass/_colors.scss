@@ -2,13 +2,14 @@
 $base-blue: rgb(65, 113, 215);
 $base-white: rgb(255, 255, 255);
 
-
 // Login
-$login-link-color: rgba(255,255,255,0.8);
+$login-link-color: rgba(0, 0, 0, 0.5);
+$login-link-active-color: rgba(0, 0, 0, 0.9);
 
 // Forms
-$login-input-background: rgb(51, 89, 169);
-$login-input-color: $base-white;
+$login-input-background: rgba(0, 0, 0, 0.05);
+$login-input-color: rgba(0,0,0,0.7);
+$login-input-placeholder-color: rgba(0,0,0,0.4);
 
-$login-submit-background: $base-white;
-$login-submit-color: $base-blue;
+$login-submit-background: $base-blue;
+$login-submit-color: $base-white;
