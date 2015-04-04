@@ -32,9 +32,9 @@
 
             console.log('Emit - Authenticate');
 
-            io.emit('authenticate', { username: username, password: password});
+            io.emit('userGetAuthToken', { username: username, password: password});
 
-            io.on('authenticateResponse', function (response) {
+            io.on('userGetAuthTokenResponse', function (response) {
                 console.log('On - authenticateResponse', response);
 
                 if (response.err) {

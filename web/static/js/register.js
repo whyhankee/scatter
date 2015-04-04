@@ -4,11 +4,26 @@ riot.tag('register', '<div id="register-container"> <div class="register-content
         var self = this;
 
         this.submit = function(e) {
-            var email = self.email.value.trim(),
-                username = self.username.value.trim(),
-                password = self.password.value.trim();
+            var data = {
+                email: self.email.value.trim(),
+                username: self.username.value.trim(),
+                password: self.password.value.trim()
+            }
+            console.log('[Register.js] Registering ', data);
 
-            console.log('[Register.js] Registering ', email, username, password);
+            io.emit('userSignup', data);
+
+            io.on('userSignupResponse', function (response) {
+                console.log('[Register.js] Server response', response);
+                if (response.err) {
+                    self.errorState = true;
+                    self.errorMessage = response.err.message || 'Unknown';
+                    riot.update();
+                    return false;
+                }
+                console.log('Greate Succes, you are now a member!', response.result);
+                iot.route('login');
+            })
 
         }.bind(this);
     
