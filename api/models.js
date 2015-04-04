@@ -31,66 +31,70 @@ function createUserModel(obj)  {
   obj.User.ensureIndex('username');
   obj.User.ensureIndex('email');
   obj.User.ensureIndex('authToken');
+
 }
 
 
 // Contacts
 //
-function createContactsModel(obj) {
-  obj.Contact = obj.db.createModel('friends', {
+function createContactModel(obj) {
+  obj.Contact = obj.db.createModel('contact', {
     id: String,
 
     userId: String,
-
-    friendId: String,
-    friendName: String,
+    username: String,
     following: Boolean,
 
+    created: Date,
     accepted: Date,
   });
+
 }
 
 
 
 // TimelineItems
 //
-function createTimelineItem(obj) {
-  obj.TimelineItem = obj.db.createModel('timelineitem', {
-    id: String,
+// function createTimelineItem(obj) {
+//   obj.TimelineItem = obj.db.createModel('timelineitem', {
+//     id: String,
 
-    ownerId: String,
-    recipients: Array,
+//     ownerId: String,
+//     recipients: Array,
 
-    category: String,
-    title: String,
-    body: String,
-    body_url: String,
+//     category: String,
+//     title: String,
+//     body: String,
+//     body_url: String,
 
-    created: String,
-  });
-}
+//     created: String,
+//   });
+// }
 
 
 // Notifications
 //
-function createNotifications(obj) {
-  obj.Notification = obj.db.createModel('notifications', {
-    userId: String,
+// function createNotifications(obj) {
+//   obj.Notification = obj.db.createModel('notifications', {
+//     userId: String,
 
-    type: String,
-    title: String,
+//     type: String,
+//     title: String,
 
-    created: String,
-    read: Date
-  });
-}
+//     created: String,
+//     read: Date
+//   });
+// }
 
 
 // Create all models
 //
 function createModels(obj) {
   createUserModel(obj);
+  createContactModel(obj);
 
+  obj.User.hasMany(obj.Contact, 'contacts', 'id', 'userId');
+  obj.Contact.belongsTo(obj.User, 'user', 'userId', 'id');
 }
 
 

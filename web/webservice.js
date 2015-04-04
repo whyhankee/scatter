@@ -123,6 +123,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
   });
 
   // RPC calls (with token)
+  //  Todo: check for existence of token here
   //
   io.route('startXmppClient', function (req) {
     var requestId = req.data._meta.requestId;
@@ -150,6 +151,11 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
       msg.io.emit(msg.data._meta.requestId, {err: err, result: result});
     });
+  });
+
+  io.route('userContactRequest', function(msg) {
+    // Add to database
+    // Send message
   });
 };
 

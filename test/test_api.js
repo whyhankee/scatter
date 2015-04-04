@@ -26,7 +26,10 @@ var iface = m1cro.interface();
 iface.on('start', runTests);
 iface.service(ApiService, 'apiService', {config: apiConfig});
 iface.client('apiService', {
-  api: ['userSignUp', 'userGetAuthToken', 'userGetMe']
+  api: [
+    'userSignUp', 'userGetAuthToken', 'userGetMe',
+    'contactRequest'
+  ]
 });
 iface.start();
 
@@ -34,7 +37,8 @@ iface.start();
 // Test modules
 //
 function runTests() {
-  describe('user service', userTests);
+  describe('user tests', userTests);
+  describe('contact tests', contactTests);
 }
 
 
@@ -117,4 +121,39 @@ function userTests() {
     });
   });
 
+}
+
+
+function contactTests() {
+  var api = iface.clients.apiService;
+  var user;
+
+  before( function(done) {
+    var userId = uuid.v4();
+    var signupData = {
+        username: 'user+'+userId,
+        password: userId,
+        email: userId+'@tester.com',
+        authToken: uuid.v4()
+    };
+    api.userSignUp(signupData, function (err, addedUser) {
+        expect(err).to.be(null);
+        user = addedUser;
+        return done();
+    });
+  });
+
+  it('should add a contact', function (done) {
+    var contactName = 'contact_'+uuid.v4();
+
+    var contactData = {
+      token: user.authToken,
+      username: contactName
+    };
+    api.contactRequest(contactData, function (err, contactList) {
+      expect(err).to.be(null);
+      expect(contactList).to.be([]);
+      return done();
+    });
+  });
 }

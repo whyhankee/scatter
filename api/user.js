@@ -27,7 +27,8 @@ function signUp(req) {
     id: {required: 0},
     username: {required: 1, defined: 1},
     password: {required: 1, defined: 1},
-    email: {required: 1, defined: 1}
+    email: {required: 1, defined: 1},
+    authToken: {required: 0}
   };
   oap.check(req.body, template, function (err, args) {
     if (err) {
@@ -62,6 +63,7 @@ function signUp(req) {
         username: args.username,
         password: results.cryptPassword,
         email: args.email,
+        authToken: args.authToken,
         confirmed: null,  // todo
       });
       // send event.user.signup.success(id: newUserId)
