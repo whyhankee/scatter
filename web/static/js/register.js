@@ -11,9 +11,9 @@ riot.tag('register', '<div id="register-container"> <div class="register-content
             }
             console.log('[Register.js] Registering ', data);
 
-            io.emit('userSignup', data);
+            io.emit('userSignUp', data);
 
-            io.on('userSignupResponse', function (response) {
+            io.on('userSignUpResponse', function (response) {
                 console.log('[Register.js] Server response', response);
                 if (response.err) {
                     self.errorState = true;
@@ -22,7 +22,7 @@ riot.tag('register', '<div id="register-container"> <div class="register-content
                     return false;
                 }
                 console.log('Greate Succes, you are now a member!', response.result);
-                iot.route('login');
+                riot.route('login');
             })
 
         }.bind(this);

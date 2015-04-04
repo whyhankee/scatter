@@ -35,18 +35,20 @@
             io.emit('userGetAuthToken', { username: username, password: password});
 
             io.on('userGetAuthTokenResponse', function (response) {
-                console.log('On - authenticateResponse', response);
+                console.log('[Login.js] Authenticate response', response);
 
-                if (response.err) {
+                if (response.err || !response.result) {
                     self.errorState = true;
                     self.errorMessage = response.err.message || 'Unknown';
                     riot.update();
                     return false;
                 }
 
-                console.log('Success!', response.result);
-
-                riot.route('main')
+                if (response.result && response.result.token) {
+                    localStorage.setItem('token', response.result.token);
+                    self.unmount();
+                    app.trigger('authenticated');
+                }
             })
         }
 

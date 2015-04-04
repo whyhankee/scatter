@@ -11,7 +11,7 @@
 
     <script>
         this.on('mount', function() {
-            console.log('MOUNTED!');
+            console.log('[core.js] Mounted');
         });
     </script>
 </core>
