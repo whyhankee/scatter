@@ -15,6 +15,7 @@ var cfg = require(path.join(__dirname, 'lib', 'config'));
 var SessionService = require('m1cro-svc-express-session-rethinkdb');
 var WebService = require(path.join(__dirname, 'web', 'webservice'));
 var ApiService = require(path.join(__dirname, 'api', 'apiservice'));
+var XmppService = require(path.join(__dirname, 'xmppserver', 'xmppserver'));
 
 
 // Setup Interface using loopback transport (default)
@@ -24,14 +25,18 @@ var iface = m1cro.interface({appName: 'scatter'});
 
 
 // Attach services to the Service Manager
-iface.service(ApiService, cfg.constants.api.queue.name, {
-    config: cfg.config.api
-});
+//
 iface.service(SessionService, cfg.constants.session.queue.name, {
     config: cfg.config.session
 });
+iface.service(ApiService, cfg.constants.api.queue.name, {
+    config: cfg.config.api
+});
 iface.service(WebService, cfg.constants.web.queue.name, {
     config: cfg.config.web
+});
+iface.service(XmppService, cfg.constants.xmppserver.queue.name, {
+    config: cfg.config.xmppserver
 });
 
 
@@ -40,6 +45,7 @@ var serviceLogger = m1cro.middleware.logger;
 iface.serviceUse(cfg.constants.api.queue.name, serviceLogger);
 iface.serviceUse(cfg.constants.session.queue.name, serviceLogger);
 iface.serviceUse(cfg.constants.web.queue.name, serviceLogger);
+iface.serviceUse(cfg.constants.xmppserver.queue.name, serviceLogger);
 
 // Start services and clients
 iface.start();
