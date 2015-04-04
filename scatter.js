@@ -14,7 +14,7 @@ var cfg = require(path.join(__dirname, 'lib', 'config'));
 //
 var WebService = require(path.join(__dirname, 'web', 'webservice'));
 var ApiService = require(path.join(__dirname, 'api', 'apiservice'));
-var XmppService = require(path.join(__dirname, 'xmpp', 'xmppserver'));
+var XmppServer = require(path.join(__dirname, 'xmpp', 'xmppserver'));
 
 
 // Setup Interface using loopback transport (default)
@@ -31,7 +31,7 @@ iface.service(ApiService, cfg.constants.api.queue.name, {
 iface.service(WebService, cfg.constants.web.queue.name, {
     config: cfg.config.web
 });
-iface.service(XmppService, cfg.constants.xmppserver.queue.name, {
+iface.service(XmppServer, cfg.constants.xmppserver.queue.name, {
     config: cfg.config.xmppserver
 });
 

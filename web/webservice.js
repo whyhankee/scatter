@@ -5,10 +5,10 @@ var os = require('os');
 var util = require('util');
 
 var express = require('express.io');
-var bodyParser = require('body-parser');
 var morgan = require('morgan');
-var connect = require('connect');
-var uuid = require('node-uuid');
+
+var _baseDir = __dirname;
+var XmppClient = require(path.join(_baseDir, '..', 'xmpp', 'xmppclient'));
 
 
 // Are we running production?
@@ -32,7 +32,7 @@ function WebService(iface, qname, options) {
     res.set('Access-Control-Allow-Methods', 'GET, POST');
     res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
      // res.set('Access-Control-Allow-Max-Age', 3600);
-    if ('OPTIONS' == req.method) return res.send(200);
+    if ('OPTIONS' === req.method) return res.send(200);
     next();
   });
 
@@ -49,7 +49,6 @@ function WebService(iface, qname, options) {
   });
 
   // Setup components
-  this.setupApiServer(iface);
   this.setupWebServer(iface);
   this.setupSocketServer(iface);
 
@@ -79,29 +78,7 @@ WebService.prototype.onStart = function(done) {
 
 // Setup Webserver routing and middleware
 //
-WebService.prototype.setupApiServer = function setupWebServer(iface) {
-  this.app.use(bodyParser.json());
-
-  // thinking about routes we need in the first place
-  this.app.post('/contact/:userid/request', ApiNotImplemented);
-  this.app.post('/notify/:userid', ApiNotImplemented);
-  this.app.post('/timelineitem', ApiNotImplemented);
-
-  // oAuth provider stuff?
-};
-
-
-function ApiNotImplemented(req, res, next) {
-    return next('notImplemented');
-}
-
-
-
-// Setup Webserver routing and middleware
-//
-WebService.prototype.setupWebServer = function setupWebServer(iface) {
-  this.app.use(bodyParser.urlencoded({ extended: false }));
-
+WebService.prototype.setupWebServer = function setupWebServer(/* iface */) {
   // Static asset routing (should be nginx on production)
   this.app.use('/static', express.static(path.join(__dirname, 'static')));
 
@@ -114,12 +91,16 @@ WebService.prototype.setupWebServer = function setupWebServer(iface) {
 
 // setupSocketServer
 //
-WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
+WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) {
   var self = this;
+
+  var xmppClients = {};
 
   var io = self.app.io;
 
-  io.route('ready', function (req) {
+  // Messages without a token
+  //
+  io.route('ready', function () {
     console.log('***** socket server ready');
   });
 
@@ -136,6 +117,26 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(iface) {
   });
 
   // RPC calls (with token)
+  //
+  io.route('startXmppClient', function (req) {
+    var requestId = req.data._meta.requestId;
+    var token = req.data._meta.authToken;
+
+    var rq = {authToken: req.data._meta.authToken};
+    self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
+      if (err) return req.io.emit(requestId, {err: err});
+
+      var jid = {
+        username: result.username,
+        password: token
+      };
+      if (!xmppClients[jid.username]) {
+        xmppClients[jid.username] = new XmppClient(jid, req.io);
+      }
+      return req.io.emit(requestId, {err: null, result: 1});
+    });
+  });
+
   io.route('userGetMe', function (msg) {
     var rq = {
       authToken: msg.data._meta.authToken
@@ -159,24 +160,6 @@ function errorHandler(err, req, res, next){
   res.status(500).send(message);
 }
 
-
-// WebRoute implementations
-//
-function getIndex(req, res) {
-  showPage('index', {}, req, res);
-}
-
-
-function showPage(page, data, req, res) {
-  var options = {
-    pretty: isProduction ? false : true
-  };
-  res.render(page+'.jade', options, function(err, html) {
-    if (err) console.log("\nerror: ", err);
-
-    res.send(html);
-  });
-}
 
 
 // Exports
