@@ -1,18 +1,18 @@
 <login>
     <div id="login-container">
         <div class="login-content">
-            <div class="login-logo-container">
-                <div class="login-logo" />
+            <div class="logo-container">
+                <div class="logo" />
             </div>
-            <div id="error" class={ errorState ? 'show' : '' }><p> { errorMessage }</p></div>
+            <div id="error" class={ errorState ? 'error-container show' : 'error-container' }><p> { errorMessage }</p></div>
             <form id="login" onsubmit={ submit }>
                 <input name="username" class="input" id="username" type="text" placeholder="Name">
                 <input name="password" class="input" id="password" type="password" placeholder="Password">
                 <button name="submit" class="submit">Sign in</button>
             </form>
-            <div class="login-links">
-                <div class="login-links-register"><a href="#">Register</a></div>
-                <div class="login-links-forgotpassword"><a href="#">Forgot your password?</a></div>
+            <div class="unauthenticated-footer-links">
+                <div class="unauthenticated-footer-links-left"><a href="#register">Register</a></div>
+                <div class="unauthenticated-footer-links-right"><a href="#forgot-password">Forgot your password?</a></div>
             </div>
         </div>
     </div>
@@ -27,9 +27,8 @@
         var self = this;
 
         submit(e) {
-
-            var username = this.username.value,
-                password = this.password.value;
+            var username = this.username.value.trim(),
+                password = this.password.value.trim();
 
             console.log('Emit - Authenticate');
 
@@ -50,6 +49,21 @@
                 riot.route('main')
             })
         }
+
+
+        this.on('mount', function () {
+            console.log('[login.tag] Mount');
+        });
+
+        this.on('unmount', function () {
+            console.log('[login.tag] Unmount');
+        });
+
+        app.on('close', function () {
+            console.log('[login.tag] Received event - close');
+            self.unmount();
+        });
+
     </script>
 
 </login>

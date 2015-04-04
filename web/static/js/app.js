@@ -3,27 +3,46 @@ riot.tag('app', '<div id="app"></div>', function(opts) {
             io = io.connect(':2460');
             io.emit('ready');
 
-            var authenticated = false;
+            var authenticated = false,
+                currentPage;
 
-            if (authenticated) {
-            } else {
-                document.body.classList.add("login");
-                riot.mountTo(document.getElementById('app'), 'login', {  title: 'Login' });
+            function transitionView (view) {
+                currentPage = view;
+                app.trigger('close');
+                riot.mount(document.getElementById('app'), view);
             }
 
-
-            riot.route(function(collection, id, action) {
-                console.log('route is called', collection, id, action);
-                clearLayout();
-                riot.mountTo(document.getElementById('app'), 'core');
-            });
-
-            function clearLayout () {
-                var elem = document.getElementById('app');
-                while (elem.firstChild) {
-                    elem.removeChild(elem.firstChild);
+            var router = {
+                register: function () {
+                    transitionView('register');
+                },
+                login: function () {
+                    transitionView('login');
                 }
             }
+
+            riot.route.exec(function(page, id, action) {
+                console.log('[App.js] Analysing the url (page, id, action)', page, id, action);
+                if (page) {
+                    router[page]();
+                    currentPage = page;
+                }
+            })
+
+            if (!authenticated && !currentPage) {
+                riot.mount(document.getElementById('app'), 'login');
+            }
+
+            riot.route(function (page, id, action) {
+                console.log('[App.js] Route is triggered (page, id, action)', page, id, action);
+                if (page === 'register') {
+                    return router.register();
+                }
+
+                if (!authenticated) {
+                    return router.login();
+                }
+            });
         };
     
 });

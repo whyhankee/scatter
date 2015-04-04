@@ -1,0 +1,12 @@
+#register-container {
+    @include container(90%);
+    margin: 0 auto;
+
+    @include breakpoint(420px, 4) {
+        @include container(400px);
+    }
+}
+
+#register {
+     width: span(12);
+}

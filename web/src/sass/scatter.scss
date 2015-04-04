@@ -4,8 +4,9 @@
 @import "bourbon/bourbon";
 @import "colors";
 @import "grid";
+@import "forms";
 @import "login";
-
+@import "register";
 
 body {
     background-color: $base-white;
