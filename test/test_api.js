@@ -56,13 +56,33 @@ function userTests() {
   it('should signup a user', function (done) {
     api.userSignUp(signupData, function (err, result) {
       expect(err).to.be(null);
-
       return done();
     });
   });
 
-  it('should not be a able to signup another with the same email address');
-  it('should not be a able to signup another with the same username');
+  it('should not be a able to signup another with the same email address', function (done) {
+    var dataDupEmail = {
+      username: 'user+'+userId+'diff',
+      password: userId,
+      email: userId+'@tester.com'
+    };
+    api.userSignUp(dataDupEmail, function (err, result) {
+      expect(err.message).to.be('duplicateEmail');
+      return done();
+    });
+  });
+
+  it('should not be a able to signup another with the same username', function (done) {
+    var dataDupUsername = {
+      username: 'user+'+userId,
+      password: userId,
+      email: userId+'@tester.com'+'diff'
+    };
+    api.userSignUp(dataDupUsername, function (err, result) {
+      expect(err.message).to.be('duplicateUsername');
+      return done();
+    });
+  });
 
   it('should create a authToken for a valid username.pwd', function (done) {
     api.userGetAuthToken(signupData, function (err, result) {

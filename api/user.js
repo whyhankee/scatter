@@ -42,10 +42,16 @@ function signUp(req) {
     }, onDone);
 
     function checkDupUsername(cb, results) {
-      return cb();
+      self.User.filter({username: args.username}).run().nodeify( function (err, users) {
+        if (users.length) return cb(new Error('duplicateUsername'));
+        return cb();
+      });
     }
     function checkDupEmail(cb, results) {
-      return cb();
+      self.User.filter({email: args.email}).run().nodeify( function (err, users) {
+        if (users.length) return cb(new Error('duplicateEmail'));
+        return cb();
+      });
     }
     function cryptPassword(cb, results) {
       _cryptPassword(args.password, cb);
@@ -122,7 +128,10 @@ function getAuthToken(req) {
     }
 
     // Update user with random authToken
-    user.merge({authToken: uuid.v4()}).save().nodeify( function (err, user) {
+    var update = {
+      authToken: uuid.v4()
+    };
+    user.merge(update).save().nodeify( function (err, user) {
       // send event
       return cb(null, {token: user.authToken});
     });
