@@ -24,7 +24,6 @@
   "dependencies": {
     "neo-async": "*",
     "bcrypt": "*",
-    "body-parser": "*",
     "bower": "*",
     "connect": "*",
     "debug": "*",
@@ -37,8 +36,8 @@
     "morgan": "*",
     "node-uuid": "*",
     "node-xmpp-client": "*",
-    "node-xmpp-server": "*",
     "node-xmpp-core": "*",
+    "node-xmpp-server": "*",
     "oap": "*",
     "thinky": "*",
     "gulp": "*",
