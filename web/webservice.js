@@ -90,6 +90,21 @@ function ApiNotImplemented(req, res, next) {
 // Setup Webserver routing and middleware
 //
 WebService.prototype.setupWebServer = function setupWebServer(iface) {
+  var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+};
+
+  this.app.use(allowCrossDomain);
   this.app.use(bodyParser.urlencoded({ extended: false }));
 
   // Static asset routing (should be nginx on production)

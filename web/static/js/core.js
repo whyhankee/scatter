@@ -8,7 +8,7 @@ riot.tag('core', '<header> <div class="logo"><a href="#">Scatter</a></div> </hea
 
         function retreiveUserData (token) {
             rpc(token, 'userGetMe', {}, function (response) {
-                console.log('[Core.js] userGetMe ', reponse);
+                console.log('[Core.js] userGetMe ', response);
                 if (response.err) {
 
                 }

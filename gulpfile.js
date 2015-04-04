@@ -29,7 +29,17 @@ var plumberErrorHandler = { errorHandler: function (error) {
 gulp.task('browser-sync', function() {
     browserSync({
         server: {
-            baseDir: "./web/"
+            baseDir: "./web/",
+            index: "/static/index.html",
+            middleware: function (req, res, next) {
+                res.setHeader('Access-Control-Allow-Origin', ':2460');
+                next();
+            }
+        },
+        socket: {
+            path: "/socket.io",
+            clientPath: "",
+            namespace: "/"
         }
     });
 });
