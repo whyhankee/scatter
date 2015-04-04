@@ -15,7 +15,7 @@
                     <p>You don't have any contacts :/</p>
                 </li>
                 <li each={ contacts }>
-                    <div class="contact-name">{ name}</div>
+                    <div class="contact-name">{ username }</div>
                     <div class="contact-status">{ status }</div>
                 </li>
             </ul>
@@ -31,12 +31,15 @@
             console.log('[Contacts.js] Mounted ');
         });
 
-        app.on('contacts-add', function (contact) {
-            if (!contact) {
+        app.on('contacts-add', function (contacts) {
+            if (!contacts) {
                 return;
             }
 
-            self.contacts.push({name: contact.username, status: 'waiting..'});
+            for (c in contacts) {
+                contacts[c].status = contacts[c].accepted ? 'Accepted' : 'waiting..';
+            }
+            self.contacts = contacts;
             self.update();
         });
 

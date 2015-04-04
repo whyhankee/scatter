@@ -5,6 +5,7 @@ var path = require('path');
 var expect = require('expect.js');
 var m1cro = require('m1cro');
 var uuid = require('node-uuid');
+var async = require('neo-async');
 
 var ApiService = require(path.join(__dirname, '..', 'api', 'apiservice'));
 
@@ -28,7 +29,7 @@ iface.service(ApiService, 'apiService', {config: apiConfig});
 iface.client('apiService', {
   api: [
     'userSignUp', 'userGetAuthToken', 'userGetMe',
-    'contactRequest'
+    'contactRequest', 'contactList'
   ]
 });
 iface.start();
@@ -147,13 +148,56 @@ function contactTests() {
     var contactName = 'contact_'+uuid.v4();
 
     var contactData = {
-      token: user.authToken,
+      authToken: user.authToken,
       username: contactName
     };
-    api.contactRequest(contactData, function (err, contactList) {
+    api.contactRequest(contactData, function (err, contact) {
       expect(err).to.be(null);
-      expect(contactList).to.be([]);
+      expect(contact.userId).to.be(user.id);
+      expect(contact.id).not.to.be(undefined);
+      expect(contact.username).to.be(contactData.username);
       return done();
     });
+  });
+
+  it('should return a contact list', function (done) {
+    var contactData = {
+      authToken: user.authToken,
+    };
+
+    api.contactList(contactData, function (err, contactList) {
+      expect(err).to.be(null);
+      expect(contactList.length).to.be(1);
+      return done();
+    });
+  });
+
+  it('should return a empty contact list for unkown user', function (done) {
+    var userId = uuid.v4();
+    var signupData = {
+      username: 'user+'+userId,
+      password: userId,
+      email: userId+'@tester.com',
+      authToken: uuid.v4()
+    };
+    var emptyUser;
+
+    async.waterfall([signupUser,testContactList], done);
+
+    function signupUser (cb) {
+      api.userSignUp(signupData, function (err, addedUser) {
+        expect(err).to.be(null);
+        emptyUser = addedUser;
+        return cb();
+      });
+    }
+
+    function testContactList (cb) {
+      api.contactList({authToken: emptyUser.authToken}, function (err, contactList) {
+        expect(err).to.be(null);
+        expect(contactList.length).to.be(0);
+        return cb();
+      });
+    }
   });
 }

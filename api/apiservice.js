@@ -54,10 +54,11 @@ function ApiService(iface, qname, options) {
   iface.subscribe(this, qname+'.userGetAuthToken', this.userGetAuthToken);
   iface.subscribe(this, qname+'.userGetMe', [checkAuthToken, this.userGetMe]);
   iface.subscribe(this, qname+'.contactRequest', [checkAuthToken, this.contactRequest]);
+  iface.subscribe(this, qname+'.contactList', [checkAuthToken, this.contactList]);
 
   // Register our client to the api on the interface
   iface.client('scatter_api', {api: [
-    'userSignUp', 'userGetAuthToken', 'userGetMe']
+    'userSignUp', 'userGetAuthToken', 'userGetMe', 'contactRequest', 'contactList']
   });
 
   // Setup
@@ -93,6 +94,7 @@ ApiService.prototype.userGetMe = user.getMe;
 
 // Contact methods
 ApiService.prototype.contactRequest = contact.request;
+ApiService.prototype.contactList = contact.list;
 
 
 // exports

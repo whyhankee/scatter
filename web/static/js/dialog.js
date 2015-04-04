@@ -11,11 +11,12 @@ riot.tag('dialog', '<div class="dialog-overlay"> <div class="dialog-container"> 
 
 
             self.username.value = '';
-            app.trigger('contacts-add', { username: userData.username });
+
             var token = localStorage.getItem('token');
 
             rpc(token, 'userContactRequest', userData, function (response) {
-                console.log('[Contacts.js] Reponse ', reponse);
+                console.log('[Contacts.js] Reponse ', response);
+                app.trigger('contacts-add', response.result);
             });
             self.unmount();
         }.bind(this);

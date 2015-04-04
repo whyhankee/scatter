@@ -19,24 +19,36 @@ function contactRequest(req) {
     }
 
     var newContact = new self.Contact({
-      user: req.user,
+      userId: req.user.id,
       username: args.username,
       following: true,
-
       created: new Date(),
       accepted: null
     });
-    // send event.user.signup.success(id: newUserId)
-    newContact.save().nodeify(function (err) {
+    // send event.contact.request.success(id: contactId)
+    newContact.save().nodeify(function (err, contact) {
         if (err) return req.done(err);
-        return req.done(null);
+        return req.done(null, contact);
     });
   });
 }
+
+// Contact list
+//
+function contactList (req) {
+  var self = this;
+
+  self.Contact.filter({userId: req.user.id}).run(function (err, contacts) {
+    if (err)  return req.done(err);
+    return req.done(null, contacts);
+  });
+}
+
 
 
 // Exports
 //
 module.exports = {
-  request: contactRequest
+  request: contactRequest,
+  list: contactList
 };

@@ -155,6 +155,19 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
 
   io.route('userContactRequest', function(msg) {
     // Add to database
+    var rq = {
+      authToken: msg.data._meta.authToken,
+      username: msg.data.username
+    };
+    self.iface.clients.scatter_api.contactRequest(rq, function (err, result) {
+      if (err) return req.io.emit(requestId, {err: err});
+      rq = {
+        authToken: msg.data._meta.authToken
+      }
+      self.iface.clients.scatter_api.contactList(rq, function (err, result) {
+        msg.io.emit(msg.data._meta.requestId, {err: err, result: result});
+      });
+    });
     // Send message
   });
 };
