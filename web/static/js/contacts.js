@@ -1,20 +1,23 @@
-riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"> <div class="contacts-header-title"> <h3>Contacts</h3> </div> <div class="contacts-header-button">  </div> </div> <div class="contacts-main"> <ul> <li> <div class="contact-name">Paul</div> <div class="contact-status">Invitation pending</div> </li> </ul> </div> <div class="contacts-footer"> <form onsubmit="{ submit }"> <input name="username" class="input" id="username" type="text" placeholder="Username"> <button name="submit" class="submit">add contact</button> </form> </div> </div>', function(opts) {
+riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"> <div class="contacts-header-title"> <h3>Contacts</h3> </div> <div class="contacts-header-button"> <a href="" onclick="{ addContact }">Add Contact</a> </div> </div> <div class="contacts-main"> <ul> <li if="{ contacts.length === 0 }" class="contacts-none"> <p>You don\'t have any contacts :/</p> </li> <li each="{ contacts }"> <div class="contact-name">{ name}</div> <div class="contact-status">{ status }</div> </li> </ul> </div> </div>', function(opts) {
         var self = this;
+
+        self.contacts = [];
 
         this.on('mount', function() {
             console.log('[Contacts.js] Mounted ');
         });
 
-        this.submit = function(e) {
-            console.log('[Contacts.js] Adding contact');
-            var userData = { username: self.username.value.trim() };
+        app.on('contacts-add', function (contact) {
+            if (!contact) {
+                return;
+            }
 
-            var token = localStorage.getItem('token');
+            self.contacts.push({name: contact.username, status: 'waiting..'});
+            self.update();
+        });
 
-            rpc(token, 'userContactRequest', userData, function (response) {
-                console.log('[Contacts.js] Reponse ', reponse);
-            });
+        this.addContact = function(evt) {
+            app.trigger('dialog');
         }.bind(this);
-
     
 });

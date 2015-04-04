@@ -10,6 +10,7 @@
 @import "contacts";
 @import "activity";
 @import "channels";
+@import "dialog";
 @import "core";
 
 
@@ -24,6 +25,13 @@ body {
 
 body.main {
     background-color: $base-background-color;
+}
+
+h2 {
+    font-size: 1em;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
 }
 
 h3 {

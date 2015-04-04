@@ -1,10 +1,10 @@
 <app>
     <div id="app"></div>
+    <div id="dialog"></div>
 
     <script>
         window.onload = function onLoad() {
             io = io.connect(':2460');
-            io.emit('ready');
 
             var authenticated = false,
                 currentPage;
@@ -36,6 +36,11 @@
             app.on('logout', function () {
                 localStorage.removeItem('token');
                 transitionView('login');
+            });
+
+            app.on('dialog', function () {
+                console.log('test');
+                riot.mount(document.getElementById('dialog'), 'dialog');
             });
 
             riot.route.exec(function(page, id, action) {
