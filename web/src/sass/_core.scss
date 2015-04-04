@@ -13,12 +13,13 @@
     margin: 0 auto;
 
     @include breakpoint(1100px, 4) {
-        @include container(1000px);
+        @include container(95%);
     }
 
 }
 
 header {
+    background-color: $base-white;
     border-bottom: $header-border-width solid $header-border-color;
     height: 60px;
 
@@ -26,11 +27,6 @@ header {
 
         @include span(3);
         margin: 10px 0;
-
-        a {
-            border: none;
-            text-decoration :none;
-        }
 
         .logo-image {
             border: none;
@@ -63,22 +59,35 @@ header {
                 margin-left: 10px;
             }
         }
-
-        a {
-            text-decoration: none;
-            font-weight: bold;
-            color: $base-blue;
-        }
     }
 }
 
 #main {
-    background-color: $base-background-color;
-
     #channels {
+        display: none;
 
+        @include breakpoint(420px, 4) {
+            @include span(3);
+            display: block;
+        }
     }
 
-    
+    #activity {
+        @include span(12);
+
+        @include breakpoint(420px, 4) {
+            @include span(6);
+            display: block;
+        }
+    }
+
+    #contacts {
+        display: none;
+
+        @include breakpoint(420px, 4) {
+            @include span(3 last);
+            display: block;
+        }
+    }
 }
 

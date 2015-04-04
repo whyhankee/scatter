@@ -17,12 +17,13 @@
     <main role="main" id="main">
         <div class="container">
             <aside id="channels">
-                <h3>Channels</h3>
+                <channels></channels>
             </aside>
-            <div id="timeline"></div>
-                <h3>Timeline</h3>
+            <div id="activity">
+                <activity></activity>
+            </div>
             <aside id="contacts">
-                <h3>Contacts</h3>
+                <contacts></contacts>
             </aside>
         </div>
     </main>
@@ -33,6 +34,8 @@
         this.on('mount', function() {
             console.log('[Core.js] Mounted');
             var token = localStorage.getItem('token');
+            // Set classname
+            document.body.className = 'main';
             // Get the user data from the server
             retreiveUserData(token);
             // Tell the server to start a Xmpp Client
