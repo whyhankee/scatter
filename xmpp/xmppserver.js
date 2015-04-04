@@ -54,15 +54,15 @@ XmppServer.prototype.onStart = function (done) {
       });
     });
 
-    client.on("online", function(client) {
-      debug('!****** new client', client);
+    client.on("online", function() {
+      debug('new xmpp client');
       // var msg = new ltx.Element('message', { to: 'localhost' }).c('body').t('HelloWorld');
       // client.send(msg);
     });
 
     // Stanza handling
     client.on("stanza", function(stanza) {
-      debug('stanza: ', stanza);
+      debug('stanza: ' + stanza.name);
     });
 
     // On Disconnect event. When a client disconnects

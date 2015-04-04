@@ -6,6 +6,8 @@ var util = require('util');
 
 var express = require('express.io');
 var morgan = require('morgan');
+var debug = require('debug')('scatter:web');
+
 
 var _baseDir = __dirname;
 var XmppClient = require(path.join(_baseDir, '..', 'xmpp', 'xmppclient'));
@@ -98,12 +100,16 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
 
   var io = self.app.io;
 
-  // Messages without a token
-  //
-  io.route('ready', function () {
-    console.log('***** socket server ready');
+  // Socket events
+  io.route('connect', function() {
+    debug('connect');
+  });
+  io.route('disconnect', function() {
+    debug('disconnect');
   });
 
+  // Messages without a token
+  //
   io.route('userGetAuthToken', function (req) {
     self.iface.clients.scatter_api.userGetAuthToken(req.data, function (err, result) {
       req.io.emit('userGetAuthTokenResponse', {err: err, result: result});
