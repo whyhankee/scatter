@@ -25,8 +25,21 @@ function WebService(iface, qname, options) {
   this.app = express();
   this.app.http().io();
 
+  this.app.all('*', function(req, res, next){
+    if (!req.get('Origin')) return next();
+    // use "*" here to accept any origin
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST');
+    res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+     // res.set('Access-Control-Allow-Max-Age', 3600);
+    if ('OPTIONS' == req.method) return res.send(200);
+    next();
+  });
+
   this.app.set('iface', iface);
   this.app.set('config', options.config);
+
+
 
   // Middlware for WebServer *AND* ApiServer
   this.app.use(morgan(isProduction ? 'combined' : 'dev'));
@@ -87,21 +100,6 @@ function ApiNotImplemented(req, res, next) {
 // Setup Webserver routing and middleware
 //
 WebService.prototype.setupWebServer = function setupWebServer(iface) {
-  var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-
-    // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    }
-    else {
-      next();
-    }
-};
-
-  this.app.use(allowCrossDomain);
   this.app.use(bodyParser.urlencoded({ extended: false }));
 
   // Static asset routing (should be nginx on production)

@@ -36,11 +36,6 @@ gulp.task('browser-sync', function() {
                 next();
             }
         },
-        socket: {
-            path: "/socket.io",
-            clientPath: "",
-            namespace: "/"
-        }
     });
 });
 
