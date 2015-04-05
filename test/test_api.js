@@ -6,6 +6,7 @@ var expect = require('expect.js');
 var m1cro = require('m1cro');
 var uuid = require('node-uuid');
 var async = require('neo-async');
+var _ = require('lodash');
 
 var ApiService = require(path.join(__dirname, '..', 'api', 'apiservice'));
 
@@ -29,7 +30,7 @@ iface.service(ApiService, 'apiService', {config: apiConfig});
 iface.client('apiService', {
   api: [
     'userSignUp', 'userGetAuthToken', 'userGetMe',
-    'contactRequest', 'contactList'
+    'contactRequest', 'contactList', 'contactDelete'
   ]
 });
 iface.start();
@@ -128,6 +129,8 @@ function userTests() {
 function contactTests() {
   var api = iface.clients.apiService;
   var user;
+  var contact;
+  var contactName = 'contact_' + uuid.v4();
 
   before( function(done) {
     var userId = uuid.v4();
@@ -145,17 +148,27 @@ function contactTests() {
   });
 
   it('should add a contact', function (done) {
-    var contactName = 'contact_'+uuid.v4();
-
     var contactData = {
       authToken: user.authToken,
       username: contactName
     };
-    api.contactRequest(contactData, function (err, contact) {
+    api.contactRequest(contactData, function (err, addedContact) {
       expect(err).to.be(null);
-      expect(contact.userId).to.be(user.id);
-      expect(contact.id).not.to.be(undefined);
-      expect(contact.username).to.be(contactData.username);
+      expect(addedContact.userId).to.be(user.id);
+      expect(addedContact.id).not.to.be(undefined);
+      expect(addedContact.username).to.be(contactData.username);
+      contact = addedContact;
+      return done();
+    });
+  });
+
+  it('should not add a duplicate contact', function (done) {
+    var contactData = {
+      authToken: user.authToken,
+      username: contactName
+    };
+    api.contactRequest(contactData, function (err) {
+      expect(err).not.to.be(null);
       return done();
     });
   });
@@ -200,4 +213,24 @@ function contactTests() {
       });
     }
   });
+
+  it ('should delete a contact', function (done) {
+    var userData = {
+      authToken: user.authToken,
+      userId: user.id,
+      contactId: contact.id
+    };
+    api.contactDelete(userData, function (err, result) {
+      expect(err).to.be(null);
+      expect(result).not.to.be(undefined);
+
+      api.contactList({authToken: user.authToken}, function (err, contactList) {
+        expect(err).to.be(null);
+        expect(contactList.length).to.be(0);
+        return done();
+      });
+    });
+  });
+
+  it ('should not delete a other users contact');
 }

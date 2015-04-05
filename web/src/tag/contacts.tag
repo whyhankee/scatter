@@ -12,12 +12,12 @@
         <div class="contacts-main">
             <ul>
                 <li if={ contacts.length === 0 } class="contacts-none">
-                    <p>You don't have any contacts :/</p>
+                    <p>Loading...</p>
                 </li>
                 <li each={ contacts }>
                     <div class="contact-name">{ username }</div>
                     <div class="contact-status">
-                        <a href="" onclick={ deleteContact }>Revoke</a>
+                        <a href="" onclick={ deleteContact }>Delete</a>
                         <em>{ status }</em>
                     </div>
                 </li>
@@ -40,7 +40,7 @@
             var resultContacts = response.result;
 
             for (var c in resultContacts) {
-                resultContacts[c].status = resultContacts[c].accepted ? 'Accepted' : 'waiting..';
+                resultContacts[c].status = resultContacts[c].accepted ? 'Accepted' : 'waiting...';
             }
 
             self.contacts = resultContacts;

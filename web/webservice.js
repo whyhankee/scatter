@@ -183,7 +183,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
 
 // Error handler implementation
 //
-function errorHandler(err, req, res, next){
+function errorHandler(err, req, res, next){ //jshint ignore:line
   var message = 'Oh noes, Scatter is broken!\n\n';
   if (err && err.stack) {
     console.error('!!', err.stack);

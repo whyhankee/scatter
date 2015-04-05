@@ -62,6 +62,7 @@
   "devDependencies": {
     "expect.js": "*",
     "jsdoc-to-markdown": "*",
+    "lodash": "^3.6.0",
     "mocha": "*",
     "nodemon": "*"
   },

@@ -49,7 +49,7 @@ function signUp(req) {
       });
     }
     function checkDupEmail(cb, results) {
-      self.User.filter({email: args.email}).run().nodeify( function (err, users) {
+      self.User.filter({email: args.email}).run().nodeify(function (err, users) {
         if (users.length) return cb(new Error('duplicateEmail'));
         return cb();
       });
@@ -157,7 +157,7 @@ function _cryptPassword(password, done) {
   if (password.length < 6) {
     return done(new Error('chooseBetterPassword'));
   }
-  var cryptedPassword = bcrypt.hash(password, 10, done);
+  bcrypt.hash(password, 10, done);
 }
 
 

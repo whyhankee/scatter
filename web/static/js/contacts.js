@@ -1,4 +1,4 @@
-riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"> <div class="contacts-header-title"> <h3>Contacts</h3> </div> <div class="contacts-header-button"> <a href="" onclick="{ addContact }">Add Contact</a> </div> </div> <div class="contacts-main"> <ul> <li if="{ contacts.length === 0 }" class="contacts-none"> <p>You don\'t have any contacts :/</p> </li> <li each="{ contacts }"> <div class="contact-name">{ username }</div> <div class="contact-status"> <a href="" onclick="{ deleteContact }">Revoke</a> <em>{ status }</em> </div> </li> </ul> </div> </div>', function(opts) {
+riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"> <div class="contacts-header-title"> <h3>Contacts</h3> </div> <div class="contacts-header-button"> <a href="" onclick="{ addContact }">Add Contact</a> </div> </div> <div class="contacts-main"> <ul> <li if="{ contacts.length === 0 }" class="contacts-none"> <p>Loading...</p> </li> <li each="{ contacts }"> <div class="contact-name">{ username }</div> <div class="contact-status"> <a href="" onclick="{ deleteContact }">Delete</a> <em>{ status }</em> </div> </li> </ul> </div> </div>', function(opts) {
         
         var self = this;
 
@@ -13,7 +13,7 @@ riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"
             var resultContacts = response.result;
 
             for (var c in resultContacts) {
-                resultContacts[c].status = resultContacts[c].accepted ? 'Accepted' : 'waiting..';
+                resultContacts[c].status = resultContacts[c].accepted ? 'Accepted' : 'waiting...';
             }
 
             self.contacts = resultContacts;
