@@ -1,4 +1,5 @@
 riot.tag('dialog', '<div class="dialog-overlay"> <div class="dialog-container"> <div class="dialog-header"> <div class="dialog-title"> <h2>Add user</h2> </div> <div class="dialog-close"> <a href="" onclick="{ close }">Close</a> </div> </div> <hr > <div class="dialog-content"> <form onsubmit="{ submit }"> <input name="username" class="input" id="username" type="text" placeholder="Username"> <button name="submit" class="submit">add contact</button> </form> </div> </div> </div>', function(opts) {
+        
         var self = this;
 
         this.close = function(evt) {
@@ -16,7 +17,7 @@ riot.tag('dialog', '<div class="dialog-overlay"> <div class="dialog-container"> 
 
             rpc(token, 'userContactRequest', userData, function (response) {
                 console.log('[Contacts.js] Reponse ', response);
-                app.trigger('contacts-add', response.result);
+                app.trigger('contacts-add', response);
             });
             self.unmount();
         }.bind(this);

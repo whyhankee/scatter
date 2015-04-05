@@ -170,6 +170,13 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     });
     // Send message
   });
+
+  io.route('userContactList', function (msg) {
+    var rq = { authToken: msg.data._meta.authToken };
+    self.iface.clients.scatter_api.contactList(rq, function (err, result) {
+      msg.io.emit(msg.data._meta.requestId, {err: err, result: result});
+    })
+  });
 };
 
 

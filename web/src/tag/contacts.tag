@@ -16,35 +16,52 @@
                 </li>
                 <li each={ contacts }>
                     <div class="contact-name">{ username }</div>
-                    <div class="contact-status">{ status }</div>
+                    <div class="contact-status">
+                        <a href="" onclick={ deleteContact }>Revoke</a>
+                        <em>{ status }</em>
+                    </div>
                 </li>
             </ul>
         </div>
     </div>
 
     <script>
+        /* jshint ignore:start */
         var self = this;
 
         self.contacts = [];
 
-        this.on('mount', function() {
-            console.log('[Contacts.js] Mounted ');
-        });
-
-        app.on('contacts-add', function (contacts) {
-            if (!contacts) {
+        function updateContacts (response) {
+            console.log('[Contacts.js] updateContacts ', response);
+            if (response.err || !response.result) {
                 return;
             }
 
-            for (c in contacts) {
-                contacts[c].status = contacts[c].accepted ? 'Accepted' : 'waiting..';
+            var resultContacts = response.result;
+
+            for (var c in resultContacts) {
+                resultContacts[c].status = resultContacts[c].accepted ? 'Accepted' : 'waiting..';
             }
-            self.contacts = contacts;
+
+            self.contacts = resultContacts;
             self.update();
+        }
+
+        this.on('mount', function() {
+            console.log('[Contacts.js] Mounted ');
+            var token = localStorage.getItem('token');
+
+            rpc(token, 'userContactList', {}, updateContacts);
         });
+
+        app.on('contacts-add', updateContacts);
 
         addContact (evt) {
             app.trigger('dialog');
+        }
+
+        deleteContact (evt) {
+            console.log('[Contacts.js] Revoking invite ');
         }
     </script>
 </contacts>

@@ -23,6 +23,7 @@
     </div>
 
     <script>
+        /* jshint ignore:start */
         var self = this;
 
         close (evt) {
@@ -40,7 +41,7 @@
             // // Tell the server to start a Xmpp Client
             rpc(token, 'userContactRequest', userData, function (response) {
                 console.log('[Contacts.js] Reponse ', response);
-                app.trigger('contacts-add', response.result);
+                app.trigger('contacts-add', response);
             });
             self.unmount();
         }
