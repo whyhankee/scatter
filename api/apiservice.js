@@ -59,7 +59,9 @@ function ApiService(iface, qname, options) {
 
   // Register our client to the api on the interface
   iface.client('scatter_api', {api: [
-    'userSignUp', 'userGetAuthToken', 'userGetMe', 'contactRequest', 'contactList', 'contactDelete']
+    'userSignUp', 'userGetAuthToken', 'userGetMe',
+    'contactRequest', 'contactList', 'contactDelete'
+    ]
   });
 
   // Setup
