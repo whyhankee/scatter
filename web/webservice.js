@@ -41,8 +41,6 @@ function WebService(iface, qname, options) {
   this.app.set('iface', iface);
   this.app.set('config', options.config);
 
-
-
   // Middlware for WebServer *AND* ApiServer
   this.app.use(morgan(isProduction ? 'combined' : 'dev'));
   this.app.use(function(req, res, next) {
@@ -108,7 +106,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     debug('disconnect');
   });
 
-  // Messages without a token
+  // Requests without a token
   //
   io.route('userGetAuthToken', function (req) {
     self.iface.clients.scatter_api.userGetAuthToken(req.data, function (err, result) {
@@ -116,11 +114,13 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     });
   });
 
+
   io.route('userSignUp', function (req) {
     self.iface.clients.scatter_api.userSignUp(req.data, function (err, result) {
       req.io.emit('userSignUpResponse', {err: err, result: result});
     });
   });
+
 
   // RPC calls (with token)
   //  Todo: check for existence of token here
@@ -129,7 +129,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     var requestId = req.data._meta.requestId;
     var token = req.data._meta.authToken;
 
-    var rq = {authToken: req.data._meta.authToken};
+    var rq = {authToken: token};
     self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
       if (err) return req.io.emit(requestId, {err: err});
 
@@ -137,49 +137,60 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
         username: result.username,
         password: token
       };
-      if (!xmppClients[jid.username]) {
-        xmppClients[jid.username] = new XmppClient(jid, req.io);
+      if (!xmppClients[token]) {
+        xmppClients[token] = new XmppClient(jid, req.io);
       }
+      debug('online clients, #'+Object.keys(xmppClients).length);
       return req.io.emit(requestId, {err: null, result: 1});
     });
   });
 
-  io.route('userGetMe', function (msg) {
+
+  io.route('userGetMe', function (req) {
     var rq = {
-      authToken: msg.data._meta.authToken
+      authToken: req.data._meta.authToken
     };
     self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
-      msg.io.emit(msg.data._meta.requestId, {err: err, result: result});
+      req.io.emit(req.data._meta.requestId, {err: err, result: result});
     });
   });
 
-  io.route('userContactRequest', function(msg) {
-    var requestId = msg.data._meta.requestId;
+
+  io.route('userContactRequest', function(req) {
+    var requestId = req.data._meta.requestId;
+    var token = req.data._meta.authToken;
+
     // Add to database
     var rq = {
-      authToken: msg.data._meta.authToken,
-      username: msg.data.username
+      authToken: token,
+      username: req.data.username
     };
     self.iface.clients.scatter_api.contactRequest(rq, function (err) {
-      if (err) return msg.io.emit(requestId, {err: err});
+      if (err) return req.io.emit(requestId, {err: err});
       rq = {
-        authToken: msg.data._meta.authToken
+        authToken: token
       };
       self.iface.clients.scatter_api.contactList(rq, function (err, result) {
-        msg.io.emit(msg.data._meta.requestId, {err: err, result: result});
+        req.io.emit(req.data._meta.requestId, {err: err, result: result});
       });
     });
     // Send message
   });
 
+
   io.route('userContactRequestRetry', function (req) {
-    console.log('userContactRequestRetry', req);
+    var requestId = req.data._meta.requestId;
+    var token = req.data._meta.authToken;
+
+    xmppClients[token].contactAdd(req.username);
+    req.io.emit(requestId, {err: null, result: true});
   });
 
-  io.route('userContactList', function (msg) {
-    var rq = { authToken: msg.data._meta.authToken };
+
+  io.route('userContactList', function (req) {
+    var rq = { authToken: req.data._meta.authToken };
     self.iface.clients.scatter_api.contactList(rq, function (err, result) {
-      msg.io.emit(msg.data._meta.requestId, {err: err, result: result});
+      req.io.emit(req.data._meta.requestId, {err: err, result: result});
     });
   });
 };

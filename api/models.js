@@ -45,10 +45,12 @@ function createContactModel(obj) {
     username: String,
     following: Boolean,
 
-    created: Date,
+    received: Date,
     accepted: Date,
-  });
 
+    created: Date,
+    deleted: Date,
+  });
 }
 
 
@@ -93,6 +95,7 @@ function createModels(obj) {
   createUserModel(obj);
   createContactModel(obj);
 
+  // Create relationships
   obj.User.hasMany(obj.Contact, 'contacts', 'id', 'userId');
   obj.Contact.belongsTo(obj.User, 'user', 'userId', 'id');
 }

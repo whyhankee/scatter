@@ -63,6 +63,7 @@ XmppServer.prototype.onStart = function (done) {
     // Stanza handling
     client.on("stanza", function(stanza) {
       debug('stanza: ' + stanza.name);
+      console.log('!****** stanza', stanza);
     });
 
     // On Disconnect event. When a client disconnects
