@@ -1,4 +1,4 @@
-riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"> <div class="contacts-header-title"> <h3>Contacts</h3> </div> <div class="contacts-header-button"> <a href="" onclick="{ addContact }">Add Contact</a> </div> </div> <div class="contacts-main"> <ul> <li if="{ contacts.length === 0 }" class="contacts-none"> <p>Loading...</p> </li> <li each="{ contacts }"> <div class="contact-name">{ username }</div> <div class="contact-status"> <a href="" onclick="{ deleteContact }">Delete</a> <em>{ status }</em> </div> </li> </ul> </div> </div>', function(opts) {
+riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"> <div class="contacts-header-title"> <h3>Contacts</h3> </div> <div class="contacts-header-button"> <a href="" onclick="{ addContact }">Add Contact</a> </div> </div> <div class="contacts-main"> <ul> <li if="{ contacts.length === 0 }" class="contacts-none"> <p>Loading...</p> </li> <li each="{ contacts }"> <div class="contact-name">{ username }</div> <div class="contact-status"> <a href="" onclick="{ parent.deleteContact }">Delete</a> <a href="" onclick="{ parent.retryInvite }">Retry</a> <em>{ status }</em> </div> </li> </ul> </div> </div>', function(opts) {
         
         var self = this;
 
@@ -29,12 +29,22 @@ riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"
 
         app.on('contacts-add', updateContacts);
 
-        this.addContact = function(evt) {
+        this.addContact = function(e) {
             app.trigger('dialog');
         }.bind(this);
 
-        this.deleteContact = function(evt) {
+        this.deleteContact = function(e) {
             console.log('[Contacts.js] Revoking invite ');
+        }.bind(this);
+
+        this.retryInvite = function(e) {
+            var token = localStorage.getItem('token');
+            var contactData = { id: e.item.id, username: e.item.username };
+
+            rpc(token, 'userContactRequestRetry', contactData, function (response) {
+                console.log('[Contacts.js] Reponse ', response);
+            });
+
         }.bind(this);
     
 });

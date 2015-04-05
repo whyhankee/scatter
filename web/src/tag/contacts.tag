@@ -17,7 +17,8 @@
                 <li each={ contacts }>
                     <div class="contact-name">{ username }</div>
                     <div class="contact-status">
-                        <a href="" onclick={ deleteContact }>Delete</a>
+                        <a href="" onclick={ parent.deleteContact }>Delete</a>
+                        <a href="" onclick={ parent.retryInvite }>Retry</a>
                         <em>{ status }</em>
                     </div>
                 </li>
@@ -56,12 +57,22 @@
 
         app.on('contacts-add', updateContacts);
 
-        addContact (evt) {
+        addContact (e) {
             app.trigger('dialog');
         }
 
-        deleteContact (evt) {
+        deleteContact (e) {
             console.log('[Contacts.js] Revoking invite ');
+        }
+
+        retryInvite(e) {
+            var token = localStorage.getItem('token');
+            var contactData = { id: e.item.id, username: e.item.username };
+            // // Tell the server to start a Xmpp Client
+            rpc(token, 'userContactRequestRetry', contactData, function (response) {
+                console.log('[Contacts.js] Reponse ', response);
+            });
+
         }
     </script>
 </contacts>

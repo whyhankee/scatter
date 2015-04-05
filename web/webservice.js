@@ -172,6 +172,10 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     // Send message
   });
 
+  io.route('userContactRequestRetry', function (req) {
+    console.log('userContactRequestRetry', req);
+  });
+
   io.route('userContactList', function (msg) {
     var rq = { authToken: msg.data._meta.authToken };
     self.iface.clients.scatter_api.contactList(rq, function (err, result) {
