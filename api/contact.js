@@ -6,7 +6,7 @@ var oap = require('oap');
 
 // Contact request
 //
-function contactRequest(req) {
+function contactAdd(req) {
   var self = this;    // jshint ignore:line
 
   var template = {
@@ -95,7 +95,7 @@ function contactDelete (req) {
 // Exports
 //
 module.exports = {
-  request: contactRequest,
+  add: contactAdd,
   list: contactList,
   delete: contactDelete
 };

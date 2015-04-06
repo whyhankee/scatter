@@ -6,7 +6,6 @@ var expect = require('expect.js');
 var m1cro = require('m1cro');
 var uuid = require('node-uuid');
 var async = require('neo-async');
-var _ = require('lodash');
 
 var ApiService = require(path.join(__dirname, '..', 'api', 'apiservice'));
 
@@ -30,7 +29,7 @@ iface.service(ApiService, 'apiService', {config: apiConfig});
 iface.client('apiService', {
   api: [
     'userSignUp', 'userGetAuthToken', 'userGetMe',
-    'contactRequest', 'contactList', 'contactDelete'
+    'contactAdd', 'contactList', 'contactDelete'
   ]
 });
 iface.start();
@@ -153,7 +152,7 @@ function contactTests() {
       authToken: user.authToken,
       username: contactName
     };
-    api.contactRequest(contactData, function (err, addedContact) {
+    api.contactAdd(contactData, function (err, addedContact) {
       expect(err).to.be(null);
       expect(addedContact.userId).to.be(user.id);
       expect(addedContact.id).not.to.be(undefined);
@@ -168,7 +167,7 @@ function contactTests() {
       authToken: user.authToken,
       username: contactName
     };
-    api.contactRequest(contactData, function (err) {
+    api.contactAdd(contactData, function (err) {
       expect(err).not.to.be(null);
       return done();
     });
@@ -244,7 +243,7 @@ function contactTests() {
 
     // Create a contact for user
     function contactAdd (cb) {
-      api.contactRequest(contactData, function (err, addedContact) {
+      api.contactAdd(contactData, function (err, addedContact) {
         expect(err).to.be(null);
         secondContact = addedContact;
         return cb();
@@ -257,7 +256,7 @@ function contactTests() {
         userId: emptyUser.id,
         contactId: secondContact.id
       };
-      api.contactDelete(userData, function (err, result) {
+      api.contactDelete(userData, function (err) {
         expect(err).not.to.be(null);
         expect(err.message).to.be('noContactFound');
         return cb();
