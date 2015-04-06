@@ -165,7 +165,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
       authToken: token,
       username: req.data.username
     };
-    self.iface.clients.scatter_api.contactRequest(rq, function (err) {
+    self.iface.clients.scatter_api.contactAdd(rq, function (err) {
       if (err) return req.io.emit(requestId, {err: err});
       rq = {
         authToken: token
