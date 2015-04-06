@@ -52,8 +52,8 @@ function contactAdd(req) {
 function contactList (req) {
   var self = this; // jshint ignore:line
 
-  self.Contact.orderBy("username").
-    filter({userId: req.user.id}).run(function (err, contacts)
+  self.Contact.
+    filter({userId: req.user.id}).orderBy("username").run(function (err, contacts)
   {
     if (err)  return req.done(err);
     return req.done(null, contacts);
