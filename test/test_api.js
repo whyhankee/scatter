@@ -131,6 +131,7 @@ function contactTests() {
   var user;
   var contact;
   var contactName = 'contact_' + uuid.v4();
+  var emptyUser;
 
   before( function(done) {
     var userId = uuid.v4();
@@ -193,7 +194,6 @@ function contactTests() {
       email: userId+'@tester.com',
       authToken: uuid.v4()
     };
-    var emptyUser;
 
     async.waterfall([signupUser,testContactList], done);
 
@@ -232,5 +232,36 @@ function contactTests() {
     });
   });
 
-  it ('should not delete a other users contact');
+  it ('should not delete a other users contact', function (done) {
+    var secondContactName = 'contact_' + uuid.v4();
+    var contactData = {
+      authToken: user.authToken,
+      username: secondContactName
+    };
+    var secondContact;
+
+    async.waterfall([contactAdd, contactDelete], done);
+
+    // Create a contact for user
+    function contactAdd (cb) {
+      api.contactRequest(contactData, function (err, addedContact) {
+        expect(err).to.be(null);
+        secondContact = addedContact;
+        return cb();
+      });
+    }
+    // Try to delete the contact with emptyUser
+    function contactDelete (cb) {
+      var userData = {
+        authToken: emptyUser.authToken,
+        userId: emptyUser.id,
+        contactId: secondContact.id
+      };
+      api.contactDelete(userData, function (err, result) {
+        expect(err).not.to.be(null);
+        expect(err.message).to.be('noContactFound');
+        return cb();
+      });
+    }
+  });
 }

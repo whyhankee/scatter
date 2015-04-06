@@ -60,10 +60,17 @@ function contactList (req) {
   });
 }
 
-// Delete contact
+/**
+ * @method contactDelete
+ * @public
+ * Remove contact from database
+ * Check if a contactId is provided, query for the contact and delete
+ * @param  {Object} req Request object
+ * @return {function} req.done Return function with err(or) and if succesfull result
+ */
 function contactDelete (req) {
   var self = this; // jshint ignore:line
-  console.log('***');
+
   var template = {
     contactId: {required: 1, defined: 1}
   };
@@ -75,12 +82,10 @@ function contactDelete (req) {
       id: args.contactId,
       userId: req.user.id
     };
-    console.log('***', filter);
     self.Contact.filter(filter).run(function (err, contact) {
       if (err) return req.done(err);
-      console.log('***', err, contact);
+      if (contact.length === 0) return req.done(new Error('noContactFound'));
       contact[0].delete().nodeify(function (err, result) {
-        console.log('###', err, result);
         return req.done(err, result);
       });
     });
