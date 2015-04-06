@@ -193,6 +193,25 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
       req.io.emit(req.data._meta.requestId, {err: err, result: result});
     });
   });
+
+  io.route('userContactDelete', function (req) {
+    var requestId = req.data._meta.requestId;
+    var token = req.data._meta.authToken;
+    var rq = {
+      authToken: token,
+      contactId: req.data.contactId
+    };
+    self.iface.clients.scatter_api.contactDelete(rq, function (err) {
+      if (err) return req.io.emit(requestId, {err: err});
+      rq = {
+        authToken: token
+      };
+      self.iface.clients.scatter_api.contactList(rq, function (err, result) {
+        req.io.emit(req.data._meta.requestId, {err: err, result: result});
+      });
+    });
+  });
+
 };
 
 
