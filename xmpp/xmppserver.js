@@ -3,7 +3,7 @@
 var util = require('util');
 
 var xmpp = require('node-xmpp-server');
-var ltx = require('node-xmpp-core').ltx;
+// var ltx = require('node-xmpp-core').ltx;
 var debug = require('debug')('scatter:xmppServer');
 
 
@@ -38,6 +38,8 @@ XmppServer.prototype.onStart = function (done) {
   });
 
   this.server.on("connect", function(client) {
+    debug('xmppServer connect');
+
     // Get clients
     self.apiClient = self.iface.clients.scatter_api;
 

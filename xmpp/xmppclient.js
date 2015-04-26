@@ -30,7 +30,7 @@ function XmppClient(jid, io) {
   });
 
   self.cl.on('error', function(e) {
-    console.error(e);
+    console.error('xmppClient error '+self.jid.username+':', {error: e});
   });
 }
 
@@ -38,6 +38,7 @@ function XmppClient(jid, io) {
 XmppClient.prototype.contactAdd = function(username) {
   var self = this;
 
+  debug('contactAdd: username', username);
   var presenceSubscrite =new ltx.Element('presence', {
     to: username,
     from: self.jid.username,
