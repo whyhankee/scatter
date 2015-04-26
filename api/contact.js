@@ -22,13 +22,14 @@ function contactAdd(req) {
       saveContact: ['checkDupContact', saveContact]
     }, onDone);
 
-    function checkDupContact (cb, results) {
-      self.Contact.filter({username: args.username, userId: req.user.id}).run().nodeify(function (err, users) {
+    function checkDupContact (cb) {
+      var filterSpec = {username: args.username, userId: req.user.id};
+      self.Contact.filter(filterSpec).run().nodeify(function (err, users) {
         if (users.length) return cb(new Error('duplicateContact'));
         return cb();
       });
     }
-    function saveContact (cb, results) {
+    function saveContact (cb) {
       var newContact = new self.Contact({
         userId: req.user.id,
         username: args.username,
