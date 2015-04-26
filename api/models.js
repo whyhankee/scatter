@@ -2,12 +2,12 @@
 "use strict";
 
 
-var categories = [
-  'public',
-  'personal',
-  'informative',
-  'funny',
-];
+// var categories = [
+//   'public',
+//   'personal',
+//   'informative',
+//   'funny',
+// ];
 
 
  // User model
@@ -47,6 +47,7 @@ function createContactModel(obj) {
 
     received: Date,
     accepted: Date,
+    rejected: Date,
 
     created: Date,
     deleted: Date,
