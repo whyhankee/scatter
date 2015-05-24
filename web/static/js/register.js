@@ -27,6 +27,9 @@ riot.tag('register', '<div id="register-container"> <div class="register-content
             client.addListener('online',
                 function () {
                     console.log('Great Succes, you are now a member!');
+
+                    var userCredentials = { username: username, password: password, serverUrl: serverUrl  };
+                    localStorage.setItem('userCredentials', JSON.stringify(userCredentials));
                     self.unmount();
                     app.trigger('authenticated');
                 }
@@ -39,6 +42,10 @@ riot.tag('register', '<div id="register-container"> <div class="register-content
                     riot.update();
                 }
             )
+
+            client.on("stanza", function(stanza) {
+                console.log('***** stanza', stanza);
+            });
 
         }.bind(this);
     

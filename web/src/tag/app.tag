@@ -6,9 +6,7 @@
         /* jshint ignore:start */
 
         window.onload = function onLoad() {
-            io = io.connect(':2460');
-
-            var client;
+            //io = io.connect(':2460');
 
             var authenticated = false,
                 currentPage;
@@ -32,11 +30,13 @@
             }
 
             app.on('authenticated', function () {
-                transitionView('core');
+                if (localStorage.getItem('userCredentials')) {
+                    transitionView('core');
+                }
             })
 
             app.on('logout', function () {
-                localStorage.removeItem('token');
+                localStorage.removeItem('userCredentials');
                 transitionView('login');
             });
 
@@ -58,19 +58,29 @@
                     return router.register();
                 }
 
-                if (localStorage.getItem('token')) {
+                if (localStorage.getItem('userCredentials')) {
                     router.core();
                 } else {
                     router.login();
                 }
             });
 
-            if (localStorage.getItem('token')) {
+            if (localStorage.getItem('userCredentials')) {
+                //@TODO: Don't store credentials in local storage
+                var userCredentials =  JSON.parse(localStorage.getItem('userCredentials'));
+                client = new XMPP.Client({
+                    websocket: { url: 'ws://' + userCredentials.serverUrl + ':5280' },
+                    jid: userCredentials.username,
+                    password: userCredentials.password
+                });
+                            client.on("stanza", function(stanza) {
+                console.log('***** stanza', stanza);
+            });
                 riot.mount(document.getElementById('app'), 'core');
                 return;
             }
 
-            if (!localStorage.getItem('token') && !currentPage) {
+            if (!localStorage.getItem('userCredentials') && !currentPage) {
                 riot.mount(document.getElementById('app'), 'login');
             }
         };

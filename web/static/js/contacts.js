@@ -47,7 +47,7 @@ riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"
 
         this.on('mount', function() {
             console.log('[Contacts.js] Mounted ');
-            rpc(token, 'userContactList', {}, contactsUpdate);
+
         });
 
         app.on('contacts-add', contactsUpdate);
@@ -60,17 +60,16 @@ riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"
         this.deleteContact = function(e) {
             console.log('[Contacts.js] Deleting contact ', e.item.username);
             var contactData = { contactId: e.item.id, username: e.item.username };
-            rpc(token, 'userContactDelete', contactData, contactsUpdate);
+
         }.bind(this);
 
         this.retryInvite = function(e) {
             console.log('[Contacts.js] Re-sending an invite to ', e.item.username);
             var contactData = { id: e.item.id, username: e.item.username };
 
-            rpc(token, 'userContactRequestRetry', contactData, function (response) {
-                console.log('[Contacts.js] Response ', response);
 
-            });
+
+
 
         }.bind(this);
     

@@ -15,10 +15,10 @@ riot.tag('dialog', '<div class="dialog-overlay"> <div class="dialog-container"> 
 
             var token = localStorage.getItem('token');
 
-            rpc(token, 'userContactRequest', userData, function (response) {
-                console.log('[Contacts.js] Reponse ', response);
-                app.trigger('contacts-add', response);
-            });
+
+
+
+
             self.unmount();
         }.bind(this);
 

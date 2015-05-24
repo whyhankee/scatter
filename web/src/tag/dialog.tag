@@ -39,10 +39,10 @@
 
             var token = localStorage.getItem('token');
             // // Tell the server to start a Xmpp Client
-            rpc(token, 'userContactRequest', userData, function (response) {
-                console.log('[Contacts.js] Reponse ', response);
-                app.trigger('contacts-add', response);
-            });
+            // rpc(token, 'userContactRequest', userData, function (response) {
+            //     console.log('[Contacts.js] Reponse ', response);
+            //     app.trigger('contacts-add', response);
+            // });
             self.unmount();
         }
 
