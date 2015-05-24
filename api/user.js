@@ -42,19 +42,19 @@ function signUp(req) {
       saveUser: ['checkDupUsername', 'checkDupEmail', 'cryptPassword', saveUser]
     }, onDone);
 
-    function checkDupUsername(cb, results) {
+    function checkDupUsername(cb) {
       self.User.filter({username: args.username}).run().nodeify( function (err, users) {
         if (users.length) return cb(new Error('duplicateUsername'));
         return cb();
       });
     }
-    function checkDupEmail(cb, results) {
+    function checkDupEmail(cb) {
       self.User.filter({email: args.email}).run().nodeify(function (err, users) {
         if (users.length) return cb(new Error('duplicateEmail'));
         return cb();
       });
     }
-    function cryptPassword(cb, results) {
+    function cryptPassword(cb) {
       _cryptPassword(args.password, cb);
     }
     function saveUser(cb, results) {
