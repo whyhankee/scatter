@@ -3,7 +3,7 @@
 var util = require('util');
 
 var xmpp = require('node-xmpp-server');
-// var ltx = require('node-xmpp-core').ltx;
+var ltx = require('node-xmpp-core').ltx;
 var debug = require('debug')('scatter:xmppServer');
 
 
@@ -84,8 +84,8 @@ XmppServer.prototype.onStart = function (done) {
 
     client.on("online", function() {
       debug('xmpp client online');
-      // var msg = new ltx.Element('message', { to: 'localhost' }).c('body').t('HelloWorld');
-      // client.send(msg);
+      var msg = new ltx.Element('message', { to: 'localhost' }).c('body').t('HelloWorld');
+      client.send(msg);
     });
 
     // Stanza handling
