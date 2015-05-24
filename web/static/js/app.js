@@ -71,10 +71,18 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
                 });
 
                 client.on("stanza", function(stanza) {
-                  console.log('***** stanza', stanza);
+                    console.log('***** stanza', stanza.toString());
+                });
+
+                client.on("online", function () {
+                    var stanza = new xmpp.Element('presence', { })
+                    .c('show').t('chat').up()
+                    .c('status').t('Happily echoing your <message/> stanzas')
+                    client.send(stanza)
                 });
 
                 riot.mount(document.getElementById('app'), 'core');
+
                 return;
             }
 
