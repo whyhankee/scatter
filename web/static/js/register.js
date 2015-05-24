@@ -12,36 +12,26 @@ riot.tag('register', '<div id="register-container"> <div class="register-content
 
             console.log('[Register.js] Registering ', data);
 
-
-
-
-
-
-
-
-
-
-
-
-
-            var client = new XMPP.Client({
+            client = new XMPP.Client({
                 websocket: { url: 'ws://dev.local:5280' },
                 jid: username,
                 password: password,
                 register: true
             });
 
-            client.addListener(
-                'online',
-                function() {
-                    console.log('online')
+            client.addListener('online',
+                function () {
+                    console.log('Great Succes, you are now a member!');
+                    self.unmount();
+                    app.trigger('authenticated');
                 }
             )
 
-            client.addListener(
-                'error',
-                function(e) {
-                    console.error(e)
+            client.addListener('error',
+                function (e) {
+                    self.errorState = true;
+                    self.errorMessage = e.err.message || 'Unknown';
+                    riot.update();
                 }
             )
 

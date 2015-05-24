@@ -17,7 +17,7 @@ riot.tag('login', '<div id="login-container"> <div class="login-content"> <div c
 
             console.log('Emit - Authenticate');
 
-            var client = new XMPP.Client({
+            client = new XMPP.Client({
                 websocket: { url: 'ws://dev.local:5280' },
                 jid: username,
                 password: password
@@ -26,14 +26,17 @@ riot.tag('login', '<div id="login-container"> <div class="login-content"> <div c
             client.addListener(
                 'online',
                 function() {
-                    console.log('online')
+                    self.unmount();
+                    app.trigger('authenticated');
                 }
             )
 
             client.addListener(
                 'error',
                 function(e) {
-                    console.error(e)
+                    self.errorState = true;
+                    self.errorMessage = response.err.message || 'Unknown';
+                    riot.update();
                 }
             )
 

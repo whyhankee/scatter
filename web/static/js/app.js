@@ -2,6 +2,8 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
         window.onload = function onLoad() {
             io = io.connect(':2460');
 
+            var client;
+
             var authenticated = false,
                 currentPage;
 

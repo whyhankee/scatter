@@ -33,38 +33,26 @@
 
             console.log('[Register.js] Registering ', data);
 
-            // io.emit('userSignUp', data);
-
-            // io.on('userSignUpResponse', function (response) {
-            //     console.log('[Register.js] Server response', response);
-            //     if (response.err) {
-            //         self.errorState = true;
-            //         self.errorMessage = response.err.message || 'Unknown';
-            //         riot.update();
-            //         return false;
-            //     }
-            //     console.log('Great Succes, you are now a member!', response.result);
-            //     riot.route('login');
-            // })
-
-            var client = new XMPP.Client({
+            client = new XMPP.Client({
                 websocket: { url: 'ws://dev.local:5280' },
                 jid: username,
                 password: password,
                 register: true
             });
 
-            client.addListener(
-                'online',
-                function() {
-                    console.log('online')
+            client.addListener('online',
+                function () {
+                    console.log('Great Succes, you are now a member!');
+                    self.unmount();
+                    app.trigger('authenticated');
                 }
             )
 
-            client.addListener(
-                'error',
-                function(e) {
-                    console.error(e)
+            client.addListener('error',
+                function (e) {
+                    self.errorState = true;
+                    self.errorMessage = e.err.message || 'Unknown';
+                    riot.update();
                 }
             )
 
