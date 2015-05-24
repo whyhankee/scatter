@@ -32,9 +32,9 @@ XmppServer.prototype.onStart = function (done) {
   var self = this;
 
   // Start XMPP server
-  this.server = new xmpp.C2SServer({
-      port: 5222,
-      domain: 'localhost'
+  this.server = new xmpp.WebSocketServer({
+    port: 5280,
+    domain: 'localhost'
   });
 
   this.server.on("connect", function(client) {
@@ -45,11 +45,19 @@ XmppServer.prototype.onStart = function (done) {
     client.on("authenticate", function(opts, cb) {
       var userEmail = util.format('%s@%s', opts.username, opts.jid.domain);
       debug('xmppServer authenticating', userEmail);
-      self.apiClient.userGetMe({authToken: opts.password}, function (err) {
+
+      var authInfo = {
+        username: opts.username,
+        password: opts.password
+      };
+
+      // self.apiClient.userGetMe({authToken: opts.password}, function (err) {
+      self.apiClient.userGetAuthToken(authInfo, function (err, token) {
         if (err) {
           debug('authenticate failed', {user: userEmail});
           return cb(false);
         }
+        debug('authenticate succes', {user: userEmail});
         return cb(null, opts);
       });
     });

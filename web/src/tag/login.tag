@@ -18,6 +18,9 @@
     </div>
 
     <script>
+        /* jshint ignore:start */
+        'use strict';
+
         // Move to a util library
         document.title = 'Scatter - Login';
         // grab above HTML elements
@@ -27,29 +30,51 @@
         var self = this;
 
         submit(e) {
+            e.preventDefault();
+
             var username = this.username.value.trim(),
                 password = this.password.value.trim();
 
             console.log('Emit - Authenticate');
 
-            io.emit('userGetAuthToken', { username: username, password: password});
+            var client = new XMPP.Client({
+                websocket: { url: 'ws://dev.local:5280' },
+                jid: username,
+                password: password
+            });
 
-            io.on('userGetAuthTokenResponse', function (response) {
-                console.log('[Login.js] Authenticate response', response);
-
-                if (response.err || !response.result) {
-                    self.errorState = true;
-                    self.errorMessage = response.err.message || 'Unknown';
-                    riot.update();
-                    return false;
+            client.addListener(
+                'online',
+                function() {
+                    console.log('online')
                 }
+            )
 
-                if (response.result && response.result.token) {
-                    localStorage.setItem('token', response.result.token);
-                    self.unmount();
-                    app.trigger('authenticated');
+            client.addListener(
+                'error',
+                function(e) {
+                    console.error(e)
                 }
-            })
+            )
+
+            // io.emit('userGetAuthToken', { username: username, password: password});
+
+            // io.on('userGetAuthTokenResponse', function (response) {
+            //     console.log('[Login.js] Authenticate response', response);
+
+            //     if (response.err || !response.result) {
+            //         self.errorState = true;
+            //         self.errorMessage = response.err.message || 'Unknown';
+            //         riot.update();
+            //         return false;
+            //     }
+
+            //     if (response.result && response.result.token) {
+            //         localStorage.setItem('token', response.result.token);
+            //         self.unmount();
+            //         app.trigger('authenticated');
+            //     }
+            // })
         }
 
 
