@@ -43,7 +43,7 @@ riot.tag('login', '<div id="login-container"> <div class="login-content"> <div c
                 'error',
                 function(e) {
                     self.errorState = true;
-                    self.errorMessage = response.err.message || 'Unknown';
+                    self.errorMessage = e || 'Unknown';
                     riot.update();
                 }
             )
