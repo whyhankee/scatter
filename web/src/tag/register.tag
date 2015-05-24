@@ -28,10 +28,10 @@
             e.preventDefault();
 
             // var email: self.email.value.trim(),
-            var username: self.username.value.trim();
-            var password: self.password.value.trim();
+            var username = self.username.value.trim();
+            var password = self.password.value.trim();
 
-            console.log('[Register.js] Registering ', data);
+            console.log('[Register.js] Registering ');
 
             client = new XMPP.Client({
                 websocket: { url: 'ws://dev.local:5280' },
@@ -51,7 +51,7 @@
             client.addListener('error',
                 function (e) {
                     self.errorState = true;
-                    self.errorMessage = e.err.message || 'Unknown';
+                    self.errorMessage = e || 'Unknown';
                     riot.update();
                 }
             )

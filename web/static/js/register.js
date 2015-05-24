@@ -7,10 +7,10 @@ riot.tag('register', '<div id="register-container"> <div class="register-content
         this.submit = function(e) {
             e.preventDefault();
 
-            var username: self.username.value.trim();
-            var password: self.password.value.trim();
+            var username = self.username.value.trim();
+            var password = self.password.value.trim();
 
-            console.log('[Register.js] Registering ', data);
+            console.log('[Register.js] Registering ');
 
             client = new XMPP.Client({
                 websocket: { url: 'ws://dev.local:5280' },
@@ -30,7 +30,7 @@ riot.tag('register', '<div id="register-container"> <div class="register-content
             client.addListener('error',
                 function (e) {
                     self.errorState = true;
-                    self.errorMessage = e.err.message || 'Unknown';
+                    self.errorMessage = e || 'Unknown';
                     riot.update();
                 }
             )

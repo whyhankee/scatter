@@ -37,30 +37,29 @@ XmppServer.prototype.onStart = function (done) {
     domain: 'localhost'
   });
 
-  // Register a new account
-  this.server.on("register", function onRegister(opts, done) {
+  // Connect existing client
+  this.server.on("connect", function(client) {
+    debug('xmppServer connect');
+
+    client.on('register', function onRegister(opts, done) {
     debug('xmppServer registering', opts);
 
     // Get clients
     self.apiClient = self.iface.clients.scatter_api;
 
     var signupInfo = {
-      username: opts.username,
+      username: opts.username + '@' + opts.client.serverdomain,
       password: opts.password
     };
     self.iface.clients.scatter_api.userSignUp(signupInfo, function (err) {
       if (err) {
-        debug('xmppServer register user failed', opts);
+        debug('xmppServer register user failed', {error: err, opts: opts});
         return done(false);
       }
       debug('xmppServer register user succesful', opts);
       return done(true);
     });
   });
-
-  // Connect existing client
-  this.server.on("connect", function(client) {
-    debug('xmppServer connect');
 
     // Client methods
     client.on("authenticate", function(opts, cb) {
