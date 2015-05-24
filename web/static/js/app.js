@@ -1,4 +1,6 @@
 riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
+        
+
         window.onload = function onLoad() {
             io = io.connect(':2460');
 
@@ -26,9 +28,7 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
             }
 
             app.on('authenticated', function () {
-                if (localStorage.getItem('token')) {
-                    transitionView('core');
-                }
+                transitionView('core');
             })
 
             app.on('logout', function () {
@@ -37,7 +37,6 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
             });
 
             app.on('dialog', function () {
-                console.log('test');
                 riot.mount(document.getElementById('dialog'), 'dialog');
             });
 

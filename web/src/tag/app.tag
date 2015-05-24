@@ -3,6 +3,8 @@
     <div id="dialog"></div>
 
     <script>
+        /* jshint ignore:start */
+
         window.onload = function onLoad() {
             io = io.connect(':2460');
 
@@ -30,9 +32,7 @@
             }
 
             app.on('authenticated', function () {
-                if (localStorage.getItem('token')) {
-                    transitionView('core');
-                }
+                transitionView('core');
             })
 
             app.on('logout', function () {
@@ -41,7 +41,6 @@
             });
 
             app.on('dialog', function () {
-                console.log('test');
                 riot.mount(document.getElementById('dialog'), 'dialog');
             });
 
