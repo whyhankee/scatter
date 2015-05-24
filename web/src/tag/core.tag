@@ -29,21 +29,16 @@
     </main>
 
     <script>
+        /* jshint ignore:start */
         var self = this;
 
         this.on('mount', function() {
             console.log('[Core.js] Mounted');
-            var token = localStorage.getItem('token');
+
             // Set classname
             document.body.className = 'main';
             // Get the user data from the server
-            retreiveUserData(token);
-            // Tell the server to start a Xmpp Client
-            rpc(token, 'startXmppClient', {}, function (response) {
-                if (response.err) {
-                    // Handle no XMPP error;
-                }
-            });
+            //retreiveUserData();
         });
 
         app.on('close', function () {
@@ -52,6 +47,10 @@
         });
 
         function retreiveUserData (token) {
+
+            client.send
+
+
             rpc(token, 'userGetMe', {}, function (response) {
                 console.log('[Core.js] userGetMe ', response);
                 if (response.err) {

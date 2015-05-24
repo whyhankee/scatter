@@ -31,6 +31,9 @@ riot.tag('login', '<div id="login-container"> <div class="login-content"> <div c
             client.addListener(
                 'online',
                 function() {
+
+                    var userCredentials = { username: username, password: password, serverUrl: serverUrl };
+                    localStorage.setItem('userCredentials', JSON.stringify(userCredentials));
                     self.unmount();
                     app.trigger('authenticated');
                 }

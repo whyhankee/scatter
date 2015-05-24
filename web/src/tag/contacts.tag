@@ -83,7 +83,7 @@
 
         this.on('mount', function() {
             console.log('[Contacts.js] Mounted ');
-            rpc(token, 'userContactList', {}, contactsUpdate);
+            //rpc(token, 'userContactList', {}, contactsUpdate);
         });
 
         app.on('contacts-add', contactsUpdate);
@@ -97,18 +97,17 @@
         deleteContact (e) {
             console.log('[Contacts.js] Deleting contact ', e.item.username);
             var contactData = { contactId: e.item.id, username: e.item.username };
-            rpc(token, 'userContactDelete', contactData, contactsUpdate);
+            //rpc(token, 'userContactDelete', contactData, contactsUpdate);
         }
 
         retryInvite(e) {
             console.log('[Contacts.js] Re-sending an invite to ', e.item.username);
             var contactData = { id: e.item.id, username: e.item.username };
             // // Tell the server to start a Xmpp Client
-            rpc(token, 'userContactRequestRetry', contactData, function (response) {
-                console.log('[Contacts.js] Response ', response);
+            //rpc(token, 'userContactRequestRetry', contactData, function (response) {
+                //console.log('[Contacts.js] Response ', response);
                 // Update UI to represent recent retry attempt, e.g. remove button for x period.
-            });
-
+            //});
         }
     </script>
 </contacts>

@@ -51,6 +51,9 @@
             client.addListener(
                 'online',
                 function() {
+                    //@TODO: Don't store credentials in local storage
+                    var userCredentials = { username: username, password: password, serverUrl: serverUrl };
+                    localStorage.setItem('userCredentials', JSON.stringify(userCredentials));
                     self.unmount();
                     app.trigger('authenticated');
                 }
