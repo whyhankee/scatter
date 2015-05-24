@@ -37,11 +37,30 @@ XmppServer.prototype.onStart = function (done) {
     domain: 'localhost'
   });
 
-  this.server.on("connect", function(client) {
-    debug('xmppServer connect');
+  // Register a new account
+  this.server.on("register", function onRegister(opts, done) {
+    debug('xmppServer registering', opts);
 
     // Get clients
     self.apiClient = self.iface.clients.scatter_api;
+
+    var signupInfo = {
+      username: opts.username,
+      password: opts.password
+    };
+    self.iface.clients.scatter_api.userSignUp(signupInfo, function (err) {
+      if (err) {
+        debug('xmppServer register user failed', opts);
+        return done(false);
+      }
+      debug('xmppServer register user succesful', opts);
+      return done(true);
+    });
+  });
+
+  // Connect existing client
+  this.server.on("connect", function(client) {
+    debug('xmppServer connect');
 
     // Client methods
     client.on("authenticate", function(opts, cb) {
@@ -54,7 +73,7 @@ XmppServer.prototype.onStart = function (done) {
       };
 
       // self.apiClient.userGetMe({authToken: opts.password}, function (err) {
-      self.apiClient.userGetAuthToken(authInfo, function (err, token) {
+      self.apiClient.userGetAuthToken(authInfo, function (err) {
         if (err) {
           debug('authenticate failed', {user: userEmail});
           return cb(false);
@@ -82,12 +101,7 @@ XmppServer.prototype.onStart = function (done) {
 
   });
 
-  this.server.on("register", function onRegister(opts, done) {
-    debug('!****** onRegister', opts);
-    return done(true);
-  });
-
-  return done();
+  return done(null);
 };
 
 
