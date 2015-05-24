@@ -14,11 +14,8 @@ var oap = require('oap');
  * @param  {String} request.id          (id of user to create) [optional]
  * @param  {String} request.username
  * @param  {String} request.password
- * @param  {String} request.email
  * @return {User}                       The created user
  * @fires  event.user.signup.success(id: newUserId)
- * @todo checkDupUsername
- * @todo checkDupEmail
  */
 function signUp(req) {
   var self = this;    // jshint ignore:line
@@ -27,7 +24,6 @@ function signUp(req) {
     id: {required: 0},
     username: {required: 1, defined: 1},
     password: {required: 1, defined: 1},
-    email: {required: 1, defined: 1},
     authToken: {required: 0}
   };
   oap.check(req.body, template, function (err, args) {
@@ -37,20 +33,13 @@ function signUp(req) {
 
     async.auto({
       checkDupUsername: checkDupUsername,
-      checkDupEmail: checkDupEmail,
       cryptPassword: cryptPassword,
-      saveUser: ['checkDupUsername', 'checkDupEmail', 'cryptPassword', saveUser]
+      saveUser: ['checkDupUsername', 'cryptPassword', saveUser]
     }, onDone);
 
     function checkDupUsername(cb) {
       self.User.filter({username: args.username}).run().nodeify( function (err, users) {
         if (users.length) return cb(new Error('duplicateUsername'));
-        return cb();
-      });
-    }
-    function checkDupEmail(cb) {
-      self.User.filter({email: args.email}).run().nodeify(function (err, users) {
-        if (users.length) return cb(new Error('duplicateEmail'));
         return cb();
       });
     }
@@ -62,7 +51,6 @@ function signUp(req) {
         id: args.id,
         username: args.username,
         password: results.cryptPassword,
-        email: args.email,
         authToken: args.authToken,
         confirmed: null,  // todo
       });

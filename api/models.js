@@ -18,7 +18,6 @@ function createUserModel(obj)  {
 
     username: String,
     password: String,
-    email: String,
 
     created: Date,
     confirmed: Date,
@@ -29,9 +28,7 @@ function createUserModel(obj)  {
   });
 
   obj.User.ensureIndex('username');
-  obj.User.ensureIndex('email');
   obj.User.ensureIndex('authToken');
-
 }
 
 

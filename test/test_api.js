@@ -55,7 +55,6 @@ function userTests() {
       id: userId,
       username: 'user+'+userId,
       password: userId,
-      email: userId+'@tester.com'
   };
 
   it('should signup a user', function (done) {
@@ -65,23 +64,10 @@ function userTests() {
     });
   });
 
-  it('should not be a able to signup another with the same email address', function (done) {
-    var dataDupEmail = {
-      username: 'user+'+userId+'diff',
-      password: userId,
-      email: userId+'@tester.com'
-    };
-    api.userSignUp(dataDupEmail, function (err) {
-      expect(err.message).to.be('duplicateEmail');
-      return done();
-    });
-  });
-
   it('should not be a able to signup another with the same username', function (done) {
     var dataDupUsername = {
       username: 'user+'+userId,
       password: userId,
-      email: userId+'@tester.com'+'diff'
     };
     api.userSignUp(dataDupUsername, function (err) {
       expect(err.message).to.be('duplicateUsername');
@@ -117,7 +103,6 @@ function userTests() {
       expect(err).to.be(null);
       expect(user.id).to.be(signupData.id);
       expect(user.username).to.be(signupData.username);
-      expect(user.email).to.be(signupData.email);
       return done();
     });
   });
@@ -137,7 +122,6 @@ function contactTests() {
     var signupData = {
         username: 'user+'+userId,
         password: userId,
-        email: userId+'@tester.com',
         authToken: uuid.v4()
     };
     api.userSignUp(signupData, function (err, addedUser) {
@@ -190,7 +174,6 @@ function contactTests() {
     var signupData = {
       username: 'user+'+userId,
       password: userId,
-      email: userId+'@tester.com',
       authToken: uuid.v4()
     };
 
