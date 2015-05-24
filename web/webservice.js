@@ -9,8 +9,8 @@ var morgan = require('morgan');
 var debug = require('debug')('scatter:web');
 
 
-var _baseDir = __dirname;
-var XmppClient = require(path.join(_baseDir, '..', 'xmpp', 'xmppclient'));
+// var _baseDir = __dirname;
+// var XmppClient = require(path.join(_baseDir, '..', 'xmpp', 'xmppclient'));
 
 
 // Are we running production?
@@ -50,7 +50,7 @@ function WebService(iface, qname, options) {
 
   // Setup components
   this.setupWebServer(iface);
-  this.setupSocketServer(iface);
+  // this.setupSocketServer(iface);
 
   // .. errorHandler last
   this.app.use(errorHandler);
@@ -91,130 +91,130 @@ WebService.prototype.setupWebServer = function setupWebServer(/* iface */) {
 
 // setupSocketServer
 //
-WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) {
-  var self = this;
+// WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) {
+//   var self = this;
 
-  var xmppClients = {};
+//   var xmppClients = {};
 
-  var io = self.app.io;
+//   var io = self.app.io;
 
-  // Socket events
-  io.route('connect', function() {
-    debug('connect');
-  });
-  io.route('disconnect', function() {
-    debug('disconnect');
-  });
+//   // Socket events
+//   io.route('connect', function() {
+//     debug('connect');
+//   });
+//   io.route('disconnect', function() {
+//     debug('disconnect');
+//   });
 
-  // Requests without a token
-  //
-  io.route('userGetAuthToken', function (req) {
-    self.iface.clients.scatter_api.userGetAuthToken(req.data, function (err, result) {
-      req.io.emit('userGetAuthTokenResponse', {err: err, result: result});
-    });
-  });
-
-
-  io.route('userSignUp', function (req) {
-    self.iface.clients.scatter_api.userSignUp(req.data, function (err, result) {
-      req.io.emit('userSignUpResponse', {err: err, result: result});
-    });
-  });
+//   // Requests without a token
+//   //
+//   io.route('userGetAuthToken', function (req) {
+//     self.iface.clients.scatter_api.userGetAuthToken(req.data, function (err, result) {
+//       req.io.emit('userGetAuthTokenResponse', {err: err, result: result});
+//     });
+//   });
 
 
-  // RPC calls (with token)
-  //  Todo: check for existence of token here
-  //
-  io.route('startXmppClient', function (req) {
-    var requestId = req.data._meta.requestId;
-    var token = req.data._meta.authToken;
-
-    var rq = {authToken: token};
-    self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
-      if (err) return req.io.emit(requestId, {err: err});
-
-      var jid = {
-        username: result.username,
-        password: token
-      };
-      if (!xmppClients[token]) {
-        xmppClients[token] = new XmppClient(jid, req.io);
-      }
-      debug('online clients, #'+Object.keys(xmppClients).length);
-      return req.io.emit(requestId, {err: null, result: 1});
-    });
-  });
+//   io.route('userSignUp', function (req) {
+//     self.iface.clients.scatter_api.userSignUp(req.data, function (err, result) {
+//       req.io.emit('userSignUpResponse', {err: err, result: result});
+//     });
+//   });
 
 
-  io.route('userGetMe', function (req) {
-    var rq = {
-      authToken: req.data._meta.authToken
-    };
-    self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
-      req.io.emit(req.data._meta.requestId, {err: err, result: result});
-    });
-  });
+//   // RPC calls (with token)
+//   //  Todo: check for existence of token here
+//   //
+//   io.route('startXmppClient', function (req) {
+//     var requestId = req.data._meta.requestId;
+//     var token = req.data._meta.authToken;
+
+//     var rq = {authToken: token};
+//     self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
+//       if (err) return req.io.emit(requestId, {err: err});
+
+//       var jid = {
+//         username: result.username,
+//         password: token
+//       };
+//       if (!xmppClients[token]) {
+//         xmppClients[token] = new XmppClient(jid, req.io);
+//       }
+//       debug('online clients, #'+Object.keys(xmppClients).length);
+//       return req.io.emit(requestId, {err: null, result: 1});
+//     });
+//   });
 
 
-  io.route('userContactRequest', function(req) {
-    var requestId = req.data._meta.requestId;
-    var token = req.data._meta.authToken;
-
-    // Add to database
-    var rq = {
-      authToken: token,
-      username: req.data.username
-    };
-    self.iface.clients.scatter_api.contactAdd(rq, function (err) {
-      if (err) return req.io.emit(requestId, {err: err});
-
-      rq = {
-        authToken: token
-      };
-      self.iface.clients.scatter_api.contactList(rq, function (err, result) {
-        req.io.emit(req.data._meta.requestId, {err: err, result: result});
-      });
-    });
-    // Send message
-  });
+//   io.route('userGetMe', function (req) {
+//     var rq = {
+//       authToken: req.data._meta.authToken
+//     };
+//     self.iface.clients.scatter_api.userGetMe(rq, function (err, result) {
+//       req.io.emit(req.data._meta.requestId, {err: err, result: result});
+//     });
+//   });
 
 
-  io.route('userContactRequestRetry', function (req) {
-    var requestId = req.data._meta.requestId;
-    var token = req.data._meta.authToken;
+//   io.route('userContactRequest', function(req) {
+//     var requestId = req.data._meta.requestId;
+//     var token = req.data._meta.authToken;
 
-    xmppClients[token].contactAdd(req.data.username);
-    req.io.emit(requestId, {err: null, result: true});
-  });
+//     // Add to database
+//     var rq = {
+//       authToken: token,
+//       username: req.data.username
+//     };
+//     self.iface.clients.scatter_api.contactAdd(rq, function (err) {
+//       if (err) return req.io.emit(requestId, {err: err});
+
+//       rq = {
+//         authToken: token
+//       };
+//       self.iface.clients.scatter_api.contactList(rq, function (err, result) {
+//         req.io.emit(req.data._meta.requestId, {err: err, result: result});
+//       });
+//     });
+//     // Send message
+//   });
 
 
-  io.route('userContactList', function (req) {
-    var rq = { authToken: req.data._meta.authToken };
-    self.iface.clients.scatter_api.contactList(rq, function (err, result) {
-      req.io.emit(req.data._meta.requestId, {err: err, result: result});
-    });
-  });
+//   io.route('userContactRequestRetry', function (req) {
+//     var requestId = req.data._meta.requestId;
+//     var token = req.data._meta.authToken;
 
-  io.route('userContactDelete', function (req) {
-    var requestId = req.data._meta.requestId;
-    var token = req.data._meta.authToken;
-    var rq = {
-      authToken: token,
-      contactId: req.data.contactId
-    };
-    self.iface.clients.scatter_api.contactDelete(rq, function (err) {
-      if (err) return req.io.emit(requestId, {err: err});
+//     xmppClients[token].contactAdd(req.data.username);
+//     req.io.emit(requestId, {err: null, result: true});
+//   });
 
-      rq = {
-        authToken: token
-      };
-      self.iface.clients.scatter_api.contactList(rq, function (err, result) {
-        req.io.emit(req.data._meta.requestId, {err: err, result: result});
-      });
-    });
-  });
 
-};
+//   io.route('userContactList', function (req) {
+//     var rq = { authToken: req.data._meta.authToken };
+//     self.iface.clients.scatter_api.contactList(rq, function (err, result) {
+//       req.io.emit(req.data._meta.requestId, {err: err, result: result});
+//     });
+//   });
+
+//   io.route('userContactDelete', function (req) {
+//     var requestId = req.data._meta.requestId;
+//     var token = req.data._meta.authToken;
+//     var rq = {
+//       authToken: token,
+//       contactId: req.data.contactId
+//     };
+//     self.iface.clients.scatter_api.contactDelete(rq, function (err) {
+//       if (err) return req.io.emit(requestId, {err: err});
+
+//       rq = {
+//         authToken: token
+//       };
+//       self.iface.clients.scatter_api.contactList(rq, function (err, result) {
+//         req.io.emit(req.data._meta.requestId, {err: err, result: result});
+//       });
+//     });
+//   });
+
+// };
 
 
 // Error handler implementation
