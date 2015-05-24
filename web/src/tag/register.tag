@@ -33,8 +33,13 @@
 
             console.log('[Register.js] Registering ');
 
+            var usernameSplit =  username.split("@");
+            var serverUrl = usernameSplit[1];
+
+            console.log('***** serverUrl, usernameSplit', serverUrl, usernameSplit);
+
             client = new XMPP.Client({
-                websocket: { url: 'ws://dev.local:5280' },
+                websocket: { url: 'ws://' + serverUrl + ':5280' },
                 jid: username,
                 password: password,
                 register: true
