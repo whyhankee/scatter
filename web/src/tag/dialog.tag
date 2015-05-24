@@ -31,12 +31,14 @@
         }
 
         submit(e) {
+            e.preventDefault();
+            var username = self.username.value.trim();
             console.log('[Contacts.js] Adding contact');
             // Reset state
             self.username.value = '';
             // Create new XMPP element
             var presenceSubscribe = new XMPP.Element('presence', {
-                to: self.username.value.trim(),
+                to: username,
                 from: client.jid.username,
                 type: 'subscribe'
             });

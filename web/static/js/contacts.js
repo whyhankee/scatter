@@ -50,10 +50,11 @@ riot.tag('contacts', '<div id="contacts-container"> <div class="contacts-header"
 
         });
 
-        app.on('contacts-add', contactsUpdate);
 
 
         this.addContact = function(e) {
+            e.preventDefault();
+
             app.trigger('dialog');
         }.bind(this);
 
