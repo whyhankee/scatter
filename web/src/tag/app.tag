@@ -73,10 +73,13 @@
                     jid: userCredentials.username,
                     password: userCredentials.password
                 });
-                            client.on("stanza", function(stanza) {
-                console.log('***** stanza', stanza);
-            });
+
+                client.on("stanza", function(stanza) {
+                    console.log('***** stanza', stanza);
+                });
+
                 riot.mount(document.getElementById('app'), 'core');
+
                 return;
             }
 
