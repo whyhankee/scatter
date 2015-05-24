@@ -39,12 +39,12 @@ XmppClient.prototype.contactAdd = function(username) {
   var self = this;
 
   debug('contactAdd: username', username);
-  var presenceSubscrite =new ltx.Element('presence', {
+  var presenceSubscribe =new ltx.Element('presence', {
     to: username,
     from: self.jid.username,
     type: 'subscribe'
   });
-  self.cl.send(presenceSubscrite);
+  self.cl.send(presenceSubscribe);
 };
 
 
