@@ -6,6 +6,8 @@
         window.onload = function onLoad() {
             io = io.connect(':2460');
 
+            var client;
+
             var authenticated = false,
                 currentPage;
 
