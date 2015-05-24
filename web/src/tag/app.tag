@@ -79,9 +79,7 @@
                 });
 
                 client.on("online", function () {
-                    var stanza = new XMPP.Element('presence', {})
-                    .c('show').t('chat').up()
-                    .c('status').t('Happily echoing your <message/> stanzas')
+                    var stanza = new XMPP.Element('presence', {});
                     client.send(stanza)
                 });
 

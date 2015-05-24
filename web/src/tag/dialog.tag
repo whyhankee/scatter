@@ -32,17 +32,18 @@
 
         submit(e) {
             console.log('[Contacts.js] Adding contact');
-            var userData = { username: self.username.value.trim() };
-            // Locale update
-            //reset state
+            // Reset state
             self.username.value = '';
+            // Create new XMPP element
+            var presenceSubscribe = new XMPP.Element('presence', {
+                to: self.username.value.trim(),
+                from: client.jid.username,
+                type: 'subscribe'
+            });
+            // Send presence
+            client.send(presenceSubscribe);
 
-            var token = localStorage.getItem('token');
-            // // Tell the server to start a Xmpp Client
-            // rpc(token, 'userContactRequest', userData, function (response) {
-            //     console.log('[Contacts.js] Reponse ', response);
-            //     app.trigger('contacts-add', response);
-            // });
+            // Remove yourself
             self.unmount();
         }
 

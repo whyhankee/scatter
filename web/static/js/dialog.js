@@ -8,16 +8,16 @@ riot.tag('dialog', '<div class="dialog-overlay"> <div class="dialog-container"> 
 
         this.submit = function(e) {
             console.log('[Contacts.js] Adding contact');
-            var userData = { username: self.username.value.trim() };
-
 
             self.username.value = '';
 
-            var token = localStorage.getItem('token');
+            var presenceSubscribe = new XMPP.Element('presence', {
+                to: self.username.value.trim(),
+                from: client.jid.username,
+                type: 'subscribe'
+            });
 
-
-
-
+            client.send(presenceSubscribe);
 
             self.unmount();
         }.bind(this);
