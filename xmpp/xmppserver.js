@@ -41,25 +41,25 @@ XmppServer.prototype.onStart = function (done) {
   this.server.on("connect", function(client) {
     debug('xmppServer connect');
 
-    client.on('register', function onRegister(opts, done) {
-    debug('xmppServer registering', opts);
-
     // Get clients
     self.apiClient = self.iface.clients.scatter_api;
 
-    var signupInfo = {
-      username: opts.username + '@' + opts.client.serverdomain,
-      password: opts.password
-    };
-    self.iface.clients.scatter_api.userSignUp(signupInfo, function (err) {
-      if (err) {
-        debug('xmppServer register user failed', {error: err, opts: opts});
-        return done(false);
-      }
-      debug('xmppServer register user succesful', opts);
-      return done(true);
+    client.on('register', function onRegister(opts, done) {
+      debug('xmppServer registering', opts);
+
+      var signupInfo = {
+        username: opts.username + '@' + opts.client.serverdomain,
+        password: opts.password
+      };
+      self.iface.clients.scatter_api.userSignUp(signupInfo, function (err) {
+        if (err) {
+          debug('xmppServer register user failed', {error: err, opts: opts});
+          return done(false);
+        }
+        debug('xmppServer register user succesful', opts);
+        return done(true);
+      });
     });
-  });
 
     // Client methods
     client.on("authenticate", function(opts, cb) {
@@ -67,7 +67,7 @@ XmppServer.prototype.onStart = function (done) {
       debug('xmppServer authenticating', userEmail);
 
       var authInfo = {
-        username: opts.username,
+        username: opts.username + '@' + opts.client.serverdomain,
         password: opts.password
       };
 
