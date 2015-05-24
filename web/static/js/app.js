@@ -71,14 +71,14 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
                 });
 
                 client.on("stanza", function(stanza) {
-                    console.log('***** stanza', stanza.toString());
+                    console.log('***** client stanza', stanza);
                 });
 
                 client.on("online", function () {
                     var stanza = new XMPP.Element('presence', {})
                     .c('show').t('chat').up()
-                    .c('status').t('Happily echoing your <message/> stanzas')
-                    client.send(stanza)
+                    .c('status').t('online')
+                    client.send(stanza);
                 });
 
                 riot.mount(document.getElementById('app'), 'core');
