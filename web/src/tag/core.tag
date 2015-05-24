@@ -7,7 +7,7 @@
 
             <nav class="navigation">
                 <ul>
-                    <li><p class={ loaded ? 'welcome-message loaded' : 'welcome-message' }>Welcome back <strong>{ welcomeMessage }</strong></p></li>
+                    <li><p class='welcome-message loaded'>Welcome back <strong>{ welcomeMessage }</strong></p></li>
                     <li class="last"><a href="#" onclick={ logout }>Logout</a></li>
                 </ul>
             </nav>
@@ -39,32 +39,15 @@
             document.body.className = 'main';
             // Get the user data from the server
             //retreiveUserData();
+            var userCredentials = JSON.parse(localStorage.getItem('userCredentials'));
+            welcomeMessage = userCredentials.username.toString();
+            self.update();
         });
 
         app.on('close', function () {
             console.log('[Core.tag] Received event - close');
             self.unmount();
         });
-
-        function retreiveUserData (token) {
-
-            client.send
-
-
-            rpc(token, 'userGetMe', {}, function (response) {
-                console.log('[Core.js] userGetMe ', response);
-                if (response.err) {
-                    // Check error might want to unload and go to login
-                }
-
-                if (response.result) {
-                    self.loaded = true;
-                    welcomeMessage = response.result.username;
-                    riot.update();
-                }
-            });
-        }
-
 
 
         /**
