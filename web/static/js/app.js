@@ -71,7 +71,7 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
                 });
 
                 client.on("stanza", function(stanza) {
-                    console.log('***** stanza', stanza.toString());
+                    console.log('***** client stanza', stanza);
                 });
 
                 client.on("online", function () {
