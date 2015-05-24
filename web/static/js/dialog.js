@@ -1,4 +1,4 @@
-riot.tag('dialog', '<div class="dialog-overlay"> <div class="dialog-container"> <div class="dialog-header"> <div class="dialog-title"> <h2>Add user</h2> </div> <div class="dialog-close"> <a href="" onclick="{ close }">Close</a> </div> </div> <hr > <div class="dialog-content"> <form onsubmit="{ submit }"> <input name="username" class="input" id="username" type="text" placeholder="Username"> <button name="submit" class="submit">add contact</button> </form> </div> </div> </div>', function(opts) {
+riot.tag('dialog', '<div class="dialog-overlay"> <div class="dialog-container"> <div class="dialog-header"> <div class="dialog-title"> <h2>Add user</h2> </div> <div class="dialog-close"> <a href="" onclick="{ close }">Close</a> </div> </div> <hr > <div class="dialog-content"> <form onsubmit="{ submit }"> <input name="username" class="input" id="username" type="text" placeholder="Username (full domain)"> <button name="submit" class="submit">add contact</button> </form> </div> </div> </div>', function(opts) {
         
         var self = this;
 

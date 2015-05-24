@@ -7,7 +7,7 @@
             <div id="error" class={ errorState ? 'error-container show' : 'error-container' }><p> { errorMessage }</p></div>
             <form id="register" onsubmit={ submit }>
                 <input name="email" class="input" id="email" type="text" placeholder="Email">
-                <input name="username" class="input" id="username" type="text" placeholder="Name">
+                <input name="username" class="input" id="username" type="text" placeholder="Username (full domain)">
                 <input name="password" class="input" id="password" type="password" placeholder="Password">
                 <button name="submit" class="submit">Register</button>
             </form>

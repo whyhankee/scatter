@@ -167,6 +167,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     };
     self.iface.clients.scatter_api.contactAdd(rq, function (err) {
       if (err) return req.io.emit(requestId, {err: err});
+
       rq = {
         authToken: token
       };
@@ -182,7 +183,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     var requestId = req.data._meta.requestId;
     var token = req.data._meta.authToken;
 
-    xmppClients[token].contactAdd(req.username);
+    xmppClients[token].contactAdd(req.data.username);
     req.io.emit(requestId, {err: null, result: true});
   });
 
@@ -203,6 +204,7 @@ WebService.prototype.setupSocketServer =  function setupSocketServer(/*iface*/) 
     };
     self.iface.clients.scatter_api.contactDelete(rq, function (err) {
       if (err) return req.io.emit(requestId, {err: err});
+
       rq = {
         authToken: token
       };

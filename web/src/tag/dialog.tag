@@ -15,7 +15,7 @@
 
             <div class="dialog-content">
                 <form onsubmit={ submit }>
-                    <input name="username" class="input" id="username" type="text" placeholder="Username">
+                    <input name="username" class="input" id="username" type="text" placeholder="Username (full domain)">
                     <button name="submit" class="submit">add contact</button>
                 </form>
             </div>
