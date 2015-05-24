@@ -69,10 +69,13 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
                     jid: userCredentials.username,
                     password: userCredentials.password
                 });
-                            client.on("stanza", function(stanza) {
-                console.log('***** stanza', stanza);
-            });
+
+                client.on("stanza", function(stanza) {
+                    console.log('***** stanza', stanza);
+                });
+
                 riot.mount(document.getElementById('app'), 'core');
+
                 return;
             }
 
