@@ -71,11 +71,10 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
                 });
 
                 client.on("stanza", function(stanza) {
-                    console.log('***** stanza', stanza);
+                  console.log('***** stanza', stanza);
                 });
 
                 riot.mount(document.getElementById('app'), 'core');
-
                 return;
             }
 
