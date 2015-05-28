@@ -86,11 +86,13 @@
             //rpc(token, 'userContactList', {}, contactsUpdate);
         });
 
-        app.on('contacts-add', contactsUpdate);
+        //app.on('contacts-add', contactsUpdate);
 
         // OnClick
 
         addContact (e) {
+            e.preventDefault();
+
             app.trigger('dialog');
         }
 

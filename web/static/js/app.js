@@ -1,4 +1,4 @@
-riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
+riot.tag('app', '<div id="app"></div>', function(opts) {
         
 
         window.onload = function onLoad() {
@@ -37,6 +37,11 @@ riot.tag('app', '<div id="app"></div> <div id="dialog"></div>', function(opts) {
             });
 
             app.on('dialog', function () {
+
+                dialogDiv = document.createElement('div');
+                dialogDiv.id = 'dialog';
+                document.body.appendChild(dialogDiv)
+
                 riot.mount(document.getElementById('dialog'), 'dialog');
             });
 

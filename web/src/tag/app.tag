@@ -1,6 +1,5 @@
 <app>
     <div id="app"></div>
-    <div id="dialog"></div>
 
     <script>
         /* jshint ignore:start */
@@ -41,6 +40,11 @@
             });
 
             app.on('dialog', function () {
+                // Dynamically create div
+                dialogDiv = document.createElement('div');
+                dialogDiv.id = 'dialog';
+                document.body.appendChild(dialogDiv)
+
                 riot.mount(document.getElementById('dialog'), 'dialog');
             });
 
