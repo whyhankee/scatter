@@ -5,6 +5,12 @@
 
 Scatter - An experiment in Distributed Social Networking with new technologies. Nothing special for now.
 
+
+# Status
+
+The current status is that it's far from usable or compleet. Please check back later for updates. Thanks.
+
+
 # Goals
 
 * Data and inner working must be fully distributed (like Email)
