@@ -11,16 +11,29 @@ var contact = require(path.join(__dirname,'contact'));
 
 
 // Middleware
-// checks if the authToken is valid
+//
+// checks if the authToken or authUser is valid
+//      authToken: secure token of 'from' user
+//      authToken: userName of 'from' user - format: a@b.c/deviceid
 //    if successful, loads the user object on the request (req.user)
+//    if !succesful, returns err
+//
 var checkAuthToken =  {
   pre: function(req) {
     var self = this;
 
-    if (!req.body.authToken) return req.done(new Error('notAuthorized'));
+    var userFilter;
+    if (req.body.authToken) {
+        userFilter = {authToken: req.body.authToken};
+    } else if (req.body.authUser) {
+        var userName = req.body.authUser.replace(/\/.*/, '');
+        userFilter = {username: userName};
+    } else {
+        return req.done(new Error('notAuthorized'));
+    }
 
     // Load User based on authToken
-    self.User.filter({authToken: req.body.authToken}).run( function (err, users) {
+    self.User.filter(userFilter).run( function (err, users) {
       if (users.length === 0)  return req.done(new Error('notAuthorized'));
       if (users.length > 1)  return req.done(new Error('notAuthorized'));
 
