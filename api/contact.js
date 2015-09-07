@@ -4,6 +4,7 @@ var util = require('util');
 var async = require('neo-async');
 var oap = require('oap');
 
+
 // Contact request
 //
 function contactAdd(req) {
@@ -48,6 +49,7 @@ function contactAdd(req) {
   });
 }
 
+
 // Contact list
 //
 function contactList (req) {
@@ -60,6 +62,7 @@ function contactList (req) {
     return req.done(null, contacts);
   });
 }
+
 
 /**
  * @method contactDelete
@@ -92,6 +95,7 @@ function contactDelete (req) {
     });
   });
 }
+
 
 // Exports
 //
