@@ -93,6 +93,21 @@ XmppServer.prototype.onStart = function (done) {
     // Stanza handling
     client.on("stanza", function(stanza) {
       debug('stanza', util.inspect(stanza, {depth: null}));
+
+      // prescence subscribe
+      if (stanza.name === 'presence') {
+        var attr = stanza.attrs;
+        if (attr.type === 'subscribe') {
+            debug('contact request from '+attr.from+' to ' + attr.to);
+            var addData = {
+              authUser: attr.from,
+              username: attr.to
+            };
+            self.apiClient.contactAdd(addData, function (err, contact) {
+                console.log('!****** err, contact :', err, contact);
+            });
+        }
+      }
     });
 
     // On Disconnect event. When a client disconnects
