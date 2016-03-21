@@ -94,9 +94,11 @@ XmppServer.prototype.onStart = function (done) {
     client.on("stanza", function(stanza) {
       debug('stanza', util.inspect(stanza, {depth: null}));
 
-      // prescence subscribe
+      // prescence stanza
       if (stanza.name === 'presence') {
         var attr = stanza.attrs;
+
+        // Presence subsctibe request
         if (attr.type === 'subscribe') {
             debug('contact request from '+attr.from+' to ' + attr.to);
             var addData = {
@@ -104,7 +106,7 @@ XmppServer.prototype.onStart = function (done) {
               username: attr.to
             };
             self.apiClient.contactAdd(addData, function (err, contact) {
-                console.log('!****** err, contact :', err, contact);
+              if (err) console.log('!****** err, contact :', err, contact);
             });
         }
       }

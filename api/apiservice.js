@@ -34,8 +34,7 @@ var checkAuthToken =  {
 
     // Load User based on authToken
     self.User.filter(userFilter).run( function (err, users) {
-      if (users.length === 0)  return req.done(new Error('notAuthorized'));
-      if (users.length > 1)  return req.done(new Error('notAuthorized'));
+      if (users.length !== 1)  return req.done(new Error('notAuthorized'));
 
       self.iface.log.debug('Loaded authenticated user', {
         authToken: req.body.authToken,
